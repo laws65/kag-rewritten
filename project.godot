@@ -9,20 +9,50 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Character",
+"language": "GDScript",
+"path": "res://base/entities/scripts/character.gd"
+}, {
+"base": "Node",
+"class": "GameMode",
+"language": "GDScript",
+"path": "res://base/rules/game_mode.gd"
+}, {
 "base": "Node",
 "class": "Tile",
 "language": "GDScript",
-"path": "res://base/scripts/tiles/tile.gd"
+"path": "res://base/entities/scripts/tile.gd"
 } ]
 _global_script_class_icons={
+"Character": "",
+"GameMode": "",
 "Tile": ""
 }
 
 [application]
 
 config/name="KAG Rewritten"
-run/main_scene="res://base/content/levels/multiplayer.tscn"
-config/icon="res://icon.png"
+run/main_scene="res://base/levels/content/matchmaking.tscn"
+config/custom_user_dir_name="KAG Rewritten"
+boot_splash/image="res://base/sprites/misc/icon.png"
+boot_splash/fullsize=false
+config/icon="res://base/sprites/misc/icon.png"
+
+[debug]
+
+settings/crash_handler/message="Please include this when reporting the bug on https://github.com/andreyrk/kag-rewritten/issues"
+
+[display]
+
+window/dpi/allow_hidpi=true
+mouse_cursor/custom_image="res://base/sprites/misc/cursor.png"
+window/stretch/mode="2d"
+window/stretch/aspect="expand"
+
+[gui]
+
+theme/use_hidpi=true
 
 [importer_defaults]
 
@@ -55,4 +85,5 @@ texture={
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
+environment/default_clear_color=Color( 0.647059, 0.741176, 0.784314, 1 )
 environment/default_environment="res://default_env.tres"
