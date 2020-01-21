@@ -14,7 +14,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://base/entities/scripts/character.gd"
 }, {
-"base": "Node",
+"base": "Node2D",
 "class": "GameMode",
 "language": "GDScript",
 "path": "res://base/rules/game_mode.gd"
@@ -34,10 +34,16 @@ _global_script_class_icons={
 
 config/name="KAG Rewritten"
 run/main_scene="res://base/levels/content/matchmaking.tscn"
+config/use_custom_user_dir=true
 config/custom_user_dir_name="KAG Rewritten"
 boot_splash/image="res://base/sprites/misc/icon.png"
 boot_splash/fullsize=false
 config/icon="res://base/sprites/misc/icon.png"
+
+[autoload]
+
+network="*res://base/rules/multiplayer/network.gd"
+gamestate="*res://base/rules/multiplayer/game_state.gd"
 
 [debug]
 
@@ -49,10 +55,6 @@ window/dpi/allow_hidpi=true
 mouse_cursor/custom_image="res://base/sprites/misc/cursor.png"
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
-
-[gui]
-
-theme/use_hidpi=true
 
 [importer_defaults]
 
@@ -85,4 +87,3 @@ texture={
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
-environment/default_clear_color=Color( 0.647059, 0.741176, 0.784314, 1 )

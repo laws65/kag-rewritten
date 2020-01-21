@@ -6,6 +6,8 @@
 
 
 
+
+
 [node name="Tile" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 representative_color = Color( 1, 0, 0, 1 )
