@@ -61,7 +61,7 @@ func _on_player_disconnected(id):
 # Peer trying to connect to server is notified on success
 func _on_connected_to_server():
 	emit_signal("join_success")
-	gamestate.player_info.net_id = get_tree().get_network_unique_id()
+	gamestate.player_info.network_id = get_tree().get_network_unique_id()
 
 	rpc_id(1, "register_player", gamestate.player_info)
 	register_player(gamestate.player_info)
@@ -86,8 +86,8 @@ remote func register_player(pinfo):
 			if (id != 1):
 				rpc_id(id, "register_player", pinfo)
 
-	print("Registering player ", pinfo.name, " (", pinfo.net_id, ") to internal player table")
-	players[pinfo.net_id] = pinfo
+	print("Registering player ", pinfo.name, " (", pinfo.network_id, ") to internal player table")
+	players[pinfo.network_id] = pinfo
 	emit_signal("player_list_changed")
 
 remote func unregister_player(id):
