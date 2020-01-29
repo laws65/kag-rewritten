@@ -24,10 +24,9 @@ func _ready():
 ### ---
 
 func create_server():
-	var net = NetworkedMultiplayerENet.new()
+	var net = WebSocketServer.new()
 	
-	# Try to create the server
-	if (net.create_server(server_info.used_port, server_info.max_players) != OK):
+	if (net.listen(server_info.used_port, PoolStringArray(), true) != OK):
 		print("Failed to create server")
 		return
 	
@@ -36,13 +35,13 @@ func create_server():
 	register_player(game_state.player_info)
 
 func join_server(ip, port):
-	var net = NetworkedMultiplayerENet.new()
+	var net = WebSocketClient.new()
 	
-	if (net.create_client(ip, port) != OK):
-		print("Failed to create client")
+	if (net.connect_to_url("ws://" + ip + ":" + str(port), PoolStringArray(), true) != OK):
+		print("Failed to create web client")
 		emit_signal("join_fail")
 		return
-		
+	
 	get_tree().set_network_peer(net)
 
 ### --- Events
