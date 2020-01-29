@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "KinematicBody2D",
+"base": "Node2D",
 "class": "Character",
 "language": "GDScript",
 "path": "res://base/entities/scripts/character.gd"
@@ -42,8 +42,8 @@ config/icon="res://base/sprites/misc/icon.png"
 
 [autoload]
 
-network="*res://base/rules/multiplayer/network.gd"
-gamestate="*res://base/rules/multiplayer/game_state.gd"
+network="*res://base/rules/common/network.gd"
+gamestate="*res://base/rules/common/game_state.gd"
 
 [debug]
 

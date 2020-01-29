@@ -6,15 +6,17 @@ func _ready():
 	network.connect("join_fail", self, "_on_join_fail")
 
 func set_player_info():
-	pass
+	if (!$PanelPlayer/txtPlayerName.text.empty()):
+		gamestate.player_info.name = $PanelPlayer/txtPlayerName.text
 
 func _on_btCreate_pressed():
 	set_player_info()
 	
 	if (!$PanelHost/txtServerName.text.empty()):
 		network.server_info.name = $PanelHost/txtServerName.text
-	network.server_info.max_players = int($PanelHost/txtMaxPlayers.value)
+	
 	network.server_info.used_port = int($PanelHost/txtServerPort.text)
+	network.server_info.max_players = int($PanelHost/txtMaxPlayers.value)
 	
 	network.create_server()
 

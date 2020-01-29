@@ -40,10 +40,10 @@ remote func spawn_player(pinfo, spawn_index):
 	print("Spawning actor for player ", pinfo.name, "(", pinfo.network_id, ") - ", spawn_index)
 	
 	# Create a character
-	var pclass = load(pinfo.actor_path)
-	var pchar = default_character.instance()
+	var pclass = load(pinfo.character)
+	var pchar = pclass.instance()
 	
-	pchar.position = $SpawnPoints.get_node(str(spawn_index)).position
+	# pchar.position = 
 	
 	if (pinfo.network_id != 1):
 		pchar.set_network_master(pinfo.network_id)

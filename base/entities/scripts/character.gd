@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Node2D
 class_name Character
 
 var move_speed = 300

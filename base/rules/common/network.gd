@@ -75,13 +75,13 @@ func _on_connection_failed():
 func _on_disconnected_from_server():
 	print("Disconnected from server")
 	players.clear()
-	gamestate.player_info.net_id = 1
+	gamestate.player_info.network_id = 1
 
 ### Remote functions
 remote func register_player(pinfo):
 	if (get_tree().is_network_server()):
 		for id in players:
-			rpc_id(pinfo.net_id, "register_player", players[id])
+			rpc_id(pinfo.network_id, "register_player", players[id])
 
 			if (id != 1):
 				rpc_id(id, "register_player", pinfo)
