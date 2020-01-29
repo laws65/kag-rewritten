@@ -2,7 +2,7 @@ extends Node2D
 class_name Character
 
 var move_speed = 300
-slave var repl_position = Vector2()
+puppet var repl_position = Vector2()
 
 func _process(delta):
 	if (is_network_master()):
