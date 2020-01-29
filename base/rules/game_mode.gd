@@ -10,17 +10,20 @@ func _ready():
 	if (get_tree().is_network_server()):
 		network.connect("player_removed", self, "_on_player_removed")
 	
-	# Spawn the players
 	if (get_tree().is_network_server()):
 		spawn_player(gamestate.player_info, 1)
 	else:
 		rpc_id(1, "spawn_player", gamestate.player_info, -1)
 
+### --- Events
+
 func _on_player_list_changed():
-	print("Got the player_list_changed event")
+	pass
 	
 func _on_player_removed(pinfo):
 	despawn_player(pinfo)
+
+### --- Remote functions
 
 remote func spawn_player(pinfo, spawn_index):
 	if (spawn_index == -1):

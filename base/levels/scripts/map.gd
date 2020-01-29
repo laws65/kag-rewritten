@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 var tile_array = []
 export (String) var map_path

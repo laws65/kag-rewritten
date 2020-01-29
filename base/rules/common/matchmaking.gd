@@ -20,7 +20,6 @@ func _on_btCreate_pressed():
 	
 	network.create_server()
 
-
 func _on_btJoin_pressed():
 	set_player_info()
 	
@@ -29,9 +28,11 @@ func _on_btJoin_pressed():
 	
 	network.join_server(ip, port)
 
+### --- Events
 
 func _on_ready_to_play():
-	get_tree().change_scene("res://base/levels/content/multiplayer.tscn")
+	if get_tree().change_scene("res://base/levels/content/multiplayer.tscn") != OK:
+		push_error("Loading the _on_ready_to_play() scene failed.")
 
 func _on_join_fail():
 	print("Failed to join server")
