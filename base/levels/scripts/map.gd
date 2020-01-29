@@ -1,6 +1,6 @@
 extends Node2D
 
-var tile_array = []
+var tile_array = {}
 export (String) var map_path
 export (Array, String) var search_directories
 
@@ -13,11 +13,11 @@ func _ready():
 	for x in range(map_image.get_width()):
 		for y in range(map_image.get_height()):
 			var pixel = map_image.get_pixel(x, y)
-			for tile in tile_array:
-				var child = tile.instance()
-				if pixel.to_html(false) == child.representative_color.to_html(false):
-					child.position = Vector2(8 * x, 8 * y)
-					add_child(child)
+			var key = pixel.to_html(false)
+			if tile_array.has(key):
+				var child = tile_array[key].instance()
+				child.position = Vector2(8 * x, 8 * y)
+				add_child(child)
 	map_image.unlock()
 	
 	pass
@@ -37,6 +37,8 @@ func load_tiles():
 			if file.ends_with(".tscn"):
 				var scene = load(path + file)
 				if scene.instance() is Tile:
-					tile_array.append(scene)
+					var color = scene.instance().representative_color
+					var key = color.to_html(false)
+					tile_array[key] = scene
 			file = dir.get_next()
 	pass
