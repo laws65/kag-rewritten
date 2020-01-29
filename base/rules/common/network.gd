@@ -33,7 +33,7 @@ func create_server():
 	
 	get_tree().set_network_peer(net)
 	emit_signal("server_created")
-	register_player(gamestate.player_info)
+	register_player(game_state.player_info)
 
 func join_server(ip, port):
 	var net = NetworkedMultiplayerENet.new()
@@ -59,10 +59,10 @@ func _on_player_disconnected(id):
 
 func _on_connected_to_server():
 	emit_signal("join_success")
-	gamestate.player_info.network_id = get_tree().get_network_unique_id()
+	game_state.player_info.network_id = get_tree().get_network_unique_id()
 
-	rpc_id(1, "register_player", gamestate.player_info)
-	register_player(gamestate.player_info)
+	rpc_id(1, "register_player", game_state.player_info)
+	register_player(game_state.player_info)
 
 func _on_connection_failed():
 	emit_signal("join_fail")
@@ -71,7 +71,7 @@ func _on_connection_failed():
 func _on_disconnected_from_server():
 	print("Disconnected from server")
 	players.clear()
-	gamestate.player_info.network_id = 1
+	game_state.player_info.network_id = 1
 
 ### --- Remote functions
 

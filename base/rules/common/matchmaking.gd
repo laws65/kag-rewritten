@@ -7,7 +7,7 @@ func _ready():
 
 func set_player_info():
 	if (!$PanelPlayer/txtPlayerName.text.empty()):
-		gamestate.player_info.name = $PanelPlayer/txtPlayerName.text
+		game_state.player_info.name = $PanelPlayer/txtPlayerName.text
 
 func _on_btCreate_pressed():
 	set_player_info()

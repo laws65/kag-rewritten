@@ -2,18 +2,19 @@ extends Node2D
 class_name GameMode
 
 export (String) var default_character
+var spawn_list = {}
 
 func _ready():
-	gamestate.player_info.character = default_character
+	game_state.player_info.character = default_character
 	
 	network.connect("player_list_changed", self, "_on_player_list_changed")
 	if (get_tree().is_network_server()):
 		network.connect("player_removed", self, "_on_player_removed")
 	
 	if (get_tree().is_network_server()):
-		spawn_player(gamestate.player_info, 1)
+		spawn_player(game_state.player_info, 1)
 	else:
-		rpc_id(1, "spawn_player", gamestate.player_info, -1)
+		rpc_id(1, "spawn_player", game_state.player_info, -1)
 
 ### --- Events
 
@@ -45,8 +46,7 @@ remote func spawn_player(pinfo, spawn_index):
 	# Create a character
 	var pclass = load(pinfo.character)
 	var pchar = pclass.instance()
-	
-	# pchar.position = 
+	pchar.position = spawn_list[0].get_position()
 	
 	if (pinfo.network_id != 1):
 		pchar.set_network_master(pinfo.network_id)

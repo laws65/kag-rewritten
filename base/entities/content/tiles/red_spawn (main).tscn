@@ -3,12 +3,11 @@
 [ext_resource path="res://base/entities/content/tile.tscn" type="PackedScene" id=1]
 [ext_resource path="res://base/entities/scripts/tiles/spawn (main).gd" type="Script" id=2]
 
-
-
-
-
-
 [node name="Tile" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+flags = 1
 representative_color = Color( 1, 0, 0, 1 )
 spawn_title = "Red Spawn"
+
+[node name="Collider" parent="." index="1"]
+disabled = true
