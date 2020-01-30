@@ -12,11 +12,11 @@ install:
 
 script:
 # Desktop
-- docker run "barichello/godot-ci:${GODOT_VERSION}" -v "$(pwd)" /bin/bash -c "godot --export 'Windows Desktop' $(pwd)/build/windows/${GAME_NAME}.exe"
-- docker run "barichello/godot-ci:${GODOT_VERSION}" -v "$(pwd)" /bin/bash -c "godot --export 'Linux/X11' $(pwd)/build/linux/${GAME_NAME}"
-- docker run "barichello/godot-ci:${GODOT_VERSION}" -v "$(pwd)" /bin/bash -c "godot --export 'Mac OSX' $(pwd)/build/mac/${GAME_NAME}-mac.zip"
+- docker run -v "$(pwd)" "barichello/godot-ci:${GODOT_VERSION}" /bin/bash -c "godot --export 'Windows Desktop' $(pwd)/build/windows/${GAME_NAME}.exe"
+- docker run -v "$(pwd)" "barichello/godot-ci:${GODOT_VERSION}" /bin/bash -c "godot --export 'Linux/X11' $(pwd)/build/linux/${GAME_NAME}"
+- docker run -v "$(pwd)" "barichello/godot-ci:${GODOT_VERSION}" /bin/bash -c "godot --export 'Mac OSX' $(pwd)/build/mac/${GAME_NAME}-mac.zip"
 # Web
-- docker run "barichello/godot-ci:${GODOT_VERSION}" -v "$(pwd)" /bin/bash -c "godot --export 'HTML5' $(pwd)/build/html5/index.html"
+- docker run -v "$(pwd)" "barichello/godot-ci:${GODOT_VERSION}" /bin/bash -c "godot --export 'HTML5' $(pwd)/build/html5/index.html"
 
 before_deploy:
 - zip -j "${GAME_NAME}-linux.zip"   build/linux/*
