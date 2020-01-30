@@ -24,11 +24,22 @@ func _ready():
 ### ---
 
 func create_server():
-	var net = WebSocketServer.new()
+	var net
+	if OS.has_feature("HTML5"):
+		# We are unable to Host from browsers
+		# So we create a placeholder Peer to simulate single-player
+		# As workaround
+		net = NetworkedMultiplayerENet.new()
 		
-	if (net.listen(server_info.used_port, PoolStringArray(), true) != OK):
-		print("Failed to create server")
-		return
+		if (net.create_server(server_info.used_port) != OK):
+			print("Failed to create server")
+			return 
+	else:
+		net = WebSocketServer.new()
+		
+		if (net.listen(server_info.used_port, PoolStringArray(), true) != OK):
+			print("Failed to create server")
+			return
 	
 	get_tree().set_network_peer(net)
 	emit_signal("server_created")
