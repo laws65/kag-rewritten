@@ -37,6 +37,7 @@ before_deploy:
 
 deploy:
 - provider: releases
+  skip_cleanup: true
   token: $GITHUB_TOKEN
   file:
     - "${GAME_NAME}-linux.zip"
@@ -47,6 +48,7 @@ deploy:
     tags: true
 
 - provider: pages
+  skip_cleanup: true
   token: $GITHUB_TOKEN
   local_dir: build/html5
   on:
