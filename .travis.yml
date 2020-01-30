@@ -4,6 +4,7 @@ git:
   quiet: true
 
 os: linux
+sudo: required
 
 env: GAME_NAME="KAG Rewritten" GODOT_VERSION="3.2"
 
