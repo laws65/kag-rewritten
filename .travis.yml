@@ -1,27 +1,33 @@
 os:
   - linux
 
-services:
-  - docker
-
 env:
   - GAME_NAME="KAG Rewritten" GODOT_VERSION="3.2"
 
 install:
-- docker pull "barichello/godot-ci:${GODOT_VERSION}"
+- wget https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/Godot_v${GODOT_VERSION}-stable_linux_headless.64.zip \
+- wget https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz \
+- mkdir ~/.cache \
+- mkdir -p ~/.config/godot \
+- mkdir -p ~/.local/share/godot/templates/${GODOT_VERSION}.stable \
+- unzip Godot_v${GODOT_VERSION}-stable_linux_headless.64.zip \
+- mv Godot_v${GODOT_VERSION}-stable_linux_headless.64 /usr/local/bin/godot \
+- unzip Godot_v${GODOT_VERSION}-stable_export_templates.tpz \
+- mv templates/* ~/.local/share/godot/templates/${GODOT_VERSION}.stable \
+- rm -f Godot_v${GODOT_VERSION}-stable_export_templates.tpz Godot_v${GODOT_VERSION}-stable_linux_headless.64.zip
 
 script:
 # Desktop
-- docker run -v "$(pwd)" "barichello/godot-ci:${GODOT_VERSION}" /bin/bash -c "godot --export 'Windows Desktop' $(pwd)/build/windows/${GAME_NAME}.exe"
-- docker run -v "$(pwd)" "barichello/godot-ci:${GODOT_VERSION}" /bin/bash -c "godot --export 'Linux/X11' $(pwd)/build/linux/${GAME_NAME}"
-- docker run -v "$(pwd)" "barichello/godot-ci:${GODOT_VERSION}" /bin/bash -c "godot --export 'Mac OSX' $(pwd)/build/mac/${GAME_NAME}-mac.zip"
+- godot --export "Windows Desktop" build/windows/${GAME_NAME}.exe
+- godot --export "Linux/X11" build/linux/${GAME_NAME}
+- godot --export "Mac OSX" build/mac/${GAME_NAME}-mac.zip
 # Web
-- docker run -v "$(pwd)" "barichello/godot-ci:${GODOT_VERSION}" /bin/bash -c "godot --export 'HTML5' $(pwd)/build/html5/index.html"
+- godot --export "HTML5" build/html5/index.html
 
 before_deploy:
-- zip -j "${GAME_NAME}-linux.zip"   build/linux/*
-- zip -j "${GAME_NAME}-windows.zip" build/windows/*
-- cp -R build/mac/* . # already a zip
+- zip -j "${GAME_NAME}-linux.zip"   ./build/linux/*
+- zip -j "${GAME_NAME}-windows.zip" ./build/windows/*
+- cp -R ./build/mac/* . # already a zip
 
 deploy:
 - provider: releases
