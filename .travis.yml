@@ -1,17 +1,16 @@
-services:
-- docker
-
 env:
   - GAME_NAME="KAG Rewritten"
 
 install:
-- docker pull gamedrivendesign/godot-export:3.2
+- wget "https://downloads.tuxfamily.org/godotengine/3.2/Godot_v3.2-stable_linux_headless.64.zip"
+- unzip "./Godot_v3.2-stable_linux_headless.64.zip"
+- mv "./Godot_v3.2-stable_linux_headless.64" godot
 
 script:
-- docker run -e EXPORT_NAME="HTML5"           -e OUTPUT_FILENAME="index.html"           -v $(pwd):/build/src -v $(pwd)/output/html5:/build/output   gamedrivendesign/godot-export:3.2
-- docker run -e EXPORT_NAME="Linux/X11"       -e OUTPUT_FILENAME="${GAME_NAME}"         -v $(pwd):/build/src -v $(pwd)/output/linux:/build/output   gamedrivendesign/godot-export:3.2
-- docker run -e EXPORT_NAME="Windows Desktop" -e OUTPUT_FILENAME="${GAME_NAME}.exe"     -v $(pwd):/build/src -v $(pwd)/output/windows:/build/output gamedrivendesign/godot-export:3.2
-- docker run -e EXPORT_NAME="Mac OSX"         -e OUTPUT_FILENAME="${GAME_NAME}-mac.zip" -v $(pwd):/build/src -v $(pwd)/output/mac:/build/output     gamedrivendesign/godot-export:3.2
+- godot --path ./ --export "Windows Desktop" output/linux/${GAME_NAME}.exe
+- godot --path ./ --export "Mac OSX" output/mac/${GAME_NAME}-mac.zip
+- godot --path ./ --export "Linux/X11" output/windows/${GAME_NAME}
+- godot --path ./ --export "HTML5" output/html5/index.html
 
 before_deploy:
 - zip -j "${GAME_NAME}-linux.zip"   output/linux/*
