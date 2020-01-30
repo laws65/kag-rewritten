@@ -12,11 +12,11 @@ install:
 
 script:
 # Desktop
-- docker run /bin/bash -c "godot --export "Windows Desktop" build/windows/${GAME_NAME}.exe"
-- docker run /bin/bash -c "godot --export "Linux/X11" build/linux/${GAME_NAME}"
-- docker run /bin/bash -c "godot --export "OSX" build/mac/${GAME_NAME}-mac.zip"
+- docker run /bin/bash -c "godot --export 'Windows Desktop' build/windows/${GAME_NAME}.exe"
+- docker run /bin/bash -c "godot --export 'Linux/X11' build/linux/${GAME_NAME}"
+- docker run /bin/bash -c "godot --export 'Mac OSX' build/mac/${GAME_NAME}-mac.zip"
 # Web
-- docker run /bin/bash -c "godot --export "HTML5" build/html5/index.html"
+- docker run /bin/bash -c "godot --export 'HTML5' build/html5/index.html"
 
 before_deploy:
 - zip -j "${GAME_NAME}-linux.zip"   build/linux/*
