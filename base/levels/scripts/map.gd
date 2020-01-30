@@ -19,11 +19,6 @@ func _ready():
 				child.position = Vector2(8 * x, 8 * y)
 				add_child(child)
 	map_image.unlock()
-	
-	pass
-
-#func _process(delta):
-#	pass
 
 func load_tiles():
 	var dir = Directory.new()
@@ -41,4 +36,3 @@ func load_tiles():
 					var key = color.to_html(false)
 					tile_array[key] = scene
 			file = dir.get_next()
-	pass
