@@ -44,7 +44,8 @@ config/icon="res://base/sprites/misc/icon.png"
 
 network="*res://base/rules/common/network.gd"
 game_state="*res://base/rules/common/game_state.gd"
-game_camera="*res://base/levels/content/game_camera.tscn"
+game_camera="*res://base/levels/content/misc/game_camera.tscn"
+game_fps="*res://base/levels/content/misc/game_fps.tscn"
 
 [debug]
 
