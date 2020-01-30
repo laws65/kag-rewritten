@@ -41,25 +41,25 @@ func _process_input():
 	velocity.x = 0
 	
 	# Walk
-	if Input.is_action_pressed("ui_right"):
+	if Input.is_action_pressed("move_right"):
 		velocity.x += move_speed
 		moveRight = true
 	else:
 		moveRight = false
 	
-	if Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("move_left"):
 		velocity.x -= move_speed
 		moveLeft = true
 	else:
 		moveLeft = false
 	
 	# Jump
-	if Input.is_action_pressed("ui_up") and not (jumping or crouching):
+	if Input.is_action_pressed("jump") and not (jumping or crouching):
 		velocity.y = -jump_speed
 		jumping = true
 	
 	# Crouch
-	if Input.is_action_pressed("ui_down"):
+	if Input.is_action_pressed("crouch"):
 		crouching = true
 	else:
 		crouching = false
