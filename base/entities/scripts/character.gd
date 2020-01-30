@@ -12,7 +12,7 @@ onready var c_sprite = $Sprite
 
 ### Physics
 export (int) var gravity = 500
-export (int) var move_speed = 100
+export (int) var move_speed = 75
 export (int) var jump_speed = 125
 
 var velocity = Vector2(0, 0)
