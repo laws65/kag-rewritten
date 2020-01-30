@@ -25,7 +25,7 @@ func _ready():
 
 func create_server():
 	var net = WebSocketServer.new()
-	
+		
 	if (net.listen(server_info.used_port, PoolStringArray(), true) != OK):
 		print("Failed to create server")
 		return

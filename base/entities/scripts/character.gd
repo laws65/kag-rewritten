@@ -15,8 +15,15 @@ export (int) var gravity = 500
 export (int) var move_speed = 100
 export (int) var jump_speed = 125
 
-var jumping = false
 var velocity = Vector2(0, 0)
+### ---
+
+### Input
+var jumping = false
+var crouching = false
+
+var moveRight = false
+var moveLeft = false
 ### ---
 
 func _ready():
@@ -27,33 +34,56 @@ func _animate(animation, flip_h = null):
 	c_anim.play(animation)
 	c_sprite.flip_h = flip_h if flip_h != null else c_sprite.flip_h
 	
-	rset("r_animation", animation)
+	rset("r_animation", c_anim.current_animation)
 	rset("r_flip_h", c_sprite.flip_h)
 
-func _get_input():
+func _process_input():
 	velocity.x = 0
 	
 	# Walk
-	if Input.is_action_pressed('ui_right'):
-		c_sprite.flip_h = false
+	if Input.is_action_pressed("ui_right"):
 		velocity.x += move_speed
-	if Input.is_action_pressed('ui_left'):
-		c_sprite.flip_h = true
+		moveRight = true
+	else:
+		moveRight = false
+	
+	if Input.is_action_pressed("ui_left"):
 		velocity.x -= move_speed
+		moveLeft = true
+	else:
+		moveLeft = false
 	
 	# Jump
-	if Input.is_action_pressed('ui_up') and not jumping:
-		jumping = true
+	if Input.is_action_pressed("ui_up") and not (jumping or crouching):
 		velocity.y = -jump_speed
+		jumping = true
 	
-	if (abs(velocity.x) <= 0.001):
-		_animate("idle")
+	# Crouch
+	if Input.is_action_pressed("ui_down"):
+		crouching = true
 	else:
-		_animate("walk")
+		crouching = false
+
+func _process_animation():
+	if is_on_floor():
+		if moveLeft or moveRight:
+			_animate("walk", moveLeft)
+		else:
+			if crouching:
+				_animate("crouch")
+			else:
+				_animate("idle")
+	else:
+		if jumping:
+			_animate("jump")
+		else:
+			#_animate("fall")
+			pass
 
 func _physics_process(delta):
 	if (is_network_master()):
-		_get_input()
+		_process_input()
+		_process_animation()
 		
 		velocity.y += gravity * delta
 		velocity = move_and_slide(velocity, Vector2(0, -1))
