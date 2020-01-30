@@ -4,9 +4,8 @@ git:
   quiet: true
 
 os: linux
-sudo: required
 
-env: GAME_NAME="KAGRewritten" GODOT_VERSION="3.2"
+env: GAME_NAME="KAG Rewritten" GODOT_VERSION="3.2"
 
 install:
 - wget -q "https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/Godot_v${GODOT_VERSION}-stable_linux_headless.64.zip"
@@ -20,10 +19,10 @@ install:
 - mv templates/* ~/.local/share/godot/templates/${GODOT_VERSION}.stable
 
 script:
-  mkdir -p "build/windows"
-  mkdir -p "build/linux"
-  mkdir -p "build/mac"
-  mkdir -p "build/html5""
+- mkdir -p "build/windows"
+- mkdir -p "build/linux"
+- mkdir -p "build/mac"
+- mkdir -p "build/html5"
 # Desktop
 - godot --export "Windows Desktop" "build/windows/${GAME_NAME}.exe"
 - godot --export "Linux/X11" "build/linux/${GAME_NAME}"
