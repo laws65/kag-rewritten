@@ -5,8 +5,7 @@ services:
   - docker
 
 env:
-  - GAME_NAME="KAG Rewritten"
-    GODOT_VERSION="3.2"
+  - GAME_NAME="KAG Rewritten" GODOT_VERSION="3.2"
 
 install:
 - docker pull "barichello/godot-ci:${GODOT_VERSION}"
