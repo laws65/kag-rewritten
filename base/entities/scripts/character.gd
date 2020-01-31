@@ -10,7 +10,7 @@ puppet var r_flip_h = false
 onready var c_anim = $Animation
 onready var c_sprite = $Sprite
 
-onready var dust = load("res://base/entities/content/effects/Dust.tscn")
+onready var dust = load("res://base/entities/content/effects/dust.tscn")
 onready var effects = Node.new()
 
 ### Physics
