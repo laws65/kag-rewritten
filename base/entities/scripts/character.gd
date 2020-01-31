@@ -10,8 +10,7 @@ puppet var r_flip_h = false
 onready var c_anim = $Animation
 onready var c_sprite = $Sprite
 
-onready var dust = load("res://base/entities/content/effects/dust.tscn")
-onready var effects = Node.new()
+onready var dust_effect = preload("res://base/entities/content/effects/dust.tscn")
 
 ### Physics
 export (int) var gravity = 500
@@ -93,10 +92,11 @@ func _physics_process(delta):
 		
 		if jumping and is_on_floor():
 			jumping = false
-			var dust_instance = dust.instance()
-			add_child(effects)
-			effects.add_child(dust_instance)
-			dust_instance.init(global_transform, global_position)
+			
+			var dust = dust_effect.instance()
+			dust.set_global_position(global_position)
+			
+			get_node("/root").add_child(dust)
 		
 		rset("r_position", position)
 	else:
