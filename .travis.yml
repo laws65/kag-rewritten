@@ -31,19 +31,21 @@ script:
 - godot --export "HTML5" "build/html5/index.html"
 
 before_deploy:
-- zip -r "${GAME_NAME}-linux.zip" build/linux/*
-- zip -r "${GAME_NAME}-windows.zip" build/windows/*
 # Only copying needed, exporting for Mac outputs a zip
 - cp -R build/mac/* .
+- zip -jr "${GAME_NAME}-linux.zip" build/linux
+- zip -jr "${GAME_NAME}-windows.zip" build/windows
+- zip -jr "${GAME_NAME}-html.zip" build/html5
 
 deploy:
 - provider: releases
   skip_cleanup: true
   token: $GITHUB_TOKEN
   file:
+    - "${GAME_NAME}-mac.zip"
     - "${GAME_NAME}-linux.zip"
     - "${GAME_NAME}-windows.zip"
-    - "${GAME_NAME}-mac.zip"
+    - "${GAME_NAME}-html.zip"
   on:
     all_branches: true
     tags: true
