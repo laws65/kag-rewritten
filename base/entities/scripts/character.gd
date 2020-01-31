@@ -31,7 +31,7 @@ var moveLeft = false
 ### ---
 
 func _ready():
-	if (is_network_master()):
+	if is_network_master():
 		game_camera.target = self
 
 func _animate(animation, flip_h = null):
@@ -39,16 +39,12 @@ func _animate(animation, flip_h = null):
 	c_sprite.flip_h = flip_h if flip_h != null else c_sprite.flip_h
 
 func _physics_process(delta):
-	if (is_network_master()):
+	if is_network_master():
 		_process_input()
 		_process_animation()
 		
 		velocity.y += gravity * delta
 		velocity = move_and_slide(velocity, Vector2(0, -1))
-	else:
-		position = r_position
-		c_anim.play(r_animation)
-		c_sprite.flip_h = r_flip_h
 	
 	_sync()
 
@@ -97,12 +93,13 @@ func _process_animation():
 			_animate("jump")
 
 func _sync():
-	if (is_network_master()):
+	if is_network_master():
 		if jumping and is_on_floor():
 			rpc_unreliable("_play_dust_effect", global_position)
 		
 		rset_unreliable("r_animation", c_anim.current_animation)
 		rset_unreliable("r_flip_h", c_sprite.flip_h)
+		rset_unreliable("r_position", position)
 	else:
 		position = r_position
 		c_anim.play(r_animation)
