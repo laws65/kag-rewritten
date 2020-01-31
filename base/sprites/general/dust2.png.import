@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/shadertest.png-1607173f869d66934fe786bf9a05308d.stex"
+path="res://.import/dust2.png-f56b80aaffd9fdadb85c2ca8fb503529.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://base/sprites/misc/shadertest.png"
-dest_files=[ "res://.import/shadertest.png-1607173f869d66934fe786bf9a05308d.stex" ]
+source_file="res://base/sprites/general/dust2.png"
+dest_files=[ "res://.import/dust2.png-f56b80aaffd9fdadb85c2ca8fb503529.stex" ]
 
 [params]
 

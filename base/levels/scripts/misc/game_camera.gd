@@ -2,7 +2,7 @@ extends Camera2D
 
 var target
 
-func _process(delta):
+func _physics_process(delta):
 	if target:
 		global_position = target.global_position
 

@@ -1,30 +1,43 @@
 extends CanvasLayer
 
+### PanelPlayer
+onready var playerName = $Layout/PanelPlayer/Content/txtPlayerName
+### ---
+
+### PanelHost
+onready var hostServerName = $Layout/PanelHost/Content/txtServerName
+onready var hostServerPort = $Layout/PanelHost/Content/txtServerPort
+### ---
+
+### PanelJoin
+onready var joinServerIP = $Layout/PanelJoin/Content/txtJoinIP
+onready var joinServerPort = $Layout/PanelJoin/Content/txtJoinPort
+### ---
+
 func _ready():
 	network.connect("server_created", self, "_on_ready_to_play")
 	network.connect("join_success", self, "_on_ready_to_play")
 	network.connect("join_fail", self, "_on_join_fail")
 
 func set_player_info():
-	if (!$PanelPlayer/txtPlayerName.text.empty()):
-		game_state.player_info.name = $PanelPlayer/txtPlayerName.text
+	if (!playerName.text.empty()):
+		game_state.player_info.name = playerName.text
 
 func _on_btCreate_pressed():
 	set_player_info()
 	
-	if (!$PanelHost/txtServerName.text.empty()):
-		network.server_info.name = $PanelHost/txtServerName.text
+	if (!hostServerName.text.empty()):
+		network.server_info.name = hostServerName.text
 	
-	network.server_info.used_port = int($PanelHost/txtServerPort.text)
-	network.server_info.max_players = int($PanelHost/txtMaxPlayers.value)
+	network.server_info.used_port = int(hostServerPort.text)
 	
 	network.create_server()
 
 func _on_btJoin_pressed():
 	set_player_info()
 	
-	var ip = $PanelJoin/txtJoinIP.text
-	var port = int($PanelJoin/txtJoinPort.text)
+	var ip = joinServerIP.text
+	var port = int(joinServerPort.text)
 	
 	network.join_server(ip, port)
 

@@ -8,7 +8,6 @@ signal player_removed(pinfo)
 
 var server_info = {
 	name = "KAG Server",
-	max_players = 0,
 	used_port = 0,
 }
 
