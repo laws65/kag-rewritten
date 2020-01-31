@@ -1,47 +1,49 @@
 [gd_resource type="ShaderMaterial" load_steps=16 format=2]
 
-[sub_resource type="VisualShaderNodeTexture" id=8]
+[sub_resource type="VisualShaderNodeTexture" id=1]
 source = 2
 
-[sub_resource type="VisualShaderNodeVec3Uniform" id=14]
+[sub_resource type="VisualShaderNodeVec3Uniform" id=2]
 uniform_name = "Step"
 
-[sub_resource type="VisualShaderNodeVectorOp" id=15]
+[sub_resource type="VisualShaderNodeVectorOp" id=3]
 
-[sub_resource type="VisualShaderNodeTexture" id=16]
+[sub_resource type="VisualShaderNodeTexture" id=4]
 source = 2
 
-[sub_resource type="VisualShaderNodeTexture" id=17]
+[sub_resource type="VisualShaderNodeTexture" id=5]
 source = 2
 
-[sub_resource type="VisualShaderNodeTexture" id=18]
+[sub_resource type="VisualShaderNodeTexture" id=6]
 source = 2
 
-[sub_resource type="VisualShaderNodeVectorOp" id=19]
+[sub_resource type="VisualShaderNodeVectorOp" id=7]
 operator = 1
 
-[sub_resource type="VisualShaderNodeScalarOp" id=20]
+[sub_resource type="VisualShaderNodeScalarOp" id=8]
 operator = 2
 
-[sub_resource type="VisualShaderNodeScalarOp" id=21]
+[sub_resource type="VisualShaderNodeScalarOp" id=9]
 operator = 2
 
-[sub_resource type="VisualShaderNodeScalarOp" id=22]
+[sub_resource type="VisualShaderNodeScalarOp" id=10]
 operator = 2
 
-[sub_resource type="VisualShaderNodeVec3Uniform" id=23]
+[sub_resource type="VisualShaderNodeVec3Uniform" id=11]
 uniform_name = "Step2"
 
-[sub_resource type="VisualShaderNodeVectorOp" id=24]
+[sub_resource type="VisualShaderNodeVectorOp" id=12]
 
-[sub_resource type="VisualShaderNodeVectorOp" id=25]
+[sub_resource type="VisualShaderNodeVectorOp" id=13]
 operator = 1
 
-[sub_resource type="VisualShaderNodeInput" id=13]
+[sub_resource type="VisualShaderNodeInput" id=14]
 input_name = "uv"
 
-[sub_resource type="VisualShader" id=5]
+[sub_resource type="VisualShader" id=15]
 code = "shader_type canvas_item;
+render_mode blend_disabled;
+
 uniform vec3 Step;
 uniform vec3 Step2;
 
@@ -140,42 +142,43 @@ void light() {
 
 }
 "
-graph_offset = Vector2( 352.459, -139.982 )
+graph_offset = Vector2( 133.853, -42.732 )
 mode = 1
+modes/blend = 5
 flags/light_only = false
 nodes/vertex/0/position = Vector2( 420, 160 )
 nodes/fragment/0/position = Vector2( 1520, -80 )
-nodes/fragment/9/node = SubResource( 13 )
+nodes/fragment/9/node = SubResource( 14 )
 nodes/fragment/9/position = Vector2( 360, 180 )
-nodes/fragment/11/node = SubResource( 8 )
+nodes/fragment/11/node = SubResource( 1 )
 nodes/fragment/11/position = Vector2( 820, -100 )
-nodes/fragment/12/node = SubResource( 14 )
+nodes/fragment/12/node = SubResource( 2 )
 nodes/fragment/12/position = Vector2( 620, 0 )
-nodes/fragment/13/node = SubResource( 15 )
+nodes/fragment/13/node = SubResource( 3 )
 nodes/fragment/13/position = Vector2( 620, -100 )
-nodes/fragment/14/node = SubResource( 16 )
-nodes/fragment/14/position = Vector2( 820, 80 )
-nodes/fragment/15/node = SubResource( 17 )
-nodes/fragment/15/position = Vector2( 820, 260 )
-nodes/fragment/16/node = SubResource( 18 )
-nodes/fragment/16/position = Vector2( 820, 440 )
-nodes/fragment/17/node = SubResource( 19 )
-nodes/fragment/17/position = Vector2( 620, 80 )
-nodes/fragment/18/node = SubResource( 20 )
+nodes/fragment/14/node = SubResource( 4 )
+nodes/fragment/14/position = Vector2( 820, 0 )
+nodes/fragment/15/node = SubResource( 5 )
+nodes/fragment/15/position = Vector2( 820, 200 )
+nodes/fragment/16/node = SubResource( 6 )
+nodes/fragment/16/position = Vector2( 820, 300 )
+nodes/fragment/17/node = SubResource( 7 )
+nodes/fragment/17/position = Vector2( 620, 60 )
+nodes/fragment/18/node = SubResource( 8 )
 nodes/fragment/18/position = Vector2( 1100, 40 )
-nodes/fragment/19/node = SubResource( 21 )
+nodes/fragment/19/node = SubResource( 9 )
 nodes/fragment/19/position = Vector2( 1100, 320 )
-nodes/fragment/20/node = SubResource( 22 )
+nodes/fragment/20/node = SubResource( 10 )
 nodes/fragment/20/position = Vector2( 1300, 180 )
-nodes/fragment/21/node = SubResource( 23 )
-nodes/fragment/21/position = Vector2( 620, 360 )
-nodes/fragment/22/node = SubResource( 24 )
-nodes/fragment/22/position = Vector2( 620, 260 )
-nodes/fragment/23/node = SubResource( 25 )
-nodes/fragment/23/position = Vector2( 620, 420 )
-nodes/fragment/connections = PoolIntArray( 11, 0, 0, 0, 9, 0, 13, 0, 13, 0, 11, 0, 12, 0, 13, 1, 12, 0, 17, 1, 9, 0, 17, 0, 17, 0, 14, 0, 11, 1, 18, 0, 14, 1, 18, 1, 18, 0, 20, 0, 19, 0, 20, 1, 20, 0, 0, 1, 15, 1, 19, 0, 16, 1, 19, 1, 21, 0, 22, 1, 9, 0, 22, 0, 22, 0, 15, 0, 9, 0, 23, 0, 21, 0, 23, 1, 23, 0, 16, 0 )
+nodes/fragment/21/node = SubResource( 11 )
+nodes/fragment/21/position = Vector2( 620, 300 )
+nodes/fragment/22/node = SubResource( 12 )
+nodes/fragment/22/position = Vector2( 620, 200 )
+nodes/fragment/23/node = SubResource( 13 )
+nodes/fragment/23/position = Vector2( 620, 360 )
+nodes/fragment/connections = PoolIntArray( 17, 0, 14, 0, 11, 1, 18, 0, 14, 1, 18, 1, 18, 0, 20, 0, 19, 0, 20, 1, 15, 1, 19, 0, 16, 1, 19, 1, 22, 0, 15, 0, 23, 0, 16, 0, 11, 0, 0, 0, 20, 0, 0, 1, 9, 0, 13, 0, 9, 0, 17, 0, 9, 0, 22, 0, 9, 0, 23, 0, 12, 0, 13, 1, 12, 0, 17, 1, 21, 0, 22, 1, 21, 0, 23, 1, 13, 0, 11, 0 )
 
 [resource]
-shader = SubResource( 5 )
-shader_param/Step = null
-shader_param/Step2 = null
+shader = SubResource( 15 )
+shader_param/Step = Vector3( 0.026, 0, 0 )
+shader_param/Step2 = Vector3( 0, 0.026, 0 )
