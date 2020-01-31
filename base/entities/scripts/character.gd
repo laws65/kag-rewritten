@@ -2,7 +2,7 @@ extends KinematicBody2D
 class_name Character
 
 ### Special effects
-var dust_effect = preload("res://base/entities/content/effects/dust.tscn")
+onready var dust_effect = load("res://base/entities/content/effects/dust.tscn")
 ### ---
 
 ### Sync
