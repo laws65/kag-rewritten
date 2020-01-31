@@ -1,6 +1,10 @@
 extends KinematicBody2D
 class_name Character
 
+### Special effects
+var dust_effect = preload("res://base/entities/content/effects/dust.tscn")
+### ---
+
 ### Sync
 puppet var r_position = Vector2(0, 0)
 puppet var r_animation = ""
@@ -9,8 +13,6 @@ puppet var r_flip_h = false
 
 onready var c_anim = $Animation
 onready var c_sprite = $Sprite
-
-onready var dust_effect = preload("res://base/entities/content/effects/dust.tscn")
 
 ### Physics
 export (int) var gravity = 500
@@ -35,10 +37,22 @@ func _ready():
 func _animate(animation, flip_h = null):
 	c_anim.play(animation)
 	c_sprite.flip_h = flip_h if flip_h != null else c_sprite.flip_h
-	
-	rset("r_animation", c_anim.current_animation)
-	rset("r_flip_h", c_sprite.flip_h)
 
+func _physics_process(delta):
+	if (is_network_master()):
+		_process_input()
+		_process_animation()
+		
+		velocity.y += gravity * delta
+		velocity = move_and_slide(velocity, Vector2(0, -1))
+	else:
+		position = r_position
+		c_anim.play(r_animation)
+		c_sprite.flip_h = r_flip_h
+	
+	_sync()
+
+### Event processing
 func _process_input():
 	velocity.x = 0
 	
@@ -75,31 +89,30 @@ func _process_animation():
 				_animate("crouch")
 			else:
 				_animate("idle")
+		
+		if jumping:
+			jumping = false
 	else:
 		if jumping:
 			_animate("jump")
-		else:
-			#_animate("fall")
-			pass
 
-func _physics_process(delta):
+func _sync():
 	if (is_network_master()):
-		_process_input()
-		_process_animation()
-		
-		velocity.y += gravity * delta
-		velocity = move_and_slide(velocity, Vector2(0, -1))
-		
 		if jumping and is_on_floor():
-			jumping = false
-			
-			var dust = dust_effect.instance()
-			dust.set_global_position(global_position)
-			
-			get_node("/root").add_child(dust)
+			rpc_unreliable("_play_dust_effect", global_position)
 		
-		rset("r_position", position)
+		rset_unreliable("r_animation", c_anim.current_animation)
+		rset_unreliable("r_flip_h", c_sprite.flip_h)
 	else:
 		position = r_position
 		c_anim.play(r_animation)
 		c_sprite.flip_h = r_flip_h
+### ---
+
+### Remote events
+remotesync func _play_dust_effect(pos):
+	var dust = dust_effect.instance()
+	dust.set_global_position(pos)
+	
+	get_node("/root").add_child(dust)
+### ---
