@@ -1,10 +1,10 @@
 extends Node2D
 
-onready var anims = $AnimationPlayer
+onready var c_anim = $Animation
 
 func _ready():
-	anims.connect("finished", self, "destroy")
-	anims.play("play")
+	c_anim.connect("animation_finished", self, "destroy")
+	c_anim.play("play")
 
-func destroy():
+func destroy(animation):
 	queue_free()
