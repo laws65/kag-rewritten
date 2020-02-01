@@ -19,15 +19,27 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://base/rules/game_mode.gd"
 }, {
-"base": "Node2D",
-"class": "Tile",
+"base": "GDScript",
+"class": "TileBehavior",
 "language": "GDScript",
-"path": "res://base/entities/scripts/tile.gd"
+"path": "res://base/entities/scripts/tile_behavior.gd"
+}, {
+"base": "Node2D",
+"class": "TileInfo",
+"language": "GDScript",
+"path": "res://base/entities/scripts/tile_info.gd"
+}, {
+"base": "GDScript",
+"class": "TileState",
+"language": "GDScript",
+"path": "res://base/entities/scripts/tile_state.gd"
 } ]
 _global_script_class_icons={
 "Character": "",
 "GameMode": "",
-"Tile": ""
+"TileBehavior": "",
+"TileInfo": "",
+"TileState": ""
 }
 
 [application]
@@ -44,6 +56,7 @@ config/icon="res://base/sprites/misc/icon.png"
 [autoload]
 
 network="*res://base/rules/common/network.gd"
+game_map="*res://base/levels/content/misc/game_map.tscn"
 game_state="*res://base/rules/common/game_state.gd"
 game_camera="*res://base/levels/content/misc/game_camera.tscn"
 game_fps="*res://base/levels/content/misc/game_fps.tscn"
@@ -51,6 +64,8 @@ game_fps="*res://base/levels/content/misc/game_fps.tscn"
 [debug]
 
 settings/crash_handler/message="Please include this when reporting the bug on https://github.com/kag-rewritten/kag-rewritten/issues"
+gdscript/warnings/unused_argument=false
+gdscript/warnings/return_value_discarded=false
 
 [display]
 

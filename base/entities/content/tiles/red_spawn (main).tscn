@@ -8,11 +8,10 @@ resource_local_to_scene = true
 extents = Vector2( 4, 4 )
 
 [node name="Tile" instance=ExtResource( 1 )]
-script = ExtResource( 2 )
+display_name = "Red Spawn (Main)"
 flags = 5
 representative_color = Color( 1, 0, 0, 1 )
-spawn_title = "Red Spawn"
+tile_behavior = ExtResource( 2 )
 
 [node name="Collider" parent="." index="1"]
 shape = SubResource( 1 )
-disabled = true

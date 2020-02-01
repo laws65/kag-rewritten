@@ -1,10 +1,6 @@
-extends Tile
+extends TileBehavior
 
-export (String) var spawn_title
-
-func _ready():
-	var game_mode = get_node("/root/Game")
-	
+func _init(t_state: TileState).(t_state):
+	var game_mode = game_map.get_node("/root/Multiplayer")
 	if game_mode:
-		game_mode.spawn_list[0] = self
-		pass
+		game_mode.spawn_list[0] = state

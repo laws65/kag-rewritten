@@ -20,8 +20,6 @@ func _ready():
 	get_tree().connect("connection_failed", self, "_on_connection_failed")
 	get_tree().connect("server_disconnected", self, "_on_disconnected_from_server")
 
-### ---
-
 func create_server():
 	var net
 	if OS.has_feature("HTML5"):
@@ -92,7 +90,7 @@ remote func register_player(pinfo):
 			if (id != 1):
 				rpc_id(id, "register_player", pinfo)
 	
-	print("Registering player ", pinfo.name, " (", pinfo.network_id, ") to internal player table")
+	print("Connecting player ", pinfo.name, " (ID ", pinfo.network_id, ")")
 	players[pinfo.network_id] = pinfo
 	emit_signal("player_list_changed")
 
