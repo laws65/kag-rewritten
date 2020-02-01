@@ -2,7 +2,6 @@ extends GDScript
 class_name TileState
 
 ### Metadata
-var id
 var tile
 ### ---
 
@@ -16,8 +15,7 @@ var world_position
 var behavior
 ### ---
 
-func _init(t_tile, t_id: int):
-	id = t_id
+func _init(t_tile):
 	tile = t_tile
 	flags = tile.flags
 	
@@ -28,4 +26,4 @@ func _add_to(t_tilemap: TileMap, x, y):
 	map_position = Vector2(x, y)
 	world_position = t_tilemap.map_to_world(map_position)
 	
-	t_tilemap.set_cellv(map_position, id)
+	t_tilemap.set_cellv(map_position, tile.tileset_id)

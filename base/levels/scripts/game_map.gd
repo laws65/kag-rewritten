@@ -29,13 +29,13 @@ func _load_map():
 	tilemap.tile_set = tileset
 	_load_tiles()
 	
-	map_image = load(map_path)
+	map_image = load(map_path).get_data()
 	map_width = map_image.get_width()
 	map_height = map_image.get_height()
 	shadow_array.resize(map_width * map_height)
 	tile_array.resize(map_width * map_height)
 	
-	var tmp_id
+	var tmp_key
 	var tmp_scene
 	var tmp_state
 	
@@ -46,13 +46,13 @@ func _load_map():
 	for x in range(map_width):
 		for y in range(map_height):
 			tmp_pixel = map_image.get_pixel(x, y)
-			tmp_id = TileInfo._get_id_from(tmp_pixel)
+			tmp_key = tmp_pixel.to_html(false)
 			tmp_index = x + y * map_width
 			
-			if tile_scenes.has(tmp_id):
-				tmp_scene = tile_scenes[tmp_id]
+			if tile_scenes.has(tmp_key):
+				tmp_scene = tile_scenes[tmp_key]
 				
-				tmp_state = TileState.new(tmp_scene, tmp_id)
+				tmp_state = TileState.new(tmp_scene)
 				tmp_state._add_to(tilemap, x, y)
 				
 				tile_array[tmp_index] = tmp_state
@@ -70,10 +70,14 @@ func _load_map():
 	emit_signal("map_loaded")
 
 func _add_to_tileset(tile):
-	var id = tile._get_id()
+	var key = tile.representative_color.to_html(false)
+	var id = tileset.get_tiles_ids().size()
 	
-	if tile_scenes.has(id):
+	if tile_scenes.has(key):
 		return
+	
+	tile.tileset_id = id
+	tile_scenes[key] = tile
 	
 	tileset.create_tile(id)
 	tileset.tile_set_texture(id, tile.get_node("Sprite").texture)
@@ -82,8 +86,6 @@ func _add_to_tileset(tile):
 	
 	if not tile.get_node("Collider").disabled:
 		tileset.tile_add_shape(id, tile.get_node("Collider").shape, tile.get_node("Collider").transform)
-	
-	tile_scenes[id] = tile
 
 func _load_tiles():
 	var file = ""

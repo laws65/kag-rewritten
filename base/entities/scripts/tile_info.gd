@@ -13,21 +13,6 @@ export (Color) var representative_color = Color(0, 0, 0, 1)
 
 export (GDScript) var tile_behavior
 
-onready var sprite = $Sprite
+var tileset_id
+onready var sprite = $Spritewa
 onready var collider = $Collider
-
-func _get_id() -> int:
-	var id = _get_id_from(representative_color)
-	return id
-
-static func _get_id_from(color: Color) -> int:
-	var stream = StreamPeerBuffer.new()
-	
-	stream.put_u8(color.r8)
-	stream.put_u8(color.g8)
-	stream.put_u8(color.b8)
-	stream.put_u8(0)
-	stream.seek(0)
-	
-	var id = stream.get_u32()
-	return id

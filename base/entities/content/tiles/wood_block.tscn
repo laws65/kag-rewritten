@@ -8,13 +8,12 @@ resource_local_to_scene = true
 extents = Vector2( 4, 4 )
 
 [node name="Tile" instance=ExtResource( 1 )]
-z_index = 1
-representative_color = Color( 0.517647, 0.278431, 0.0823529, 1 )
+representative_color = Color( 0.768627, 0.529412, 0.0823529, 1 )
 
 [node name="Sprite" parent="." index="0"]
 texture = ExtResource( 2 )
 region_enabled = true
-region_rect = Rect2( 0, 8, 8, 8 )
+region_rect = Rect2( 32, 96, 8, 8 )
 
 [node name="Collider" parent="." index="1"]
 shape = SubResource( 1 )
