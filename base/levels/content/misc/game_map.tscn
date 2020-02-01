@@ -11,14 +11,12 @@ search_directories = [ "res://base/entities/content/tiles/" ]
 [node name="SolidShadows" type="Sprite" parent="."]
 material = ExtResource( 1 )
 scale = Vector2( 8, 8 )
-z_index = 2
+z_index = 3
 centered = false
-
-[node name="Mesh" type="MeshInstance2D" parent="."]
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = 1
 cell_size = Vector2( 8, 8 )
-cell_quadrant_size = 8
+cell_quadrant_size = 32
 centered_textures = true
 format = 1
