@@ -78,7 +78,10 @@ func _add_to_tileset(tile):
 	tileset.create_tile(id)
 	tileset.tile_set_texture(id, tile.get_node("Sprite").texture)
 	tileset.tile_set_region(id, tile.get_node("Sprite").region_rect)
-	tileset.tile_add_shape(id, tile.get_node("Collider").shape, tile.get_node("Collider").transform)
+	tileset.tile_set_z_index(id, tile.z_index)
+	
+	if not tile.get_node("Collider").disabled:
+		tileset.tile_add_shape(id, tile.get_node("Collider").shape, tile.get_node("Collider").transform)
 	
 	tile_scenes[id] = tile
 
