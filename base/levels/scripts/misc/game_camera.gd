@@ -3,7 +3,7 @@ extends Camera2D
 var target
 
 func _physics_process(_delta):
-	if target:
+	if is_instance_valid(target):
 		global_position = target.global_position
 
 func _input(event):

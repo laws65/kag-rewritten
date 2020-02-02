@@ -15,8 +15,7 @@ onready var joinServerPort = $Layout/PanelJoin/Content/txtJoinPort
 ### ---
 
 func _ready():
-	network.connect("server_created", self, "_on_ready_to_play")
-	network.connect("join_success", self, "_on_ready_to_play")
+	network.connect("join_success", self, "_on_join_success")
 	network.connect("join_fail", self, "_on_join_fail")
 
 func set_player_info():
@@ -26,12 +25,10 @@ func set_player_info():
 func _on_btCreate_pressed():
 	set_player_info()
 	
-	if (!hostServerName.text.empty()):
-		network.server_info.name = hostServerName.text
+	var name = hostServerName.text
+	var port = int(joinServerPort.text)
 	
-	network.server_info.used_port = int(hostServerPort.text)
-	
-	network.create_server()
+	network.create_server(name, port)
 
 func _on_btJoin_pressed():
 	set_player_info()
@@ -43,7 +40,7 @@ func _on_btJoin_pressed():
 
 ### --- Events
 
-func _on_ready_to_play():
+func _on_join_success():
 	if get_tree().change_scene("res://base/levels/content/multiplayer.tscn") != OK:
 		push_error("Loading the _on_ready_to_play() scene failed.")
 
