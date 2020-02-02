@@ -88,8 +88,6 @@ func _process_animation():
 		
 		if jumping:
 			jumping = false
-	else:
-		if jumping:
 			_animate("jump")
 
 func _sync():
