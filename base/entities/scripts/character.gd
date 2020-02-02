@@ -66,7 +66,7 @@ func _process_input():
 		moveLeft = false
 	
 	# Jump
-	if Input.is_action_pressed("jump") and not (jumping or crouching):
+	if Input.is_action_pressed("jump") and not (jumping or crouching) and is_on_floor():
 		velocity.y = -jump_speed
 		jumping = true
 	
