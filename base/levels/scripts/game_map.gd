@@ -4,7 +4,7 @@ extends Node2D
 signal map_loaded
 ### ---
 
-onready var solid_shadow_layer = $SolidShadows
+onready var solid_shadow_layer = $Shadow
 onready var tilemap = $TileMap
 var tileset = TileSet.new()
 
@@ -66,6 +66,7 @@ func _load_map():
 	map_image.unlock()
 	
 	_generate_shadows()
+	_optimize_tilemap()
 	
 	emit_signal("map_loaded")
 
@@ -124,8 +125,33 @@ func _generate_shadows():
 	var material = solid_shadow_layer.get_material()
 	material.set_shader_param("Step", Vector2(0.5/map_width, 0.5/map_height))
 	material.set_shader_param("Step2", Vector2(0.5/map_width, -0.5/map_height))
+
+func _optimize_tilemap():
+	var top
+	var bottom
+	var left
+	var right
+	var topleft
+	var topright
+	var bottomleft
+	var bottomright
 	
-	#scale(Vector2(8, 8))
-	#var shadow_texture = ImageTexture.new()
-	#shadow_texture.create(map_width, map_height, Image.FORMAT_RGB8, Texture.FLAG_FILTER)
-	#solid_shadow_layer.set_texture(shadow_texture)
+	for x in map_width:
+		for y in map_height:
+			var middle = shadow_array[x + y * map_width]
+			
+			if x == 0 || x == map_width - 1 || y == 0 || y == map_height - 1:
+				continue
+			
+			top = shadow_array[x + (y + 1) * map_width]
+			bottom = shadow_array[x + (y - 1) * map_width]
+			left = shadow_array[(x - 1) + y * map_width]
+			right = shadow_array[(x + 1) + y * map_width]
+			topleft = shadow_array[(x - 1) + (y + 1) * map_width]
+			topright = shadow_array[(x + 1) + (y + 1) * map_width]
+			bottomleft = shadow_array[(x - 1) + (y - 1) * map_width]
+			bottomright = shadow_array[(x + 1) + (y - 1) * map_width]
+			
+			if middle && top && bottom && left && right:
+				if topleft && topright && bottomleft && bottomright:
+					tilemap.set_cell(x, y, -1)
