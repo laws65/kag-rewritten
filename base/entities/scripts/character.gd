@@ -87,12 +87,12 @@ func _process_animation():
 				_animate("idle")
 		
 		if jumping:
-			jumping = false
 			_animate("jump")
 
 func _sync():
 	if is_network_master():
 		if jumping and is_on_floor():
+			jumping = false
 			rpc_unreliable("_play_dust_effect", global_position)
 		
 		rset_unreliable("r_animation", c_anim.current_animation)
