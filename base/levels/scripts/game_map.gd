@@ -19,6 +19,7 @@ var shadow_array = []
 
 ### Metadata
 var tile_scenes = {}
+var map_object_scenes = {}
 
 var map_image
 var map_width
@@ -27,7 +28,7 @@ var map_height
 
 func _load_map():
 	tilemap.tile_set = tileset
-	_load_tiles()
+	_load_map_objects()
 	
 	map_image = load(map_path).get_data()
 	map_width = map_image.get_width()
@@ -61,6 +62,11 @@ func _load_map():
 					shadow_array[tmp_index] = false
 				else:
 					shadow_array[tmp_index] = true
+			elif map_object_scenes.has(tmp_key):
+				var tmp_child = map_object_scenes[tmp_key].instance()
+				tmp_child.position = Vector2(x*tile_size.x+tile_size.x/2, y*tile_size.y+tile_size.y/2)
+				add_child(tmp_child)
+				shadow_array[tmp_index] = false
 			else:
 				shadow_array[tmp_index] = false
 	map_image.unlock()
@@ -87,7 +93,7 @@ func _add_to_tileset(tile):
 	if not tile.get_node("Collider").disabled:
 		tileset.tile_add_shape(id, tile.get_node("Collider").shape, tile.get_node("Collider").transform)
 
-func _load_tiles():
+func _load_map_objects():
 	var file = ""
 	var dir = Directory.new()
 	for path in search_directories:
@@ -97,9 +103,13 @@ func _load_tiles():
 		file = dir.get_next()
 		while file != "":
 			if file.ends_with(".tscn"):
-				var tile = load(path + file).instance()
-				if tile is TileInfo:
-					_add_to_tileset(tile)
+				var object = load(path + file)
+				var object_inst = object.instance()
+				if object_inst is TileInfo:
+					_add_to_tileset(object_inst)
+				elif "representative_color" in object_inst:
+					var key = object_inst.representative_color.to_html(false)
+					map_object_scenes[key] = object
 			
 			file = dir.get_next()
 
@@ -124,8 +134,3 @@ func _generate_shadows():
 	var material = solid_shadow_layer.get_material()
 	material.set_shader_param("Step", Vector2(0.5/map_width, 0.5/map_height))
 	material.set_shader_param("Step2", Vector2(0.5/map_width, -0.5/map_height))
-	
-	#scale(Vector2(8, 8))
-	#var shadow_texture = ImageTexture.new()
-	#shadow_texture.create(map_width, map_height, Image.FORMAT_RGB8, Texture.FLAG_FILTER)
-	#solid_shadow_layer.set_texture(shadow_texture)

@@ -6,7 +6,7 @@
 [node name="GameMap" type="StaticBody2D"]
 script = ExtResource( 2 )
 map_path = "res://base/sprites/maps/fuzzle_stale.png"
-search_directories = [ "res://base/entities/content/tiles/" ]
+search_directories = [ "res://base/entities/content/tiles/", "res://base/entities/content/map_objects/" ]
 
 [node name="SolidShadows" type="Sprite" parent="."]
 material = ExtResource( 1 )
