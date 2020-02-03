@@ -20,7 +20,7 @@ func _ready():
 
 func set_player_info():
 	if (!playerName.text.empty()):
-		game_state.player_info.name = playerName.text
+		network.player.name = playerName.text
 
 func _on_btCreate_pressed():
 	set_player_info()

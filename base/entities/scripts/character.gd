@@ -38,12 +38,14 @@ func _ready():
 	if is_network_master():
 		game_camera.target = self
 	
-	if network.players.has(get_network_master()):
+	if get_network_master() in network.players:
 		var pinfo = network.players[get_network_master()]
+		print(network.players.size())
 		c_name.text = pinfo.name
 
 func _animate(animation, t_flip_h = null):
-	c_anim.play(animation)
+	if c_anim.has_animation(animation):
+		c_anim.play(animation)
 	
 	if t_flip_h != null && t_flip_h != flip_h:
 		flip_h = t_flip_h

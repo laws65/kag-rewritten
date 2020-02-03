@@ -19,6 +19,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://base/rules/common/game_mode.gd"
 }, {
+"base": "Node2D",
+"class": "NetworkClient",
+"language": "GDScript",
+"path": "res://base/rules/multiplayer/network_client.gd"
+}, {
+"base": "Node2D",
+"class": "NetworkServer",
+"language": "GDScript",
+"path": "res://base/rules/multiplayer/network_server.gd"
+}, {
 "base": "GDScript",
 "class": "TileBehavior",
 "language": "GDScript",
@@ -37,6 +47,8 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Character": "",
 "GameMode": "",
+"NetworkClient": "",
+"NetworkServer": "",
 "TileBehavior": "",
 "TileInfo": "",
 "TileState": ""
@@ -55,11 +67,10 @@ config/icon="res://base/sprites/misc/icon.png"
 
 [autoload]
 
-network="*res://base/rules/common/network.gd"
 game_map="*res://base/levels/content/misc/game_map.tscn"
-game_state="*res://base/rules/common/game_state.gd"
 game_camera="*res://base/levels/content/misc/game_camera.tscn"
 game_fps="*res://base/levels/content/misc/game_fps.tscn"
+network="*res://base/levels/content/misc/network.tscn"
 
 [debug]
 

@@ -14,11 +14,11 @@ func _ready():
 ### --- Events
 
 func _on_player_added(pinfo):
-	print("Spawning player ", pinfo.name, " (ID ", pinfo.network_id, ")")
+	print("Spawning player ", pinfo.name, " (ID ", pinfo.id, ")")
 	spawn_player(pinfo)
 
 func _on_player_removed(pinfo):
-	print("Removing player ", pinfo.name, " (ID ", pinfo.network_id, ")")
+	print("Removing player ", pinfo.name, " (ID ", pinfo.id, ")")
 	despawn_player(pinfo)
 
 ### --- Remote functions
@@ -26,10 +26,10 @@ func _on_player_removed(pinfo):
 remote func spawn_player(pinfo):
 	pinfo.character = default_character
 	
-	if (get_tree().is_network_server() && pinfo.network_id != 1):
+	if (get_tree().is_network_server() && pinfo.id != 1):
 		for id in network.players:
-			if (id != pinfo.network_id):
-				rpc_id(pinfo.network_id, "spawn_player", network.players[id])
+			if (id != pinfo.id):
+				rpc_id(pinfo.id, "spawn_player", network.players[id])
 			
 			if (id != 1):
 				rpc_id(id, "spawn_player", pinfo)
@@ -39,23 +39,21 @@ remote func spawn_player(pinfo):
 	
 	var pchar = pclass.instance()
 	pchar.position = spawn_list[0].world_position
-	pchar.set_name(str(pinfo.network_id))
-	
-	if pinfo.network_id != 1:
-		pchar.set_network_master(pinfo.network_id)
+	pchar.set_name(str(pinfo.id))
+	pchar.set_network_master(pinfo.id)
 	
 	add_child(pchar)
 
 remote func despawn_player(pinfo):
 	if (get_tree().is_network_server()):
 		for id in network.players:
-			if (id == pinfo.network_id || id == 1):
+			if (id == pinfo.id || id == 1):
 				continue
 			
 			rpc_id(id, "despawn_player", pinfo)
 	
 	# Try to locate the player actor
-	var player_node = get_node(str(pinfo.network_id))
+	var player_node = get_node(str(pinfo.id))
 	if (!player_node):
 		print("Cannot remove invalid node from tree")
 		return
