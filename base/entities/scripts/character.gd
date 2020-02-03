@@ -13,6 +13,7 @@ puppet var r_flip_h = false
 
 onready var c_anim = $Animation
 onready var c_sprite = $Sprite
+onready var c_head = load("res://base/entities/content/characters/head.tscn")
 
 ### Physics
 export (int) var gravity = 500
@@ -33,6 +34,9 @@ var moveLeft = false
 func _ready():
 	if is_network_master():
 		game_camera.target = self
+		var head = c_head.instance()
+		head.set_global_position(Vector2(9,-2))
+		add_child(head)
 
 func _animate(animation, flip_h = null):
 	c_anim.play(animation)
@@ -91,6 +95,7 @@ func _process_animation():
 	else:
 		if jumping:
 			_animate("jump")
+	get_child(3)._updatepos(moveLeft, moveRight, crouching, jumping)
 
 func _sync():
 	if is_network_master():
