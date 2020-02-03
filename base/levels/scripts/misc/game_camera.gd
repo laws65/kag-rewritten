@@ -2,8 +2,8 @@ extends Camera2D
 
 var target
 
-func _physics_process(delta):
-	if target:
+func _physics_process(_delta):
+	if is_instance_valid(target):
 		global_position = target.global_position
 
 func _input(event):

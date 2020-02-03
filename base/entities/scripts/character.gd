@@ -18,7 +18,7 @@ onready var c_head = load("res://base/entities/content/characters/head.tscn")
 ### Physics
 export (int) var gravity = 500
 export (int) var move_speed = 75
-export (int) var jump_speed = 125
+export (int) var jump_speed = 160
 
 var velocity = Vector2(0, 0)
 ### ---
@@ -70,7 +70,7 @@ func _process_input():
 		moveLeft = false
 	
 	# Jump
-	if Input.is_action_pressed("jump") and not (jumping or crouching):
+	if Input.is_action_pressed("jump") and not (jumping or crouching) and is_on_floor():
 		velocity.y = -jump_speed
 		jumping = true
 	
@@ -91,15 +91,13 @@ func _process_animation():
 				_animate("idle")
 		
 		if jumping:
-			jumping = false
-	else:
-		if jumping:
 			_animate("jump")
 	get_child(3)._updatepos(moveLeft, moveRight, crouching, jumping)
 
 func _sync():
 	if is_network_master():
 		if jumping and is_on_floor():
+			jumping = false
 			rpc_unreliable("_play_dust_effect", global_position)
 		
 		rset_unreliable("r_animation", c_anim.current_animation)

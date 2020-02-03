@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://base/entities/scripts/tile_info.gd" type="Script" id=1]
+[ext_resource path="res://base/sprites/nature/bush.png" type="Texture" id=2]
+[ext_resource path="res://base/entities/scripts/tiles/bush.gd" type="Script" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+resource_local_to_scene = true
+extents = Vector2( 4, 4 )
+
+[node name="Tile" type="Node2D"]
+z_index = -1
+z_as_relative = false
+script = ExtResource( 1 )
+flags = 4
+representative_color = Color( 0.356863, 0.494118, 0.0941176, 1 )
+tile_behavior = ExtResource( 3 )
+must_instantiate = true
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 4, 4 )
+texture = ExtResource( 2 )
+vframes = 2
+hframes = 4
+region_rect = Rect2( 0, 0, 24, 24 )
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+position = Vector2( 4, 4 )
+shape = SubResource( 1 )
+disabled = true

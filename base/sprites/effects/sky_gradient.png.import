@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/sky_gradient.png-246a59f4724e0525110553602a785f71.stex"
+path="res://.import/sky_gradient.png-b44b02d6cfc99d916d9b12dc962b78be.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://base/sprites/general/sky_gradient.png"
-dest_files=[ "res://.import/sky_gradient.png-246a59f4724e0525110553602a785f71.stex" ]
+source_file="res://base/sprites/effects/sky_gradient.png"
+dest_files=[ "res://.import/sky_gradient.png-b44b02d6cfc99d916d9b12dc962b78be.stex" ]
 
 [params]
 
