@@ -13,10 +13,14 @@ display_name = "Red Spawn (Main)"
 flags = 5
 representative_color = Color( 1, 0, 0, 1 )
 tile_behavior = ExtResource( 2 )
+must_instantiate = true
 
 [node name="Sprite" parent="." index="0"]
 position = Vector2( 0, -8 )
+z_index = -2
 texture = ExtResource( 3 )
+offset = Vector2( 0, 0 )
 
 [node name="Collider" parent="." index="1"]
 shape = SubResource( 1 )
+disabled = true
