@@ -66,7 +66,7 @@ func _process_input():
 		moveLeft = false
 	
 	# Jump
-	if Input.is_action_pressed("jump") and not (jumping or crouching):
+	if Input.is_action_pressed("jump") and not (jumping or crouching) and is_on_floor():
 		velocity.y = -jump_speed
 		jumping = true
 	
@@ -87,14 +87,12 @@ func _process_animation():
 				_animate("idle")
 		
 		if jumping:
-			jumping = false
-	else:
-		if jumping:
 			_animate("jump")
 
 func _sync():
 	if is_network_master():
 		if jumping and is_on_floor():
+			jumping = false
 			rpc_unreliable("_play_dust_effect", global_position)
 		
 		rset_unreliable("r_animation", c_anim.current_animation)

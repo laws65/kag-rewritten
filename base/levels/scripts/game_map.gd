@@ -4,7 +4,7 @@ extends Node2D
 signal map_loaded
 ### ---
 
-onready var solid_shadow_layer = $SolidShadows
+onready var solid_shadow_layer = $Shadow
 onready var tilemap = $TileMap
 var tileset = TileSet.new()
 
@@ -19,16 +19,49 @@ var shadow_array = []
 
 ### Metadata
 var tile_scenes = {}
-var map_object_scenes = {}
 
 var map_image
 var map_width
 var map_height
 ### ---
 
+func _load_tiles():
+	var file = ""
+	var dir = Directory.new()
+	for path in search_directories:
+		if dir.open(path) != OK:
+			continue
+		dir.list_dir_begin()
+		file = dir.get_next()
+		while file != "":
+			if file.ends_with(".tscn"):
+				var tile = load(path + file).instance()
+				if tile is TileInfo:
+					_add_to_tileset(tile)
+			
+			file = dir.get_next()
+
+func _add_to_tileset(tile):
+	var key = tile.representative_color.to_html(false)
+	var id = tileset.get_tiles_ids().size()
+	
+	if tile_scenes.has(key):
+		return
+	
+	tile.tileset_id = id
+	tile_scenes[key] = tile
+	
+	tileset.create_tile(id)
+	tileset.tile_set_texture(id, tile.get_node("Sprite").texture)
+	tileset.tile_set_region(id, tile.get_node("Sprite").region_rect)
+	tileset.tile_set_z_index(id, tile.z_index)
+	
+	if not tile.get_node("Collider").disabled:
+		tileset.tile_add_shape(id, tile.get_node("Collider").shape, tile.get_node("Collider").transform)
+
 func _load_map():
 	tilemap.tile_set = tileset
-	_load_map_objects()
+	_load_tiles()
 	
 	map_image = load(map_path).get_data()
 	map_width = map_image.get_width()
@@ -54,64 +87,22 @@ func _load_map():
 				tmp_scene = tile_scenes[tmp_key]
 				
 				tmp_state = TileState.new(tmp_scene)
-				tmp_state._add_to(tilemap, x, y)
+				tmp_state._add_to_tilemap(tilemap, x, y)
 				
 				tile_array[tmp_index] = tmp_state
 				
-				if (tmp_state.flags & TileInfo.TileFlags.LIGHT_PASSES) == TileInfo.TileFlags.LIGHT_PASSES:
+				if (tmp_state.tile.flags & TileInfo.TileFlags.LIGHT_PASSES) == TileInfo.TileFlags.LIGHT_PASSES:
 					shadow_array[tmp_index] = false
 				else:
 					shadow_array[tmp_index] = true
-			elif map_object_scenes.has(tmp_key):
-				var tmp_child = map_object_scenes[tmp_key].instance()
-				tmp_child.position = Vector2(x*tile_size.x+tile_size.x/2, y*tile_size.y+tile_size.y/2)
-				add_child(tmp_child)
-				shadow_array[tmp_index] = false
 			else:
 				shadow_array[tmp_index] = false
 	map_image.unlock()
 	
 	_generate_shadows()
+	_optimize_tilemap()
 	
 	emit_signal("map_loaded")
-
-func _add_to_tileset(tile):
-	var key = tile.representative_color.to_html(false)
-	var id = tileset.get_tiles_ids().size()
-	
-	if tile_scenes.has(key):
-		return
-	
-	tile.tileset_id = id
-	tile_scenes[key] = tile
-	
-	tileset.create_tile(id)
-	tileset.tile_set_texture(id, tile.get_node("Sprite").texture)
-	tileset.tile_set_region(id, tile.get_node("Sprite").region_rect)
-	tileset.tile_set_z_index(id, tile.z_index)
-	
-	if not tile.get_node("Collider").disabled:
-		tileset.tile_add_shape(id, tile.get_node("Collider").shape, tile.get_node("Collider").transform)
-
-func _load_map_objects():
-	var file = ""
-	var dir = Directory.new()
-	for path in search_directories:
-		if dir.open(path) != OK:
-			continue
-		dir.list_dir_begin()
-		file = dir.get_next()
-		while file != "":
-			if file.ends_with(".tscn"):
-				var object = load(path + file)
-				var object_inst = object.instance()
-				if object_inst is TileInfo:
-					_add_to_tileset(object_inst)
-				elif "representative_color" in object_inst:
-					var key = object_inst.representative_color.to_html(false)
-					map_object_scenes[key] = object
-			
-			file = dir.get_next()
 
 func _generate_shadows():
 	var shadow_texture = ImageTexture.new()
@@ -134,3 +125,33 @@ func _generate_shadows():
 	var material = solid_shadow_layer.get_material()
 	material.set_shader_param("Step", Vector2(0.5/map_width, 0.5/map_height))
 	material.set_shader_param("Step2", Vector2(0.5/map_width, -0.5/map_height))
+
+func _optimize_tilemap():
+	var top
+	var bottom
+	var left
+	var right
+	var topleft
+	var topright
+	var bottomleft
+	var bottomright
+	
+	for x in map_width:
+		for y in map_height:
+			var middle = shadow_array[x + y * map_width]
+			
+			if x == 0 || x == map_width - 1 || y == 0 || y == map_height - 1:
+				continue
+			
+			top = shadow_array[x + (y + 1) * map_width]
+			bottom = shadow_array[x + (y - 1) * map_width]
+			left = shadow_array[(x - 1) + y * map_width]
+			right = shadow_array[(x + 1) + y * map_width]
+			topleft = shadow_array[(x - 1) + (y + 1) * map_width]
+			topright = shadow_array[(x + 1) + (y + 1) * map_width]
+			bottomleft = shadow_array[(x - 1) + (y - 1) * map_width]
+			bottomright = shadow_array[(x + 1) + (y - 1) * map_width]
+			
+			if middle && top && bottom && left && right:
+				if topleft && topright && bottomleft && bottomright:
+					tilemap.set_cell(x, y, -1)

@@ -6,7 +6,7 @@
 extents = Vector2( 5, 6 )
 
 [node name="Character" type="KinematicBody2D"]
-z_index = 1
+z_index = -2
 z_as_relative = false
 script = ExtResource( 1 )
 

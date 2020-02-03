@@ -17,7 +17,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "GameMode",
 "language": "GDScript",
-"path": "res://base/rules/game_mode.gd"
+"path": "res://base/rules/common/game_mode.gd"
 }, {
 "base": "GDScript",
 "class": "TileBehavior",
