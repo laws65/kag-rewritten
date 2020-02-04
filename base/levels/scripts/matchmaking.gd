@@ -17,6 +17,7 @@ onready var joinServerPort = $Layout/PanelJoin/Content/txtJoinPort
 func _ready():
 	network.connect("connection_established", self, "_on_connection_established")
 	network.connect("connection_closed", self, "_on_connection_closed")
+	get_tree().paused = false
 
 func set_player_info():
 	if (!playerName.text.empty()):

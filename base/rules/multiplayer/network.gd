@@ -50,14 +50,15 @@ func _on_connection_established():
 		register_player(player)
 
 func _on_connection_closed():
-	emit_signal("connection_closed")
-	
+	get_tree().paused = true
 	get_tree().set_network_peer(null)
+	
+	emit_signal("connection_closed")
 
 ### --- Remote functions
 
 remote func register_player(pinfo):
-	if get_tree().get_rpc_sender_id() == 0:
+	if get_tree().get_rpc_sender_id() == 0 && pinfo.id != 1:
 		rpc_id(1, "register_player", player)
 	
 	players[pinfo.id] = pinfo

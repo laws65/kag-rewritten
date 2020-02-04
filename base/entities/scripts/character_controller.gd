@@ -10,31 +10,53 @@ puppetsync var moveRight = false
 puppetsync var moveLeft = false
 ### ---
 
+export (int) var fps = 24
+
 func _ready():
 	pass
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	if is_network_master():
-		_process_input()
-
-func _process_input():
-	# Walk
-	if Input.is_action_pressed("move_right"):
-		rset_unreliable_id(1, "moveRight", true)
-	else:
-		rset_unreliable_id(1, "moveRight", false)
+		_process_input(delta)
 	
+	_sync(delta)
+
+func _process_input(_delta):
+	# Walk
 	if Input.is_action_pressed("move_left"):
-		rset_unreliable_id(1, "moveLeft", true)
+		moveLeft = true
 	else:
-		rset_unreliable_id(1, "moveLeft", false)
+		moveLeft = false
+		
+	if Input.is_action_pressed("move_right"):
+		moveRight = true
+	else:
+		moveRight = false
 	
 	# Jump
-	if Input.is_action_pressed("jump"):
-		rset_unreliable_id(1, "jumping", true)
+	if Input.is_action_just_pressed("jump"):
+		jumping = true
+	
+	if Input.is_action_just_released("jump"):
+		jumping = false
 	
 	# Crouch
 	if Input.is_action_pressed("crouch"):
-		rset_unreliable_id(1, "crouching", true)
+		crouching = true
 	else:
-		rset_unreliable_id(1, "crouching", false)
+		crouching = false
+
+var timer = 0
+func _sync(delta):
+	timer += delta
+	if timer > 1.0 / fps:
+		timer -= 1.0 / fps
+	else:
+		return
+	
+	if is_network_master():
+			
+		rset_id(1, "moveLeft", moveLeft)
+		rset_id(1, "moveRight", moveRight)
+		rset_id(1, "jumping", jumping)
+		rset_id(1, "crouching", crouching)
