@@ -20,6 +20,7 @@ func _ready():
 	get_tree().connect("connection_failed", self, "_on_connection_failed")
 	
 	$Server.connect("create_success", self, "_on_connection_success")
+	$Server.connect("create_fail", self, "_on_connection_fail")
 
 func create_server(name: String, port: int):
 	$Server._create_server(name, port)
@@ -45,7 +46,7 @@ func _on_connection_success():
 		network.player.id = get_tree().get_network_unique_id()
 		register_player(player)
 
-func _on_connection_failed():
+func _on_connection_fail():
 	emit_signal("join_fail")
 	
 	get_tree().set_network_peer(null)
@@ -53,7 +54,7 @@ func _on_connection_failed():
 ### --- Remote functions
 
 remote func register_player(pinfo):
-	if get_tree().get_rpc_sender_id() == 0:
+	if get_tree().get_rpc_sender_id() != 0:
 		rpc_id(1, "register_player", player)
 	
 	players[pinfo.id] = pinfo

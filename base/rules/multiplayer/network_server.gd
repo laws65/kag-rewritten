@@ -11,10 +11,6 @@ var server_info = {
 
 var server
 
-func _ready():
-	network.connect("player_connected", self, "_on_player_connected")
-	network.connect("player_disconnected", self, "_on_player_disconnected")
-
 func _process(_delta):
 	if server is WebSocketServer:
 		if server.is_listening():
@@ -42,15 +38,3 @@ func _create_server(name: String, port: int):
 	
 	get_tree().set_network_peer(server)
 	emit_signal("create_success")
-
-func _on_player_connected(id):
-	pass
-
-func _on_player_disconnected(id):
-	pass
-
-func _register_player(id):
-	pass
-
-func _unregister_player(id):
-	pass
