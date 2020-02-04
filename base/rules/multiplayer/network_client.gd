@@ -5,8 +5,9 @@ var client
 
 func _process(_delta):
 	if client is WebSocketClient:
-		if client.get_connection_status() != NetworkedMultiplayerPeer.CONNECTION_DISCONNECTED:
-			client.poll()
+		if (client.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED
+			or client.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
+				client.poll()
 
 func _join_server(ip, port: int):
 	client = WebSocketClient.new()
