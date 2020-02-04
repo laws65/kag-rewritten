@@ -1,23 +1,27 @@
 extends CanvasLayer
 
 ### PanelPlayer
-onready var playerName = $Layout/PanelPlayer/Content/txtPlayerName
+onready var playerName = $PanelPlayer/Content/txtPlayerName
 ### ---
 
 ### PanelHost
-onready var hostServerName = $Layout/PanelHost/Content/txtServerName
-onready var hostServerPort = $Layout/PanelHost/Content/txtServerPort
+onready var hostServerName = $PanelHost/Content/txtServerName
+onready var hostServerPort = $PanelHost/Content/txtServerPort
 ### ---
 
 ### PanelJoin
-onready var joinServerIP = $Layout/PanelJoin/Content/txtJoinIP
-onready var joinServerPort = $Layout/PanelJoin/Content/txtJoinPort
+onready var joinServerIP = $PanelJoin/Content/txtJoinIP
+onready var joinServerPort = $PanelJoin/Content/txtJoinPort
 ### ---
 
 func _ready():
 	network.connect("connection_established", self, "_on_connection_established")
 	network.connect("connection_closed", self, "_on_connection_closed")
 	get_tree().paused = false
+	
+	if "--host=true" in OS.get_cmdline_args():
+		set_player_info()
+		network.create_server("KAG-Rewritten Server", 3074)
 
 func set_player_info():
 	if (!playerName.text.empty()):

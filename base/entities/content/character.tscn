@@ -30,12 +30,13 @@ position = Vector2( 0, -16 )
 [node name="Animation" type="AnimationPlayer" parent="Sprite"]
 
 [node name="Name" type="Label" parent="."]
-margin_left = -31.25
-margin_right = 218.75
-margin_bottom = 25.0
-rect_scale = Vector2( 0.25, 0.25 )
-text = "Name"
+margin_left = -50.0
+margin_right = 150.0
+margin_bottom = 9.0
+rect_scale = Vector2( 0.5, 0.5 )
+text = "[INVALID]"
 align = 1
+clip_text = true
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false

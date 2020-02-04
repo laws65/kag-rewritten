@@ -15,13 +15,13 @@ export (int) var fps = 24
 func _ready():
 	pass
 
-func _physics_process(delta):
-	if is_network_master():
-		_process_input(delta)
-	
+func _process(delta):
 	_sync(delta)
 
-func _process_input(_delta):
+func _unhandled_input(event):
+	if not is_network_master():
+		return
+	
 	# Walk
 	if Input.is_action_pressed("move_left"):
 		moveLeft = true
