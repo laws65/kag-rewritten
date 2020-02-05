@@ -6,11 +6,12 @@ onready var dust_effect = load("res://base/entities/content/effects/dust.tscn")
 ### ---
 
 ### Sync
-puppet var r_position = Vector2(0, 0)
-puppet var r_animation = ""
-puppet var r_flip_h = false
+puppetsync var r_position = Vector2(0, 0)
+puppetsync var r_animation = ""
+puppetsync var r_flip_h = false
 
 var p_position = Vector2(0, 0)
+var p_jumping = false
 ### ---
 
 onready var c_anim = $Sprite/Animation
@@ -72,7 +73,7 @@ func _process_input(_delta):
 		velocity.x -= move_speed
 	
 	# Jump
-	if c_controller.jumping and not c_controller.crouching and is_on_floor():
+	if c_controller.jumping && !c_controller.crouching && is_on_floor():
 		velocity.y = -jump_speed
 
 func _process_animation(_delta):
@@ -98,7 +99,7 @@ func _sync(delta):
 	
 	if is_network_master():
 		if c_controller.jumping and is_on_floor():
-			rpc_unreliable("_play_dust_effect", global_position)
+			rpc("_play_dust_effect", global_position)
 		
 		rset_unreliable("r_animation", c_anim.current_animation)
 		rset_unreliable("r_flip_h", c_controller.flip_h)
@@ -118,7 +119,7 @@ func _animate(animation, t_flip_h = null):
 		$Sprite.scale.x *= -1
 
 ### Remote events
-remotesync func _play_dust_effect(pos):
+puppetsync func _play_dust_effect(pos):
 	var dust = dust_effect.instance()
 	dust.set_global_position(pos)
 	

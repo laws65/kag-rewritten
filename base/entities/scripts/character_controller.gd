@@ -1,5 +1,7 @@
 extends Node2D
 
+export (int) var fps = 24
+
 ### Input
 puppetsync var flip_h = false
 
@@ -8,9 +10,9 @@ puppetsync var crouching = false
 
 puppetsync var moveRight = false
 puppetsync var moveLeft = false
-### ---
+### ---god
 
-export (int) var fps = 24
+onready var character = get_parent()
 
 func _ready():
 	pass
@@ -22,29 +24,27 @@ func _unhandled_input(event):
 	if not is_network_master():
 		return
 	
-	# Walk
-	if Input.is_action_pressed("move_left"):
+	if Input.is_action_just_pressed("move_left"):
 		moveLeft = true
-	else:
+	if Input.is_action_just_released("move_left"):
 		moveLeft = false
-		
-	if Input.is_action_pressed("move_right"):
+	
+	if Input.is_action_just_pressed("move_right"):
 		moveRight = true
-	else:
+	if Input.is_action_just_released("move_right"):
 		moveRight = false
 	
+	# Crouch
+	if Input.is_action_just_pressed("crouch"):
+		crouching = true
+	if Input.is_action_just_released("crouch"):
+		crouching = false
+		
 	# Jump
 	if Input.is_action_just_pressed("jump"):
 		jumping = true
-	
 	if Input.is_action_just_released("jump"):
 		jumping = false
-	
-	# Crouch
-	if Input.is_action_pressed("crouch"):
-		crouching = true
-	else:
-		crouching = false
 
 var timer = 0
 func _sync(delta):
@@ -55,7 +55,6 @@ func _sync(delta):
 		return
 	
 	if is_network_master():
-			
 		rset_id(1, "moveLeft", moveLeft)
 		rset_id(1, "moveRight", moveRight)
 		rset_id(1, "jumping", jumping)
