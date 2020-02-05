@@ -24,6 +24,8 @@ margin_right = 294.0
 margin_bottom = 121.0
 custom_constants/separation = 1
 
+[node name="ChatTween" type="Tween" parent="Panel/Layout"]
+
 [node name="ChatDisplay" type="RichTextLabel" parent="Panel/Layout"]
 margin_right = 288.0
 margin_bottom = 93.0
@@ -42,5 +44,6 @@ margin_right = 288.0
 margin_bottom = 117.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
+max_length = 150
 placeholder_text = "Type your message here"
 placeholder_alpha = 0.5
