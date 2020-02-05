@@ -14,6 +14,7 @@ var p_position = Vector2(0, 0)
 var p_jumping = false
 ### ---
 
+onready var c_sprite = $Sprite
 onready var c_anim = $Sprite/Animation
 onready var c_body = $Sprite/Body
 onready var c_head = $Sprite/Head
@@ -116,7 +117,7 @@ func _animate(animation, t_flip_h = null):
 	if t_flip_h != null && t_flip_h != c_controller.flip_h:
 		c_controller.flip_h = t_flip_h
 		
-		$Sprite.scale.x *= -1
+		c_sprite.scale.x *= -1
 
 ### Remote events
 puppetsync func _play_dust_effect(pos):

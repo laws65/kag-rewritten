@@ -1,6 +1,8 @@
 extends Node2D
 
 export (int) var fps = 24
+export (float) var emote_time = 3
+export (Array, String) var emote_directories
 
 ### Input
 puppetsync var flip_h = false
@@ -13,9 +15,12 @@ puppetsync var moveLeft = false
 ### ---god
 
 onready var character = get_parent()
+onready var character_emote = character.get_node("Emote")
+onready var character_timer = character.get_node("Timer")
+var emote_array = {}
 
 func _ready():
-	pass
+	_load_emotes()
 
 func _process(delta):
 	_sync(delta)
@@ -23,6 +28,10 @@ func _process(delta):
 func _unhandled_input(event):
 	if not is_network_master():
 		return
+	
+	for key in emote_array.keys():
+		if Input.is_action_just_pressed(emote_array[key].action):
+			rpc("_play_emote", key)
 	
 	if Input.is_action_just_pressed("move_left"):
 		moveLeft = true
@@ -59,3 +68,31 @@ func _sync(delta):
 		rset_id(1, "moveRight", moveRight)
 		rset_id(1, "jumping", jumping)
 		rset_id(1, "crouching", crouching)
+
+func _load_emotes():
+	var file = ""
+	var dir = Directory.new()
+	for path in emote_directories:
+		if dir.open(path) != OK:
+			continue
+		dir.list_dir_begin()
+		file = dir.get_next()
+		while file != "":
+			if file.ends_with(".tres"):
+				var emote = load(path + file)
+				
+				if emote is Emote:
+					emote_array[path + file] = emote
+			
+			file = dir.get_next()
+
+remotesync func _play_emote(key):
+	if !emote_array.has(key):
+		return
+	
+	character_timer.stop()
+	character_emote.set_texture(emote_array[key].image)
+	character_timer.start(emote_time)
+	
+	yield (character_timer, "timeout")
+	character_emote.set_texture(null)

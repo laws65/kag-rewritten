@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fuzzle_stale.png-c69d1e996fc4dca0e6070ddccdbdddc5.stex"
+path="res://.import/kag_mad.png-8ec167e36f3e6ddb1c7fccf712ad0f36.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://base/sprites/maps/fuzzle_stale.png"
-dest_files=[ "res://.import/fuzzle_stale.png-c69d1e996fc4dca0e6070ddccdbdddc5.stex" ]
+source_file="res://base/sprites/emotes/kag_mad.png"
+dest_files=[ "res://.import/kag_mad.png-8ec167e36f3e6ddb1c7fccf712ad0f36.stex" ]
 
 [params]
 

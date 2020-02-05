@@ -1,7 +1,12 @@
 extends CanvasLayer
 
-export (int) var max_characters = 150
+signal chat_opened()
+signal chat_closed()
 
+export (int) var max_characters = 150
+export (Resource) var emote_typing
+
+onready var chat_tween = $Panel/Layout/ChatTween
 onready var chat_display = $Panel/Layout/ChatDisplay
 onready var chat_input = $Panel/Layout/ChatInput
 
