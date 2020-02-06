@@ -5,6 +5,8 @@ export (String) var default_character
 var spawn_list = {}
 
 func _ready():
+	game_chat._enable()
+	
 	if (get_tree().is_network_server()):
 		network.connect("player_added", self, "_on_player_added")
 		network.connect("player_removed", self, "_on_player_removed")

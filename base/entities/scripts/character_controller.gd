@@ -21,6 +21,10 @@ var emote_array = {}
 
 func _ready():
 	_load_emotes()
+	
+	if is_network_master():
+		game_chat.connect("chat_opened", self, "_on_chat_opened")
+		game_chat.connect("chat_closed", self, "_on_chat_closed")
 
 func _process(delta):
 	_sync(delta)
@@ -86,7 +90,7 @@ func _load_emotes():
 			
 			file = dir.get_next()
 
-remotesync func _play_emote(key):
+puppetsync func _play_emote(key):
 	if !emote_array.has(key):
 		return
 	
@@ -96,3 +100,15 @@ remotesync func _play_emote(key):
 	
 	yield (character_timer, "timeout")
 	character_emote.set_texture(null)
+
+puppetsync func _start_chat_emote():
+	character_emote.set_texture(game_chat.emote_typing.image)
+
+puppetsync func _stop_chat_emote():
+	character_emote.set_texture(null)
+
+func _on_chat_opened():
+	rpc("_start_chat_emote")
+
+func _on_chat_closed():
+	rpc("_stop_chat_emote")

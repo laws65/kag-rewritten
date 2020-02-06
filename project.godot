@@ -75,6 +75,7 @@ config/icon="res://base/sprites/misc/icon.png"
 
 game_map="*res://base/levels/content/misc/game_map.tscn"
 game_camera="*res://base/levels/content/misc/game_camera.tscn"
+game_chat="*res://base/levels/content/misc/game_chat.tscn"
 game_fps="*res://base/levels/content/misc/game_fps.tscn"
 network="*res://base/levels/content/misc/network.tscn"
 

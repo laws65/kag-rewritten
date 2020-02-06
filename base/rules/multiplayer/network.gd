@@ -50,7 +50,6 @@ func _on_connection_established():
 		register_player(player)
 
 func _on_connection_closed():
-	get_tree().paused = true
 	get_tree().set_network_peer(null)
 	
 	emit_signal("connection_closed")

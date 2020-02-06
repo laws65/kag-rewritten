@@ -6,31 +6,45 @@ signal chat_closed()
 export (int) var max_characters = 150
 export (Resource) var emote_typing
 
+onready var chat_panel = $Panel
 onready var chat_tween = $Panel/Layout/ChatTween
 onready var chat_display = $Panel/Layout/ChatDisplay
 onready var chat_input = $Panel/Layout/ChatInput
 
 func _ready():
 	chat_input.connect("text_entered", self, "_send_message")
+	_disable()
+
+func _enable():
+	chat_panel.show()
+	set_process_input(true)
+
+func _disable():
+	chat_panel.hide()
+	set_process_input(false)
 
 func _input(event):
 	if chat_input.has_focus():
 		if Input.is_action_just_pressed("chat_close") or Input.is_action_just_pressed("chat_any"):
 			if chat_input.text.empty():
+				emit_signal("chat_closed")
 				chat_input.release_focus()
 				get_tree().set_input_as_handled()
 		
 		if event is InputEventMouseButton:
 			if event.button_index == BUTTON_LEFT || event.button_index == BUTTON_RIGHT:
 				if !chat_input.get_global_rect().has_point(event.global_position):
+					emit_signal("chat_closed")
 					chat_input.release_focus()
 					get_tree().set_input_as_handled()
 	else:
 		if Input.is_action_just_pressed("chat_open") or Input.is_action_just_pressed("chat_any"):
+			emit_signal("chat_opened")
 			chat_input.grab_focus()
 			get_tree().set_input_as_handled()
 
 func _send_message(message):
+	emit_signal("chat_closed")
 	chat_input.clear()
 	chat_input.release_focus()
 	
