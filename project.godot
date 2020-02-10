@@ -14,11 +14,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://base/entities/scripts/character.gd"
 }, {
-"base": "Resource",
-"class": "Emote",
-"language": "GDScript",
-"path": "res://base/entities/scripts/emote.gd"
-}, {
 "base": "Node2D",
 "class": "GameMode",
 "language": "GDScript",
@@ -51,7 +46,6 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Character": "",
-"Emote": "",
 "GameMode": "",
 "NetworkClient": "",
 "NetworkServer": "",
