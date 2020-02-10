@@ -19,22 +19,22 @@ func _process(_delta):
 func _create_server(name: String, port: int):
 	server_info.name = name
 	server_info.port = port
-	
+
 	# We are unable to Host from browsers
 	# So we create a placeholder Peer to simulate single-player
 	# As workaround
 	if OS.has_feature("HTML5"):
 		server = NetworkedMultiplayerENet.new()
-		
+
 		if (server.create_server(server_info.port) != OK):
 			emit_signal("create_fail")
-			return 
+			return
 	else:
 		server = WebSocketServer.new()
-		
+
 		if (server.listen(server_info.port, PoolStringArray(), true) != OK):
 			emit_signal("create_fail")
 			return
-	
+
 	get_tree().set_network_peer(server)
 	emit_signal("create_success")
