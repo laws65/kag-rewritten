@@ -31,7 +31,15 @@ func create_server(name: String, port: int):
 func join_server(ip: String, port: int):
 	$Client._join_server(ip, port)
 
-### --- Events
+### Helper functions
+
+func get_player(id: int):
+	return players[id]
+
+func get_local_player():
+	return get_player(get_tree().get_network_unique_id())
+
+### Events
 
 func _on_player_connected(id):
 	if id != 1:
@@ -54,7 +62,7 @@ func _on_connection_closed():
 
 	emit_signal("connection_closed")
 
-### --- Remote functions
+### Remote functions
 
 remote func register_player(pinfo):
 	if get_tree().get_rpc_sender_id() == 0 && pinfo.id != 1:

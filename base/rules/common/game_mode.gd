@@ -47,10 +47,8 @@ remote func spawn_player(pinfo):
 	var pclass = load(pinfo.character)
 
 	var pchar = pclass.instance()
+	pchar._setup(pinfo)
 	pchar.position = spawn_list[0].world_position
-	pchar.set_name(str(pinfo.id))
-	pchar.set_network_master(1)
-	pchar.get_node("Controller").set_network_master(pinfo.id)
 
 	add_child(pchar)
 

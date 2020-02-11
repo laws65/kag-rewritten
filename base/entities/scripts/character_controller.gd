@@ -10,13 +10,13 @@ puppetsync var crouching = false
 
 puppetsync var moveRight = false
 puppetsync var moveLeft = false
-### ---god
+### ---
 
 func _process(delta):
 	_sync(delta)
 
 func _unhandled_input(event):
-	if not is_network_master():
+	if !is_network_master():
 		return
 
 	if Input.is_action_just_pressed("move_left"):
@@ -49,7 +49,7 @@ func _sync(delta):
 	else:
 		return
 
-	if is_network_master() && get_tree().get_network_unique_id() != 1:
+	if is_network_master():
 		rset_id(1, "moveLeft", moveLeft)
 		rset_id(1, "moveRight", moveRight)
 		rset_id(1, "jumping", jumping)

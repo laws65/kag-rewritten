@@ -20,7 +20,12 @@ onready var c_body = $Sprite/Body
 onready var c_head = $Sprite/Head
 onready var c_name = $Name
 
-onready var c_controller = $Controller
+onready var c_client = $Client
+onready var c_controller = $Client/Controller
+onready var c_emote = $Client/Emote
+
+# Has information about the local player
+var pinfo
 
 ### Physics
 export (int) var gravity = 500
@@ -31,13 +36,18 @@ export (int) var fps = 24
 var velocity = Vector2(0, 0)
 ### ---
 
-func _ready():
-	if c_controller.is_network_master():
-		game_camera.target = self
+func _setup(t_pinfo):
+	pinfo = t_pinfo
+	set_name(str(pinfo.id))
 
-	if c_controller.get_network_master() in network.players:
-		var pinfo = network.players[c_controller.get_network_master()]
-		c_name.text = pinfo.name
+func _ready():
+	c_name.text = pinfo.name
+
+	set_network_master(1)
+	c_client.set_network_master(pinfo.id)
+
+	if c_client.is_network_master():
+		game_camera.target = self
 
 var interpolation = 0.0
 func _process(delta):
