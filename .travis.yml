@@ -23,12 +23,14 @@ script:
 - mkdir -p "build/linux"
 - mkdir -p "build/mac"
 - mkdir -p "build/html5"
+- cd src
 # Desktop
-- godot src --export "Windows Desktop" "build/windows/${GAME_NAME}.exe"
-- godot src --export "Linux/X11" "build/linux/${GAME_NAME}"
-- godot src --export "Mac OSX" "build/mac/${GAME_NAME}-mac.zip"
+- godot --export "Windows Desktop" "../build/windows/${GAME_NAME}.exe"
+- godot --export "Linux/X11" "../build/linux/${GAME_NAME}"
+- godot --export "Mac OSX" "../build/mac/${GAME_NAME}-mac.zip"
 # Web
-- godot src --export "HTML5" "build/html5/index.html"
+- godot --export "HTML5" "../build/html5/index.html"
+- cd ..
 
 before_deploy:
 # Only copying needed, exporting for Mac outputs a zip
