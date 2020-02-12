@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://rules/scripts/misc/game_chat.gd" type="Script" id=1]
+[ext_resource path="res://rules/resources/themes/fonts/m5x7.tres" type="DynamicFont" id=2]
+
+[node name="Chat" type="CanvasLayer"]
+script = ExtResource( 1 )
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -300.0
+margin_top = -125.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Layout" type="VBoxContainer" parent="Panel"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 293.0
+margin_bottom = 118.0
+custom_constants/separation = 1
+
+[node name="ChatTween" type="Tween" parent="Panel/Layout"]
+
+[node name="ChatDisplay" type="RichTextLabel" parent="Panel/Layout"]
+margin_right = 286.0
+margin_bottom = 87.0
+focus_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+bbcode_text = "[color=green]Welcome to KAG Rewritten![/color]"
+text = "Welcome to KAG Rewritten!"
+scroll_following = true
+selection_enabled = true
+
+[node name="ChatInput" type="LineEdit" parent="Panel/Layout"]
+margin_top = 88.0
+margin_right = 286.0
+margin_bottom = 111.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+max_length = 150
+placeholder_text = "Type your message here"
+placeholder_alpha = 0.5
+[connection signal="focus_entered" from="Panel/Layout/ChatInput" to="." method="_on_ChatInput_focus_entered"]
+[connection signal="focus_exited" from="Panel/Layout/ChatInput" to="." method="_on_ChatInput_focus_exited"]
