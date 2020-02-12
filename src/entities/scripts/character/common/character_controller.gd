@@ -3,7 +3,7 @@ extends Node2D
 export (int) var fps = 24
 
 ### Input
-puppetsync var flip_h = false
+puppetsync var flip_left = false # default right
 
 puppetsync var jumping = false
 puppetsync var crouching = false
@@ -42,6 +42,9 @@ func _unhandled_input(event):
 		jumping = true
 	if Input.is_action_just_released("jump"):
 		jumping = false
+		
+	if event is InputEventMouseMotion:
+		flip_left = get_global_mouse_position().x < get_parent().global_position.x
 
 var timer = 0
 func _sync(delta):
@@ -56,3 +59,4 @@ func _sync(delta):
 		rset_id(1, "moveRight", moveRight)
 		rset_id(1, "jumping", jumping)
 		rset_id(1, "crouching", crouching)
+		rset_id(1, "flip_left", flip_left)
