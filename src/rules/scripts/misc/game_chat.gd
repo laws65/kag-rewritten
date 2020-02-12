@@ -28,12 +28,6 @@ func _input(event):
 			if chat_input.text.empty():
 				chat_input.release_focus()
 				get_tree().set_input_as_handled()
-
-		if event is InputEventMouseButton:
-			if event.button_index == BUTTON_LEFT || event.button_index == BUTTON_RIGHT:
-				if !chat_input.get_global_rect().has_point(event.global_position):
-					chat_input.release_focus()
-					get_tree().set_input_as_handled()
 	else:
 		if Input.is_action_just_pressed("chat_open") or Input.is_action_just_pressed("chat_any"):
 			chat_input.grab_focus()
