@@ -25,11 +25,11 @@ script:
 - mkdir -p "build/html5"
 - cd src
 # Desktop
-- godot --export "Windows Desktop" "../build/windows/${GAME_NAME}.exe"
-- godot --export "Linux/X11" "../build/linux/${GAME_NAME}"
-- godot --export "Mac OSX" "../build/mac/${GAME_NAME}-mac.zip"
+- godot --export "Windows" "../build/windows/${GAME_NAME}.exe"
+- godot --export "Linux" "../build/linux/${GAME_NAME}"
+- godot --export "Mac" "../build/mac/${GAME_NAME}-mac.zip"
 # Web
-- godot --export "HTML5" "../build/html5/index.html"
+- godot --export "Web" "../build/html5/index.html"
 - cd ..
 
 before_deploy:
