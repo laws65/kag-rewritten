@@ -8,7 +8,7 @@ var dust_effect # Will be added back once fall damage has been implemented
 ### Sync
 puppetsync var r_position = Vector2(0, 0)
 puppetsync var r_animation = ""
-puppetsync var r_flip_h = false
+puppetsync var r_flip_left = false
 
 var p_position = Vector2(0, 0)
 var p_jumping = false
@@ -35,6 +35,7 @@ export (float) var gravity_scale = 1
 export (float) var run_speed = 68
 export (float) var walk_speed = 68
 export (float) var jump_speed = 20
+export (float) var facing_mod = 0.8
 
 var velocity = Vector2(0, 0)
 ### ---
@@ -74,11 +75,15 @@ func _process_input(_delta):
 	velocity.x = 0
 
 	# Walk
+	var _xvel = 0
+	
 	if c_controller.moveRight:
-		velocity.x += walk_speed
+		_xvel = walk_speed * (facing_mod if c_controller.flip_left else 1)
+		velocity.x += _xvel
 
 	if c_controller.moveLeft:
-		velocity.x -= walk_speed
+		_xvel = -walk_speed * (1 if c_controller.flip_left else facing_mod)
+		velocity.x += _xvel
 
 	# Jump
 	if c_controller.jumping && !c_controller.crouching && is_on_floor():
@@ -87,7 +92,7 @@ func _process_input(_delta):
 func _process_animation(_delta):
 	if is_on_floor():
 		if c_controller.moveLeft or c_controller.moveRight:
-			_animate("walk", c_controller.moveLeft)
+			_animate("walk")
 		else:
 			if c_controller.crouching:
 				_animate("crouch")
@@ -96,6 +101,8 @@ func _process_animation(_delta):
 
 		if c_controller.jumping:
 			_animate("jump")
+
+	_animate(null, true) # airborne
 
 var timer = 0
 func _sync(delta):
@@ -107,18 +114,20 @@ func _sync(delta):
 
 	if is_network_master():
 		rset_unreliable("r_animation", c_anim.current_animation)
-		rset_unreliable("r_flip_h", c_controller.flip_h)
 		rset_unreliable("r_position", position)
+		rset_unreliable("r_flip_left", c_controller.flip_left)
 	else:
-		_animate(r_animation, r_flip_h)
+		_animate(r_animation)
+		_animate(null, true)
 		p_position = position
 ### ---
 
-func _animate(animation, t_flip_h = null):
+func _animate(animation, airborne = false):
+	if airborne:
+		c_sprite.scale.x = -sign(float(r_flip_left) - 0.1)
+		# if animation != null:
+		# 	to add here: stuns, attacks, etc
+		return
+	
 	if c_anim.has_animation(animation):
 		c_anim.play(animation)
-
-	if t_flip_h != null && t_flip_h != c_controller.flip_h:
-		c_controller.flip_h = t_flip_h
-
-		c_sprite.scale.x *= -1
