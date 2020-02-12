@@ -15,7 +15,6 @@
 [ext_resource path="res://entities/resources/misc/emote/kag_mad.png" type="Texture" id=13]
 [ext_resource path="res://entities/resources/misc/emote/kag_troll.png" type="Texture" id=14]
 
-
 [sub_resource type="Animation" id=1]
 resource_name = "hide"
 tracks/0/type = "value"
