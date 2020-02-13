@@ -35,8 +35,6 @@ export (float) var run_speed = 68
 export (float) var walk_speed = 68
 export (float) var jump_speed = 20
 
-var vertical_scale = 1
-var horizontal_scale = 1
 export (float) var backward_scale = 0.8
 
 var velocity = Vector2(0, 0)
@@ -135,8 +133,8 @@ func _sync(delta):
 		p_position = position
 
 	if r_flip_horizontal:
-		c_sprite.scale.x = -1
+		c_sprite.scale.x = -abs(c_sprite.scale.x)
 	else:
-		c_sprite.scale.x = 1
+		c_sprite.scale.x = abs(c_sprite.scale.x)
 
 ### ---
