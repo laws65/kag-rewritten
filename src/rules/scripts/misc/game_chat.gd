@@ -6,7 +6,7 @@ signal chat_closed()
 export (int) var max_characters = 150
 
 onready var chat_panel = $Panel
-onready var chat_tween = $Panel/Layout/ChatTween
+onready var chat_animation = $Panel/Layout/ChatAnimation
 onready var chat_display = $Panel/Layout/ChatDisplay
 onready var chat_input = $Panel/Layout/ChatInput
 
@@ -49,7 +49,7 @@ remotesync func _forward_message(message: String):
 	if max_characters > 0 and message.length() > max_characters:
 		filtered = filtered.substr(0, max_characters) + " [...]"
 
-	chat_display.append_bbcode(str("\n", "[color=yellow]<", pinfo.name, ">[/color] ", filtered))
+	chat_display.append_bbcode(str("\n", "[color=green]<", pinfo.name, ">[/color] ", filtered))
 
 var chat_open = false
 func is_chat_open():
@@ -57,8 +57,10 @@ func is_chat_open():
 
 func _on_ChatInput_focus_entered():
 	chat_open = true
+	chat_animation.play("open")
 	emit_signal("chat_opened")
 
 func _on_ChatInput_focus_exited():
 	chat_open = false
+	chat_animation.play("close")
 	emit_signal("chat_closed")
