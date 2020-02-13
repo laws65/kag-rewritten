@@ -8,7 +8,6 @@ var dust_effect # Will be added back once fall damage has been implemented
 ### Sync
 puppetsync var r_position = Vector2(0, 0)
 puppetsync var r_animation = ""
-puppetsync var r_flip_horizontal = false
 
 var p_position = Vector2(0, 0)
 var p_jumping = false
@@ -83,11 +82,11 @@ func _process_input(_delta):
 	var _xvel = 0
 
 	if c_controller.r_move_right:
-		_xvel = walk_speed * (backward_scale if r_flip_horizontal else 1)
+		_xvel = walk_speed * (backward_scale if c_controller.r_flip_horizontal else 1)
 		velocity.x += _xvel
 
 	if c_controller.r_move_left:
-		_xvel = walk_speed * (1 if r_flip_horizontal else backward_scale)
+		_xvel = walk_speed * (1 if c_controller.r_flip_horizontal else backward_scale)
 		velocity.x -= _xvel
 
 	# Jump
@@ -116,14 +115,6 @@ func _sync(delta):
 		return
 
 	if is_network_master():
-		var flip_horizontal = false
-
-		if c_controller.r_mouse_position.x < global_position.x:
-			flip_horizontal = true
-
-		if r_flip_horizontal != flip_horizontal:
-			rset("r_flip_horizontal", flip_horizontal)
-
 		if r_animation != c_anim.current_animation:
 			rset("r_animation", c_anim.current_animation)
 
@@ -132,7 +123,7 @@ func _sync(delta):
 		_animate(r_animation)
 		p_position = position
 
-	if r_flip_horizontal:
+	if c_controller.r_flip_horizontal:
 		c_sprite.scale.x = -abs(c_sprite.scale.x)
 	else:
 		c_sprite.scale.x = abs(c_sprite.scale.x)

@@ -3,8 +3,8 @@ extends Node2D
 export (int) var fps = 24
 
 ### Input
-var mouse_position = Vector2(0, 0)
-puppetsync var r_mouse_position = Vector2(0, 0)
+var flip_horizontal = false
+puppetsync var r_flip_horizontal = false
 
 puppetsync var r_move_left = false
 puppetsync var r_move_right = false
@@ -13,7 +13,7 @@ puppetsync var r_jumping = false
 ### ---
 
 func _physics_process(delta):
-	_sync(delta)
+	#_sync(delta)
 
 	if is_network_master():
 		pass
@@ -44,7 +44,8 @@ func _unhandled_input(event):
 		rset_id(1, "r_jumping", false)
 
 	if event is InputEventMouseMotion:
-		mouse_position = get_global_mouse_position()
+		flip_horizontal = get_global_mouse_position().x < get_parent().global_position.x
+		rset_id(1, "r_flip_horizontal", flip_horizontal)
 
 var timer = 0
 func _sync(delta):
@@ -53,7 +54,3 @@ func _sync(delta):
 		timer -= 1.0 / fps
 	else:
 		return
-
-	if is_network_master():
-		if r_mouse_position.distance_to(mouse_position) > 2:
-			rset_unreliable_id(1, "r_mouse_position", mouse_position)
