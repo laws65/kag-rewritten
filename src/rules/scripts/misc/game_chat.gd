@@ -51,10 +51,14 @@ remotesync func _forward_message(message: String):
 
 	chat_display.append_bbcode(str("\n", "[color=yellow]<", pinfo.name, ">[/color] ", filtered))
 
+var chat_open = false
+func is_chat_open():
+	return chat_open
 
 func _on_ChatInput_focus_entered():
+	chat_open = true
 	emit_signal("chat_opened")
 
-
 func _on_ChatInput_focus_exited():
+	chat_open = false
 	emit_signal("chat_closed")

@@ -8,7 +8,7 @@ var dust_effect # Will be added back once fall damage has been implemented
 ### Sync
 puppetsync var r_position = Vector2(0, 0)
 puppetsync var r_animation = ""
-puppetsync var r_flip_left = false
+puppetsync var r_flip_horizontal = false
 
 var p_position = Vector2(0, 0)
 var p_jumping = false
@@ -20,7 +20,6 @@ onready var c_body = $Sprite/Body
 onready var c_head = $Sprite/Head
 onready var c_name = $Name
 
-onready var c_client = $Client
 onready var c_controller = $Client/Controller
 
 # Has information about the local player
@@ -35,7 +34,10 @@ export (float) var gravity_scale = 1
 export (float) var run_speed = 68
 export (float) var walk_speed = 68
 export (float) var jump_speed = 20
-export (float) var facing_mod = 0.8
+
+var vertical_scale = 1
+var horizontal_scale = 1
+export (float) var backward_scale = 0.8
 
 var velocity = Vector2(0, 0)
 ### ---
@@ -45,12 +47,12 @@ func _setup(t_pinfo):
 	set_name(str(pinfo.id))
 
 	set_network_master(1)
-	get_node("Client").set_network_master(pinfo.id)
+	$Client.set_network_master(pinfo.id)
 
 func _ready():
 	c_name.text = pinfo.name
 
-	if c_client.is_network_master():
+	if $Client.is_network_master():
 		game_camera.target = self
 
 func _process(delta):
@@ -71,38 +73,41 @@ func _physics_process(delta):
 	_sync(delta)
 
 ### Event processing
+
+func _animate(animation):
+	if c_anim.has_animation(animation):
+		c_anim.play(animation)
+
 func _process_input(_delta):
 	velocity.x = 0
 
 	# Walk
 	var _xvel = 0
-	
-	if c_controller.moveRight:
-		_xvel = walk_speed * (facing_mod if c_controller.flip_left else 1)
+
+	if c_controller.r_move_right:
+		_xvel = walk_speed * (backward_scale if r_flip_horizontal else 1)
 		velocity.x += _xvel
 
-	if c_controller.moveLeft:
-		_xvel = -walk_speed * (1 if c_controller.flip_left else facing_mod)
-		velocity.x += _xvel
+	if c_controller.r_move_left:
+		_xvel = walk_speed * (1 if r_flip_horizontal else backward_scale)
+		velocity.x -= _xvel
 
 	# Jump
-	if c_controller.jumping && !c_controller.crouching && is_on_floor():
+	if c_controller.r_jumping && !c_controller.r_crouching && is_on_floor():
 		velocity.y = -(game_map.gravity * jump_speed)
 
 func _process_animation(_delta):
 	if is_on_floor():
-		if c_controller.moveLeft or c_controller.moveRight:
+		if c_controller.r_move_left or c_controller.r_move_right:
 			_animate("walk")
 		else:
-			if c_controller.crouching:
+			if c_controller.r_crouching:
 				_animate("crouch")
 			else:
 				_animate("idle")
 
-		if c_controller.jumping:
+		if c_controller.r_jumping:
 			_animate("jump")
-
-	_animate(null, true) # airborne
 
 var timer = 0
 func _sync(delta):
@@ -113,21 +118,26 @@ func _sync(delta):
 		return
 
 	if is_network_master():
-		rset_unreliable("r_animation", c_anim.current_animation)
-		rset_unreliable("r_position", position)
-		rset_unreliable("r_flip_left", c_controller.flip_left)
+		var flip_horizontal = false
+
+		if c_controller.r_mouse_position.x < global_position.x:
+			flip_horizontal = true
+
+		if r_flip_horizontal != flip_horizontal:
+			rset("r_flip_horizontal", flip_horizontal)
+
+		if r_animation != c_anim.current_animation:
+			rset("r_animation", c_anim.current_animation)
+
+		if r_position.distance_to(position) > 0.02:
+			rset_unreliable("r_position", position)
 	else:
 		_animate(r_animation)
-		_animate(null, true)
 		p_position = position
-### ---
 
-func _animate(animation, airborne = false):
-	if airborne:
-		c_sprite.scale.x = -sign(float(r_flip_left) - 0.1)
-		# if animation != null:
-		# 	to add here: stuns, attacks, etc
-		return
-	
-	if c_anim.has_animation(animation):
-		c_anim.play(animation)
+	if r_flip_horizontal:
+		c_sprite.scale.x = -1
+	else:
+		c_sprite.scale.x = 1
+
+### ---

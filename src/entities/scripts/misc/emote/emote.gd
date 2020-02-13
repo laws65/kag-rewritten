@@ -49,7 +49,8 @@ puppetsync func _show_emote(index):
 	timer.start(duration)
 	yield (timer, "timeout")
 
-	_hide_emote()
+	if !game_chat.is_chat_open():
+		_hide_emote()
 
 func _hide_emote():
 	animation.play("hide")
