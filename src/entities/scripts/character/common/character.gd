@@ -129,8 +129,7 @@ func _sync(delta):
 		if r_animation != c_anim.current_animation:
 			rset("r_animation", c_anim.current_animation)
 
-		if r_position.distance_to(position) > 0.02:
-			rset_unreliable("r_position", position)
+		rset_unreliable("r_position", position)
 	else:
 		_animate(r_animation)
 		p_position = position
