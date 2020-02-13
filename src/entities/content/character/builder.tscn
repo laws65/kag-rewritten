@@ -4,13 +4,6 @@
 [ext_resource path="res://entities/resources/character/builder_male.png" type="Texture" id=2]
 [ext_resource path="res://entities/resources/character/heads/builder.png" type="Texture" id=3]
 
-
-
-
-
-
-
-
 [sub_resource type="Animation" id=1]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:frame")
@@ -119,6 +112,9 @@ tracks/1/keys = {
 }
 
 [node name="Character" instance=ExtResource( 1 )]
+
+[node name="Sprite" parent="." index="2"]
+position = Vector2( 0, 0.5 )
 
 [node name="Body" parent="Sprite" index="0"]
 texture = ExtResource( 2 )
