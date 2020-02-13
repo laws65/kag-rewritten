@@ -127,7 +127,7 @@ anims/hide = SubResource( 1 )
 anims/show = SubResource( 2 )
 
 [node name="Collider" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -11 )
+position = Vector2( 0, -11.5 )
 shape = SubResource( 3 )
 
 [node name="Sprite" type="Node2D" parent="."]
