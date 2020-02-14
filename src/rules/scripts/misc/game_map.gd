@@ -4,7 +4,8 @@ extends Node2D
 signal map_loaded
 ### ---
 
-onready var solid_shadow_layer = $Shadow
+onready var sky = $Sky
+onready var shadow = $Shadow
 onready var tilemap = $TileMap
 var tileset = TileSet.new()
 
@@ -68,6 +69,11 @@ func _load_map():
 	map_image = load(map_path).get_data()
 	map_width = map_image.get_width()
 	map_height = map_image.get_height()
+
+	# Adjust Sky to fit map
+	sky.scale.x = map_width * tile_size.x
+	sky.scale.y = map_height * tile_size.y
+
 	shadow_array.resize(map_width * map_height)
 	tile_array.resize(map_width * map_height)
 
@@ -121,10 +127,10 @@ func _generate_shadows():
 	shadow_image.lock()
 
 	shadow_texture.create_from_image(shadow_image)
-	solid_shadow_layer.set_texture(shadow_texture)
-	solid_shadow_layer.set_scale(Vector2(tile_size.x, tile_size.y))
+	shadow.set_texture(shadow_texture)
+	shadow.set_scale(Vector2(tile_size.x, tile_size.y))
 
-	var material = solid_shadow_layer.get_material()
+	var material = shadow.get_material()
 	material.set_shader_param("Step", Vector2(0.5/map_width, 0.5/map_height))
 	material.set_shader_param("Step2", Vector2(0.5/map_width, -0.5/map_height))
 
