@@ -35,9 +35,13 @@ script:
 before_deploy:
 # Only copying needed, exporting for Mac outputs a zip
 - cp -R build/mac/* .
+- md5sum "${GAME_NAME}-mac.zip" > "${GAME_NAME}-mac-md5.txt"
 - zip -jr "${GAME_NAME}-linux.zip" build/linux
+- md5sum "${GAME_NAME}-linux.zip" > "${GAME_NAME}-linux-md5.txt"
 - zip -jr "${GAME_NAME}-windows.zip" build/windows
+- md5sum "${GAME_NAME}-windows.zip" > "${GAME_NAME}-windows-md5.txt"
 - zip -jr "${GAME_NAME}-html.zip" build/html5
+- md5sum "${GAME_NAME}-html.zip" > "${GAME_NAME}-html-md5.txt"
 
 deploy:
 - provider: releases
@@ -45,9 +49,13 @@ deploy:
   token: $GITHUB_TOKEN
   file:
     - "${GAME_NAME}-mac.zip"
+    - "${GAME_NAME}-mac-md5.txt"
     - "${GAME_NAME}-linux.zip"
+    - "${GAME_NAME}-linux-md5.txt"
     - "${GAME_NAME}-windows.zip"
+    - "${GAME_NAME}-windows-md5.txt"
     - "${GAME_NAME}-html.zip"
+    - "${GAME_NAME}-html-md5.txt"
   on:
     all_branches: true
     tags: true
