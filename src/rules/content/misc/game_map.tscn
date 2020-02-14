@@ -10,6 +10,7 @@ map_path = "res://rules/resources/maps/fuzzle_stale.png"
 tile_directories = [ "res://entities/content/tiles/" ]
 
 [node name="Sky" type="Sprite" parent="."]
+scale = Vector2( 1e-05, 1e-05 )
 z_index = -10
 texture = ExtResource( 3 )
 centered = false
