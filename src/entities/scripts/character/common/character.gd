@@ -30,7 +30,6 @@ export (int) var fps = 24
 export (float) var mass = 64
 export (float) var gravity_scale = 1
 
-export (float) var run_speed = 68
 export (float) var walk_speed = 68
 export (float) var jump_speed = 20
 

@@ -13,14 +13,12 @@ puppetsync var r_jumping = false
 ### ---
 
 func _physics_process(delta):
-	#_sync(delta)
-
-	if is_network_master():
-		pass
-	else:
-		set_process_unhandled_input(false)
+	_sync(delta)
 
 func _unhandled_input(event):
+	if !is_network_master():
+		return
+
 	if Input.is_action_just_pressed("move_left"):
 		rset_id(1, "r_move_left", true)
 	if Input.is_action_just_released("move_left"):
@@ -45,7 +43,9 @@ func _unhandled_input(event):
 
 	if event is InputEventMouseMotion:
 		flip_horizontal = get_global_mouse_position().x < get_parent().global_position.x
-		rset_id(1, "r_flip_horizontal", flip_horizontal)
+
+		if r_flip_horizontal != flip_horizontal:
+			rset("r_flip_horizontal", flip_horizontal)
 
 var timer = 0
 func _sync(delta):
