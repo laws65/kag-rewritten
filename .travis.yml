@@ -36,8 +36,6 @@ install:
 
 script:
 - cd ${TRAVIS_BUILD_DIR}
-- echo 'keystore/release_user="'${ANDROID_RELEASE_USER}'"' >> src/export_presets.cfg
-- echo 'keystore/release_password="'${ANDROID_RELEASE_PASSWORD}'"' >> src/export_presets.cfg
 - mkdir -p "build/android"
 - mkdir -p "build/windows"
 - mkdir -p "build/linux"
@@ -45,6 +43,8 @@ script:
 - mkdir -p "build/html5"
 - cd src
 # Desktop
+- echo 'keystore/release_user="'${ANDROID_RELEASE_USER}'"' >> export_presets.cfg
+- echo 'keystore/release_password="'${ANDROID_RELEASE_PASSWORD}'"' >> export_presets.cfg
 - sudo godot --export "Android" "../build/android/${GAME_NAME}-android.apk"
 - sudo godot --export "Windows" "../build/windows/${GAME_NAME}.exe"
 - sudo godot --export "Linux" "../build/linux/${GAME_NAME}"
