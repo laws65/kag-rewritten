@@ -45,6 +45,7 @@ install:
 - echo 'export/android/shutdown_adb_on_exit = true' >> ~/.config/godot/editor_settings-3.tres
 
 script:
+- cd ${TRAVIS_BUILD_DIR}
 - mkdir -p "build/android"
 - mkdir -p "build/windows"
 - mkdir -p "build/linux"
