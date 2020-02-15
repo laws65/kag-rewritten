@@ -8,8 +8,8 @@ os: linux
 env: GAME_NAME="KAG Rewritten" GODOT_VERSION="3.2"
 
 before_install:
-- echo 'keystore/release_user="${ANDROID_RELEASE_USER}"' >> src/export_presets.cfg
-- echo 'keystore/release_password="${ANDROID_RELEASE_PASSWORD}"' >> src/export_presets.cfg
+- echo 'keystore/release_user="'"$ANDROID_RELEASE_USER"'"' >> src/export_presets.cfg
+- echo 'keystore/release_password="'"$ANDROID_RELEASE_PASSWORD"'"' >> src/export_presets.cfg
 
 install:
 - sudo apt-get update
