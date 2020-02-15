@@ -24,6 +24,7 @@ install:
 - unzip Godot_v${GODOT_VERSION}-stable_export_templates.tpz
 - sudo mv Godot_v${GODOT_VERSION}-stable_linux_headless.64 /usr/local/bin/godot
 - mv templates/* ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+- godot -e -q
 - echo "Installing Android dependencies"
 - mkdir -p -v ~/android
 - cd ~/android
@@ -37,8 +38,7 @@ install:
 - yes | ~/android/tools/bin/sdkmanager "tools"
 - yes | ~/android/tools/bin/sdkmanager "platform-tools"
 - yes | ~/android/tools/bin/sdkmanager "build-tools;28.0.3"
-- godot -e -q
-- echo 'export/android/adb = "/root/android/platform-tools/adb"' >> ~/.config/godot/editor_settings-3.tres
+- echo 'export/android/adb = "~/android/platform-tools/adb"' >> ~/.config/godot/editor_settings-3.tres
 - echo 'export/android/jarsigner = "/usr/lib/jvm/java-8-openjdk-amd64/bin/jarsigner"' >> ~/.config/godot/editor_settings-3.tres
 - echo 'export/android/force_system_user = false' >> ~/.config/godot/editor_settings-3.tres
 - echo 'export/android/timestamping_authority_url = ""' >> ~/.config/godot/editor_settings-3.tres
