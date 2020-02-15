@@ -28,16 +28,9 @@ install:
 - echo "Installing Android dependencies"
 - mkdir -p -v ~/android
 - cd ~/android
-- wget -q "https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
-- unzip -q sdk-tools-linux-*.zip
-- rm sdk-tools-linux-*.zip
-- export ANDROID_HOME="~/android"
-- mkdir -p -v ~/.android
-- echo "count=0" > ~/.android/repositories.cfg
-- yes | ~/android/tools/bin/sdkmanager --licenses
-- yes | ~/android/tools/bin/sdkmanager "tools"
-- yes | ~/android/tools/bin/sdkmanager "platform-tools"
-- yes | ~/android/tools/bin/sdkmanager "build-tools;28.0.3"
+- wget -q "https://dl.google.com/android/repository/platform-tools-latest-linux.zip"
+- unzip -q platform-tools-latest-linux.zip
+- rm platform-tools-latest-linux.zip
 - echo 'export/android/adb = "~/android/platform-tools/adb"' >> ~/.config/godot/editor_settings-3.tres
 - echo 'export/android/jarsigner = "/usr/lib/jvm/java-8-openjdk-amd64/bin/jarsigner"' >> ~/.config/godot/editor_settings-3.tres
 - echo 'export/android/force_system_user = false' >> ~/.config/godot/editor_settings-3.tres
