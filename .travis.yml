@@ -7,7 +7,14 @@ os: linux
 
 env: GAME_NAME="KAG Rewritten" GODOT_VERSION="3.2"
 
+before_install:
+- echo 'keystore/release_user="${ANDROID_RELEASE_USER}"' >> src/export_presets.cfg
+- echo 'keystore/release_password="${ANDROID_RELEASE_PASSWORD}"' >> src/export_presets.cfg
+
 install:
+- sudo apt-get update
+- sudo apt-get install -y --no-install-recommends ca-certificates openjdk-8-jdk
+- sudo rm -rf /var/lib/apt/lists/*
 - wget -q "https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/Godot_v${GODOT_VERSION}-stable_linux_headless.64.zip"
 - wget -q "https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
 - mkdir -p ~/.cache
@@ -17,14 +24,35 @@ install:
 - unzip Godot_v${GODOT_VERSION}-stable_export_templates.tpz
 - sudo mv Godot_v${GODOT_VERSION}-stable_linux_headless.64 /usr/local/bin/godot
 - mv templates/* ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+- echo "Installing Android dependencies"
+- mkdir -p -v ~/android
+- cd ~/android
+- wget -q "https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
+- unzip -q sdk-tools-linux-*.zip
+- rm sdk-tools-linux-*.zip
+- export ANDROID_HOME="~/android"
+- mkdir -p -v ~/.android
+- echo "count=0" > ~/.android/repositories.cfg
+- yes | ~/android/tools/bin/sdkmanager --licenses
+- yes | ~/android/tools/bin/sdkmanager "tools"
+- yes | ~/android/tools/bin/sdkmanager "platform-tools"
+- yes | ~/android/tools/bin/sdkmanager "build-tools;28.0.3"
+- godot -e -q
+- echo 'export/android/adb = "/root/android/platform-tools/adb"' >> ~/.config/godot/editor_settings-3.tres
+- echo 'export/android/jarsigner = "/usr/lib/jvm/java-8-openjdk-amd64/bin/jarsigner"' >> ~/.config/godot/editor_settings-3.tres
+- echo 'export/android/force_system_user = false' >> ~/.config/godot/editor_settings-3.tres
+- echo 'export/android/timestamping_authority_url = ""' >> ~/.config/godot/editor_settings-3.tres
+- echo 'export/android/shutdown_adb_on_exit = true' >> ~/.config/godot/editor_settings-3.tres
 
 script:
+- mkdir -p "build/android"
 - mkdir -p "build/windows"
 - mkdir -p "build/linux"
 - mkdir -p "build/mac"
 - mkdir -p "build/html5"
 - cd src
 # Desktop
+- godot --export "Android" "../build/android/${GAME_NAME}-android.apk"
 - godot --export "Windows" "../build/windows/${GAME_NAME}.exe"
 - godot --export "Linux" "../build/linux/${GAME_NAME}"
 - godot --export "Mac" "../build/mac/${GAME_NAME}-mac.zip"
@@ -33,6 +61,8 @@ script:
 - cd ..
 
 before_deploy:
+- cp -R build/android/* .
+- md5sum "${GAME_NAME}-android.apk" > "${GAME_NAME}-android-md5.txt"
 # Only copying needed, exporting for Mac outputs a zip
 - cp -R build/mac/* .
 - md5sum "${GAME_NAME}-mac.zip" > "${GAME_NAME}-mac-md5.txt"
@@ -48,6 +78,8 @@ deploy:
   skip_cleanup: true
   token: $GITHUB_TOKEN
   file:
+    - "${GAME_NAME}-android.apk"
+    - "${GAME_NAME}-android-md5.txt"
     - "${GAME_NAME}-mac.zip"
     - "${GAME_NAME}-mac-md5.txt"
     - "${GAME_NAME}-linux.zip"
