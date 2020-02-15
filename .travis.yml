@@ -25,7 +25,7 @@ install:
 - sudo mv Godot_v${GODOT_VERSION}-stable_linux_headless.64 /usr/local/bin/godot
 - mv templates/* ~/.local/share/godot/templates/${GODOT_VERSION}.stable
 - godot -e -q
-- mkdir -p /home/android
+- sudo mkdir -p /home/android
 - cd /home/android
 - echo "Installing Android dependencies"
 - wget -q "https://dl.google.com/android/repository/platform-tools-latest-linux.zip"
