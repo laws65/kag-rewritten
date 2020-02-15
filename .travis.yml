@@ -28,9 +28,9 @@ install:
 - sudo mkdir -p /home/android
 - cd /home/android
 - echo "Installing Android dependencies"
-- wget -q "https://dl.google.com/android/repository/platform-tools-latest-linux.zip"
-- unzip -q platform-tools-latest-linux.zip
-- rm platform-tools-latest-linux.zip
+- sudo wget -q "https://dl.google.com/android/repository/platform-tools-latest-linux.zip"
+- sudo unzip -q platform-tools-latest-linux.zip
+- sudo rm platform-tools-latest-linux.zip
 - echo 'export/android/adb = "/home/android/platform-tools/adb"' >> ~/.config/godot/editor_settings-3.tres
 - echo 'export/android/jarsigner = "/usr/lib/jvm/java-8-openjdk-amd64/bin/jarsigner"' >> ~/.config/godot/editor_settings-3.tres
 - echo 'export/android/force_system_user = false' >> ~/.config/godot/editor_settings-3.tres
@@ -47,12 +47,12 @@ script:
 - mkdir -p "build/html5"
 - cd src
 # Desktop
-- godot --export "Android" "../build/android/${GAME_NAME}-android.apk"
-- godot --export "Windows" "../build/windows/${GAME_NAME}.exe"
-- godot --export "Linux" "../build/linux/${GAME_NAME}"
-- godot --export "Mac" "../build/mac/${GAME_NAME}-mac.zip"
+- sudo godot --export "Android" "../build/android/${GAME_NAME}-android.apk"
+- sudo godot --export "Windows" "../build/windows/${GAME_NAME}.exe"
+- sudo godot --export "Linux" "../build/linux/${GAME_NAME}"
+- sudo godot --export "Mac" "../build/mac/${GAME_NAME}-mac.zip"
 # Web
-- godot --export "Web" "../build/html5/index.html"
+- sudo godot --export "Web" "../build/html5/index.html"
 - cd ..
 
 before_deploy:
