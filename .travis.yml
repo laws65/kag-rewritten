@@ -26,19 +26,17 @@ install:
 - mv templates/* ~/.local/share/godot/templates/${GODOT_VERSION}.stable
 - godot -e -q
 - echo "Installing Android dependencies"
-- mkdir -p -v ~/android
-- cd ~/android
 - wget -q "https://dl.google.com/android/repository/platform-tools-latest-linux.zip"
 - unzip -q platform-tools-latest-linux.zip
 - rm platform-tools-latest-linux.zip
-- echo 'export/android/adb = "~/android/platform-tools/adb"' >> ~/.config/godot/editor_settings-3.tres
+- echo 'export/android/adb = "${TRAVIS_BUILD_DIR}/platform-tools/adb"' >> ~/.config/godot/editor_settings-3.tres
 - echo 'export/android/jarsigner = "/usr/lib/jvm/java-8-openjdk-amd64/bin/jarsigner"' >> ~/.config/godot/editor_settings-3.tres
 - echo 'export/android/force_system_user = false' >> ~/.config/godot/editor_settings-3.tres
 - echo 'export/android/timestamping_authority_url = ""' >> ~/.config/godot/editor_settings-3.tres
 - echo 'export/android/shutdown_adb_on_exit = true' >> ~/.config/godot/editor_settings-3.tres
+- cat ~/.config/godot/editor_settings-3.tres
 
 script:
-- cd ${TRAVIS_BUILD_DIR}
 - mkdir -p "build/android"
 - mkdir -p "build/windows"
 - mkdir -p "build/linux"
