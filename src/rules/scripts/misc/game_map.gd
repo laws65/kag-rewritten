@@ -116,23 +116,24 @@ func _generate_shadows():
 	var shadow_texture = ImageTexture.new()
 	var shadow_image = Image.new()
 
-	shadow_image.create(map_width, map_height, true, Image.FORMAT_RGBAF)
-	shadow_image.fill(Color(0, 0, 0, 1))
+	shadow_image.create(map_width, map_height, false, Image.FORMAT_RGBAF)
+	shadow_image.fill(Color(0, 0, 0, 0))
 
 	shadow_image.lock()
 	for x in range(map_width):
 		for y in range(map_height):
-			if shadow_array[x + y * map_width] == false:
-				shadow_image.set_pixel(x, y, Color(0, 0, 0, 0))
-	shadow_image.lock()
+			if shadow_array[x + y * map_width]:
+				shadow_image.set_pixel(x, y, Color(0, 0, 0, 1))
+	shadow_image.unlock()
 
-	shadow_texture.create_from_image(shadow_image)
+	shadow_image.resize(map_width * tile_size.x, map_height * tile_size.y, Image.INTERPOLATE_CUBIC)
+	shadow_texture.create_from_image(shadow_image, 0)
 	shadow.set_texture(shadow_texture)
-	shadow.set_scale(Vector2(tile_size.x, tile_size.y))
 
 	var material = shadow.get_material()
-	material.set_shader_param("Step", Vector2(0.5/map_width, 0.5/map_height))
-	material.set_shader_param("Step2", Vector2(0.5/map_width, -0.5/map_height))
+	material.set_shader_param("Step", Vector2(0.5 / map_width, 0.5 / map_height))
+	material.set_shader_param("Step2", Vector2(0.5 / map_width, -0.5 / map_height))
+
 
 func _optimize_tilemap():
 	var top
