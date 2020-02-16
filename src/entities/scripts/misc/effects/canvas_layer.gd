@@ -1,4 +1,4 @@
-extends Label
+extends CanvasItem
 
 export (int) var z_index = 0
 
