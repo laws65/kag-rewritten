@@ -17,6 +17,9 @@ func _ready():
 	network.connect("login_success", self, "_on_login_success")
 	network.connect("login_failure", self, "_on_login_failure")
 
+	if "--host=true" in OS.get_cmdline_args():
+		network._create_server("", 3074)
+
 	if config.load(CONFIG_FILE) == OK:
 		login_remember.pressed = config.get_value("Login", "Remember", false)
 

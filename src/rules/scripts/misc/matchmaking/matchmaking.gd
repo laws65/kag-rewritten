@@ -21,9 +21,6 @@ func _ready():
 	network.connect("connection_established", self, "_on_connection_established")
 	network.connect("connection_closed", self, "_on_connection_closed")
 
-	if "--host=true" in OS.get_cmdline_args():
-		network._create_server("", 3074)
-
 func _on_btCreate_pressed():
 	var name = hostServerName.text
 	var port = int(joinServerPort.text)

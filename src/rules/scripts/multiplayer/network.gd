@@ -17,10 +17,9 @@ var player = {
 
 var players = {}
 
-
 ### Nakama API
 var api_key = "kag-rewritten"
-var api_host = "127.0.0.1"
+var api_host = "35.227.127.127"
 var api_port = 7350
 
 var api: NakamaClient
