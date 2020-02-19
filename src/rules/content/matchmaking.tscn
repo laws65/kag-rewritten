@@ -1,97 +1,80 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://rules/scripts/multiplayer/matchmaking.gd" type="Script" id=1]
-[ext_resource path="res://rules/resources/themes/theme.tres" type="Theme" id=2]
+[ext_resource path="res://rules/scripts/misc/matchmaking/matchmaking.gd" type="Script" id=1]
+[ext_resource path="res://rules/scripts/misc/matchmaking/server_list.gd" type="Script" id=2]
+[ext_resource path="res://entities/resources/misc/player_icon.png" type="Texture" id=3]
+[ext_resource path="res://rules/resources/themes/menu.tres" type="Theme" id=4]
+[ext_resource path="res://rules/scripts/misc/matchmaking/server_item.gd" type="Script" id=5]
+[ext_resource path="res://rules/resources/themes/gui/refresh.png" type="Texture" id=6]
+
+[sub_resource type="StyleBoxTexture" id=1]
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 50, 50 )
 
 [node name="Matchmaking" type="CanvasLayer"]
 script = ExtResource( 1 )
 
-[node name="Layout" type="VBoxContainer" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 11.6652
-margin_top = -99.0547
-margin_right = 261.665
-margin_bottom = 325.945
-alignment = 1
+[node name="Server_Item" type="Button" parent="."]
+visible = false
+margin_left = 290.95
+margin_top = 80.0
+margin_right = 670.95
+margin_bottom = 105.0
+rect_min_size = Vector2( 0, 25 )
+text = "KAG Server"
+align = 0
+script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PanelPlayer" type="Panel" parent="."]
+[node name="Server_List" type="PanelContainer" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -112.0
-margin_top = -172.0
-margin_right = 38.0
-margin_bottom = -112.0
-rect_scale = Vector2( 1.5, 1.5 )
-theme = ExtResource( 2 )
+margin_left = -199.05
+margin_top = -200.0
+margin_right = 200.95
+margin_bottom = 200.0
+theme = ExtResource( 4 )
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+server_item = NodePath("../Server_Item")
 
-[node name="Content" type="VBoxContainer" parent="PanelPlayer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 5.0
-margin_right = -5.0
-margin_bottom = -5.0
+[node name="Layout" type="ScrollContainer" parent="Server_List"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 390.0
+margin_bottom = 390.0
+
+[node name="Content" type="VBoxContainer" parent="Server_List/Layout"]
+margin_right = 380.0
+margin_bottom = 380.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="Label" type="Label" parent="PanelPlayer/Content"]
-margin_top = 1.0
-margin_right = 140.0
-margin_bottom = 22.0
-rect_min_size = Vector2( 0, 21 )
-text = "Player name"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="txtPlayerName" type="LineEdit" parent="PanelPlayer/Content"]
-margin_top = 26.0
-margin_right = 140.0
-margin_bottom = 49.0
-size_flags_horizontal = 3
-max_length = 50
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PanelHost" type="Panel" parent="."]
+[node name="PanelHost" type="PanelContainer" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -112.0
-margin_top = -67.5
-margin_right = 38.0001
-margin_bottom = 72.5
-rect_scale = Vector2( 1.5, 1.5 )
-rect_pivot_offset = Vector2( 250, 0 )
-theme = ExtResource( 2 )
+margin_left = 204.369
+margin_top = -200.0
+margin_right = 354.37
+margin_bottom = -60.0
+theme = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Content" type="VBoxContainer" parent="PanelHost"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 5.0
-margin_right = -5.0
-margin_bottom = -5.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 140.001
+margin_bottom = 130.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
@@ -100,9 +83,9 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="PanelHost/Content"]
-margin_top = 1.0
-margin_right = 140.0
-margin_bottom = 22.0
+margin_top = 4.0
+margin_right = 130.0
+margin_bottom = 17.0
 text = "Server name"
 valign = 1
 __meta__ = {
@@ -110,18 +93,18 @@ __meta__ = {
 }
 
 [node name="txtServerName" type="LineEdit" parent="PanelHost/Content"]
-margin_top = 26.0
-margin_right = 140.0
-margin_bottom = 49.0
+margin_top = 21.0
+margin_right = 130.0
+margin_bottom = 44.0
 max_length = 50
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label3" type="Label" parent="PanelHost/Content"]
-margin_top = 53.0
-margin_right = 140.0
-margin_bottom = 74.0
+margin_top = 48.0
+margin_right = 130.0
+margin_bottom = 61.0
 text = "Port"
 valign = 1
 __meta__ = {
@@ -129,9 +112,9 @@ __meta__ = {
 }
 
 [node name="txtServerPort" type="LineEdit" parent="PanelHost/Content"]
-margin_top = 78.0
-margin_right = 140.0
-margin_bottom = 101.0
+margin_top = 65.0
+margin_right = 130.0
+margin_bottom = 88.0
 text = "3074"
 max_length = 50
 __meta__ = {
@@ -139,34 +122,30 @@ __meta__ = {
 }
 
 [node name="btCreate" type="Button" parent="PanelHost/Content"]
-margin_top = 105.0
-margin_right = 140.0
-margin_bottom = 128.0
+margin_top = 92.0
+margin_right = 130.0
+margin_bottom = 115.0
 text = "Host"
 
-[node name="PanelJoin" type="Panel" parent="."]
+[node name="PanelJoin" type="PanelContainer" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -112.0
-margin_top = -67.5
-margin_right = 38.0001
-margin_bottom = 72.5
-rect_scale = Vector2( 1.5, 1.5 )
-rect_pivot_offset = Vector2( -250, 0 )
-theme = ExtResource( 2 )
+margin_left = 204.369
+margin_top = -54.0
+margin_right = 354.369
+margin_bottom = 86.0003
+theme = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Content" type="VBoxContainer" parent="PanelJoin"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 5.0
-margin_right = -5.0
-margin_bottom = -5.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 140.0
+margin_bottom = 130.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
@@ -175,37 +154,83 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="PanelJoin/Content"]
-margin_top = 1.0
-margin_right = 140.0
-margin_bottom = 22.0
+margin_top = 4.0
+margin_right = 130.0
+margin_bottom = 17.0
 text = "Server IP"
 valign = 1
 
 [node name="txtJoinIP" type="LineEdit" parent="PanelJoin/Content"]
-margin_top = 26.0
-margin_right = 140.0
-margin_bottom = 49.0
+margin_top = 21.0
+margin_right = 130.0
+margin_bottom = 44.0
 text = "127.0.0.1"
 max_length = 50
 
 [node name="Label3" type="Label" parent="PanelJoin/Content"]
-margin_top = 53.0
-margin_right = 140.0
-margin_bottom = 74.0
+margin_top = 48.0
+margin_right = 130.0
+margin_bottom = 61.0
 text = "Port"
 valign = 1
 
 [node name="txtJoinPort" type="LineEdit" parent="PanelJoin/Content"]
-margin_top = 78.0
-margin_right = 140.0
-margin_bottom = 101.0
+margin_top = 65.0
+margin_right = 130.0
+margin_bottom = 88.0
 text = "3074"
 max_length = 50
 
 [node name="btJoin" type="Button" parent="PanelJoin/Content"]
-margin_top = 105.0
-margin_right = 140.0
-margin_bottom = 128.0
+margin_top = 92.0
+margin_right = 130.0
+margin_bottom = 115.0
 text = "Join"
+
+[node name="Info" type="HBoxContainer" parent="."]
+margin_right = 256.0
+margin_bottom = 30.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Icon" type="Panel" parent="Info"]
+margin_right = 30.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 30, 30 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="Layout" type="VBoxContainer" parent="Info"]
+margin_left = 34.0
+margin_right = 256.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Username" type="Label" parent="Info/Layout"]
+margin_right = 222.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Player name"
+valign = 1
+
+[node name="Refresh" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 147.353
+margin_top = 146.0
+margin_right = 189.353
+margin_bottom = 188.0
+theme = ExtResource( 4 )
+icon = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="PanelHost/Content/btCreate" to="." method="_on_btCreate_pressed"]
 [connection signal="pressed" from="PanelJoin/Content/btJoin" to="." method="_on_btJoin_pressed"]

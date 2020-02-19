@@ -19,6 +19,76 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://rules/scripts/mode/common/game_mode.gd"
 }, {
+"base": "Reference",
+"class": "NakamaAPI",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/api/NakamaAPI.gd"
+}, {
+"base": "Reference",
+"class": "NakamaAsyncResult",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/utils/NakamaAsyncResult.gd"
+}, {
+"base": "Reference",
+"class": "NakamaClient",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/client/NakamaClient.gd"
+}, {
+"base": "Reference",
+"class": "NakamaException",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/utils/NakamaException.gd"
+}, {
+"base": "Node",
+"class": "NakamaHTTPAdapter",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/client/NakamaHTTPAdapter.gd"
+}, {
+"base": "Reference",
+"class": "NakamaLogger",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/utils/NakamaLogger.gd"
+}, {
+"base": "NakamaAsyncResult",
+"class": "NakamaRTAPI",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/api/NakamaRTAPI.gd"
+}, {
+"base": "Reference",
+"class": "NakamaRTMessage",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/api/NakamaRTMessage.gd"
+}, {
+"base": "Reference",
+"class": "NakamaSerializer",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/utils/NakamaSerializer.gd"
+}, {
+"base": "NakamaAsyncResult",
+"class": "NakamaSession",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/api/NakamaSession.gd"
+}, {
+"base": "Reference",
+"class": "NakamaSocket",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/socket/NakamaSocket.gd"
+}, {
+"base": "Node",
+"class": "NakamaSocketAdapter",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/socket/NakamaSocketAdapter.gd"
+}, {
+"base": "Reference",
+"class": "NakamaStorageObjectId",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/api/NakamaStorageObjectId.gd"
+}, {
+"base": "Reference",
+"class": "NakamaWriteStorageObject",
+"language": "GDScript",
+"path": "res://addons/com.heroiclabs.nakama/api/NakamaWriteStorageObject.gd"
+}, {
 "base": "Node2D",
 "class": "NetworkClient",
 "language": "GDScript",
@@ -47,6 +117,20 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Character": "",
 "GameMode": "",
+"NakamaAPI": "",
+"NakamaAsyncResult": "",
+"NakamaClient": "",
+"NakamaException": "",
+"NakamaHTTPAdapter": "",
+"NakamaLogger": "",
+"NakamaRTAPI": "",
+"NakamaRTMessage": "",
+"NakamaSerializer": "",
+"NakamaSession": "",
+"NakamaSocket": "",
+"NakamaSocketAdapter": "",
+"NakamaStorageObjectId": "",
+"NakamaWriteStorageObject": "",
 "NetworkClient": "",
 "NetworkServer": "",
 "TileBehavior": "",
@@ -57,7 +141,7 @@ _global_script_class_icons={
 [application]
 
 config/name="KAG Rewritten"
-run/main_scene="res://rules/content/matchmaking.tscn"
+run/main_scene="res://rules/content/authentication.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="KAG Rewritten"
 boot_splash/image="res://entities/resources/misc/icon.png"
@@ -71,11 +155,11 @@ default_bus_layout=""
 
 [autoload]
 
-game_map="*res://rules/content/misc/game_map.tscn"
+Nakama="*res://addons/com.heroiclabs.nakama/Nakama.gd"
+network="*res://rules/content/misc/network.tscn"
 game_camera="*res://rules/content/misc/game_camera.tscn"
 game_chat="*res://rules/content/misc/game_chat.tscn"
-game_fps="*res://rules/content/misc/game_fps.tscn"
-network="*res://rules/content/misc/network.tscn"
+game_map="*res://rules/content/misc/game_map.tscn"
 
 [debug]
 
@@ -85,6 +169,8 @@ gdscript/warnings/return_value_discarded=false
 
 [display]
 
+window/size/width=960
+window/size/height=540
 window/dpi/allow_hidpi=true
 window/vsync/use_vsync=false
 mouse_cursor/custom_image="res://entities/resources/misc/cursor.png"
@@ -104,7 +190,7 @@ texture={
 "compress/mode": 0,
 "compress/normal_map": 0,
 "detect_3d": false,
-"flags/anisotropic": false,
+"flags/anisotropic": true,
 "flags/filter": false,
 "flags/mipmaps": false,
 "flags/repeat": 0,
@@ -122,11 +208,13 @@ texture={
 
 ui_focus_next={
 "deadzone": 0.5,
-"events": [  ]
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777218,"unicode":0,"echo":false,"script":null)
+ ]
 }
 ui_focus_prev={
 "deadzone": 0.5,
-"events": [  ]
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":true,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777218,"unicode":0,"echo":false,"script":null)
+ ]
 }
 move_left={
 "deadzone": 0.5,
@@ -221,4 +309,4 @@ quality/intended_usage/framebuffer_allocation.mobile=0
 quality/2d/use_pixel_snap=true
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
-quality/dynamic_fonts/use_oversampling=false
+quality/depth/hdr=false

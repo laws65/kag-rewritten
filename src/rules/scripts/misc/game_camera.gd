@@ -2,6 +2,9 @@ extends Camera2D
 
 var target
 
+func _ready():
+	OS.min_window_size = OS.window_size
+
 func _process(_delta):
 	if is_instance_valid(target):
 		global_position = target.global_position
