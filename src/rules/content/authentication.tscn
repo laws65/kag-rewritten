@@ -1,0 +1,202 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://rules/resources/themes/fonts/m5x7.tres" type="DynamicFont" id=1]
+[ext_resource path="res://rules/scripts/misc/authentication/authentication.gd" type="Script" id=2]
+[ext_resource path="res://rules/resources/themes/menu.tres" type="Theme" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[node name="Authentication" type="CanvasLayer"]
+script = ExtResource( 2 )
+
+[node name="Register" type="PanelContainer" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = -116.5
+margin_right = 100.0
+margin_bottom = 116.5
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Layout" type="VBoxContainer" parent="Register"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 190.0
+margin_bottom = 223.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_Username" type="Label" parent="Register/Layout"]
+margin_right = 180.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+text = "Username"
+valign = 1
+
+[node name="Username" type="LineEdit" parent="Register/Layout"]
+margin_top = 24.0
+margin_right = 180.0
+margin_bottom = 49.0
+rect_min_size = Vector2( 125, 25 )
+custom_fonts/font = ExtResource( 1 )
+max_length = 50
+
+[node name="Label_Email" type="Label" parent="Register/Layout"]
+margin_top = 53.0
+margin_right = 180.0
+margin_bottom = 73.0
+rect_min_size = Vector2( 0, 20 )
+text = "E-mail"
+valign = 1
+
+[node name="Email" type="LineEdit" parent="Register/Layout"]
+margin_top = 77.0
+margin_right = 180.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 125, 25 )
+custom_fonts/font = ExtResource( 1 )
+max_length = 50
+
+[node name="Label_Password" type="Label" parent="Register/Layout"]
+margin_top = 106.0
+margin_right = 180.0
+margin_bottom = 126.0
+rect_min_size = Vector2( 0, 20 )
+text = "Password"
+valign = 1
+
+[node name="Password" type="LineEdit" parent="Register/Layout"]
+margin_top = 130.0
+margin_right = 180.0
+margin_bottom = 155.0
+rect_min_size = Vector2( 125, 25 )
+custom_fonts/font = ExtResource( 1 )
+max_length = 50
+secret = true
+
+[node name="Confirm" type="Button" parent="Register/Layout"]
+margin_top = 159.0
+margin_right = 180.0
+margin_bottom = 184.0
+rect_min_size = Vector2( 0, 25 )
+text = "Register"
+
+[node name="GoToLogin" type="Button" parent="Register/Layout"]
+margin_top = 188.0
+margin_right = 180.0
+margin_bottom = 213.0
+rect_min_size = Vector2( 0, 25 )
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
+shortcut_in_tooltip = false
+text = "I already have an account ->"
+flat = true
+
+[node name="Login" type="PanelContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = -104.5
+margin_right = 100.0
+margin_bottom = 104.5
+size_flags_horizontal = 2
+size_flags_vertical = 2
+theme = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Layout" type="VBoxContainer" parent="Login"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 190.0
+margin_bottom = 199.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_Email" type="Label" parent="Login/Layout"]
+margin_right = 180.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+text = "E-mail"
+valign = 1
+
+[node name="Email" type="LineEdit" parent="Login/Layout"]
+margin_top = 24.0
+margin_right = 180.0
+margin_bottom = 49.0
+rect_min_size = Vector2( 125, 25 )
+custom_fonts/font = ExtResource( 1 )
+max_length = 50
+
+[node name="Label_Password" type="Label" parent="Login/Layout"]
+margin_top = 53.0
+margin_right = 180.0
+margin_bottom = 73.0
+rect_min_size = Vector2( 0, 20 )
+text = "Password"
+valign = 1
+
+[node name="Password" type="LineEdit" parent="Login/Layout"]
+margin_top = 77.0
+margin_right = 180.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 125, 25 )
+custom_fonts/font = ExtResource( 1 )
+max_length = 50
+secret = true
+
+[node name="Remember" type="CheckButton" parent="Login/Layout"]
+margin_top = 106.0
+margin_right = 180.0
+margin_bottom = 131.0
+rect_min_size = Vector2( 0, 25 )
+text = "Remember me"
+
+[node name="Confirm" type="Button" parent="Login/Layout"]
+margin_top = 135.0
+margin_right = 180.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 0, 25 )
+text = "Login"
+
+[node name="GoToRegister" type="Button" parent="Login/Layout"]
+margin_top = 164.0
+margin_right = 180.0
+margin_bottom = 189.0
+rect_min_size = Vector2( 0, 25 )
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
+shortcut_in_tooltip = false
+text = "I don't have an account ->"
+flat = true

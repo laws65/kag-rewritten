@@ -1,8 +1,8 @@
 extends CanvasLayer
 
-### PanelPlayer
-onready var playerName = $PanelPlayer/Content/txtPlayerName
-### ---
+### Info
+onready var username = $Info/Layout/Username
+###
 
 ### PanelHost
 onready var hostServerName = $PanelHost/Content/txtServerName
@@ -15,32 +15,23 @@ onready var joinServerPort = $PanelJoin/Content/txtJoinPort
 ### ---
 
 func _ready():
+	username.text = network.player.name
+
+	$Refresh.connect("pressed", $Server_List, "_refresh")
 	network.connect("connection_established", self, "_on_connection_established")
 	network.connect("connection_closed", self, "_on_connection_closed")
 
-	if "--host=true" in OS.get_cmdline_args():
-		set_player_info()
-		network.create_server("KAG Server", 3074)
-
-func set_player_info():
-	if (!playerName.text.empty()):
-		network.player.name = playerName.text
-
 func _on_btCreate_pressed():
-	set_player_info()
-
 	var name = hostServerName.text
 	var port = int(joinServerPort.text)
 
-	network.create_server(name, port)
+	network._create_server(name, port)
 
 func _on_btJoin_pressed():
-	set_player_info()
-
 	var ip = joinServerIP.text
 	var port = int(joinServerPort.text)
 
-	network.join_server(ip, port)
+	network._join_server(ip, port)
 
 ### --- Events
 

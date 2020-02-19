@@ -1,5 +1,8 @@
 extends Node2D
 
+signal login_success()
+signal login_failure()
+
 signal connection_established()
 signal connection_closed()
 
@@ -14,7 +17,19 @@ var player = {
 
 var players = {}
 
+### Nakama API
+var api_key = "kag-rewritten"
+var api_host = "35.227.127.127"
+var api_port = 7350
+
+var api: NakamaClient
+var api_socket: NakamaSocket
+var api_session: NakamaSession
+### ---
+
 func _ready():
+	api = Nakama.create_client(api_key, api_host, api_port, "http")
+
 	get_tree().connect("network_peer_connected", self, "_on_player_connected")
 	get_tree().connect("network_peer_disconnected", self, "_on_player_disconnected")
 
@@ -25,11 +40,47 @@ func _ready():
 	$Server.connect("create_success", self, "_on_connection_established")
 	$Server.connect("create_fail", self, "_on_connection_closed")
 
-func create_server(name: String, port: int):
-	$Server._create_server(name, port)
+func _login(email, password):
+	api_session = yield(api.authenticate_email_async(email, password, null, false), "completed")
 
-func join_server(ip: String, port: int):
-	$Client._join_server(ip, port)
+	if !api_session.is_exception():
+		api_socket = Nakama.create_socket_from(api)
+		yield(api_socket.connect_async(api_session), "completed")
+
+		player.name = api_session.username
+		emit_signal("login_success")
+	else:
+		emit_signal("login_failure")
+
+func _register(username, email, password):
+	api_session = yield(api.authenticate_email_async(email, password, username, true), "completed")
+
+	if !api_session.is_exception():
+		api_socket = Nakama.create_socket_from(api)
+		yield(api_socket.connect_async(api_session), "completed")
+
+		player.name = api_session.username
+		emit_signal("login_success")
+	else:
+		emit_signal("login_failure")
+
+func _login_with_token(token):
+	api_session = NakamaClient.restore_session(token)
+
+	if api_session.is_valid() && !api_session.is_expired():
+		api_socket = Nakama.create_socket_from(api)
+		yield(api_socket.connect_async(api_session), "completed")
+
+		player.name = api_session.username
+		emit_signal("login_success")
+	else:
+		emit_signal("login_failure")
+
+func _create_server(server_name: String, server_port: int):
+	$Server._create_server(server_name, server_port)
+
+func _join_server(server_ip: String, server_port: int):
+	$Client._join_server(server_ip, server_port)
 
 ### Helper functions
 

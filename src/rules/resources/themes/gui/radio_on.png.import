@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon.png-8d5278c3de7de2ead35992c3120ddf4f.stex"
+path="res://.import/radio_on.png-923b0866ee023479838aa27ee9c7f285.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://entities/resources/misc/icon.png"
-dest_files=[ "res://.import/icon.png-8d5278c3de7de2ead35992c3120ddf4f.stex" ]
+source_file="res://rules/resources/themes/gui/radio_on.png"
+dest_files=[ "res://.import/radio_on.png-923b0866ee023479838aa27ee9c7f285.stex" ]
 
 [params]
 

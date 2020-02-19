@@ -2,8 +2,6 @@
 
 [ext_resource path="res://rules/scripts/misc/game_camera.gd" type="Script" id=1]
 
-
-
 [node name="GameCamera" type="Camera2D"]
 offset = Vector2( 0, -8 )
 current = true

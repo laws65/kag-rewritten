@@ -127,7 +127,7 @@ func _generate_shadows():
 	shadow_image.unlock()
 
 	shadow_image.resize(map_width * tile_size.x, map_height * tile_size.y, Image.INTERPOLATE_CUBIC)
-	shadow_texture.create_from_image(shadow_image, 0)
+	shadow_texture.create_from_image(shadow_image, 4)
 	shadow.set_texture(shadow_texture)
 
 	var material = shadow.get_material()
