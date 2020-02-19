@@ -25,7 +25,7 @@ var id : int = 0
 ### <returns>A task which resolves to the contents of the response.</returns>
 func send_async(p_method : String, p_uri : String, p_headers : Dictionary, p_body : PoolByteArray, p_timeout : int = 3):
 	var req = HTTPRequest.new()
-	req.use_threads = true
+	req.use_threads = false
 
 	# Parse method
 	var method = HTTPClient.METHOD_GET
