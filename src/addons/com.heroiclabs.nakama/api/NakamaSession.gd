@@ -16,7 +16,7 @@ func _no_set(v):
 	return
 
 func is_expired() -> bool:
-	return OS.get_unix_time() - expire_time > 0
+	return expire_time < OS.get_unix_time()
 
 func is_valid():
 	return valid

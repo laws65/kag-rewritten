@@ -28,6 +28,7 @@ func _ready():
 
 			var token = config.get_value("Login", "Token", "")
 
+			# Disabled until we stabilize the changes of servers
 			#if token:
 			#	network._login_with_token(token)
 

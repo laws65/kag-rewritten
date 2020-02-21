@@ -19,7 +19,8 @@ var players = {}
 
 ### Nakama API
 var api_key = "kag-rewritten"
-var api_host = "35.211.204.98"
+var api_host = "vamist.dev"
+var api_scheme = "http"
 var api_port = 7350
 
 var api: NakamaClient
@@ -39,7 +40,7 @@ func _ready():
 	$Server.connect("create_fail", self, "_on_connection_closed")
 
 func _login(email, password):
-	api = Nakama.create_client(api_key, api_host, api_port, "http")
+	api = Nakama.create_client(api_key, api_host, api_port, api_scheme)
 	api_session = yield(api.authenticate_email_async(email, password, null, false), "completed")
 
 	if !api_session.is_exception():
@@ -52,7 +53,7 @@ func _login(email, password):
 		emit_signal("login_failure")
 
 func _register(username, email, password):
-	api = Nakama.create_client(api_key, api_host, api_port, "https")
+	api = Nakama.create_client(api_key, api_host, api_port, api_scheme)
 	api_session = yield(api.authenticate_email_async(email, password, username, true), "completed")
 
 	if !api_session.is_exception():
@@ -65,7 +66,7 @@ func _register(username, email, password):
 		emit_signal("login_failure")
 
 func _login_with_token(token):
-	api = Nakama.create_client(api_key, api_host, api_port, "https")
+	api = Nakama.create_client(api_key, api_host, api_port, api_scheme)
 	api_session = NakamaClient.restore_session(token)
 
 	if api_session.is_valid() && !api_session.is_expired():
