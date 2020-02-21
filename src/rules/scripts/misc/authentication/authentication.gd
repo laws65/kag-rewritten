@@ -28,8 +28,8 @@ func _ready():
 
 			var token = config.get_value("Login", "Token", "")
 
-			if token:
-				network._login_with_token(token)
+			#if token:
+			#	network._login_with_token(token)
 
 	$Register/Layout/GoToLogin.connect("pressed", self, "_show_login")
 	$Login/Layout/GoToRegister.connect("pressed", self, "_show_register")
