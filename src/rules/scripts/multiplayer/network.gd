@@ -20,7 +20,7 @@ var players = {}
 ### Nakama API
 var api_key = "kag-rewritten"
 var api_host = "vamist.dev"
-var api_scheme = "http"
+var api_scheme = "https"
 var api_port = 7350
 
 var api: NakamaClient

@@ -303,7 +303,7 @@ emote_9={
 
 [network]
 
-ssl/certificates="res://deploy/backend/ca-certificate.crt"
+ssl/certificates="res://deploy/backend/ca-certificates.crt"
 
 [rendering]
 
