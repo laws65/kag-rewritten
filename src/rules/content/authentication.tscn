@@ -134,7 +134,7 @@ __meta__ = {
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 190.0
-margin_bottom = 199.0
+margin_bottom = 228.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -187,10 +187,17 @@ margin_bottom = 160.0
 rect_min_size = Vector2( 0, 25 )
 text = "Login"
 
-[node name="GoToRegister" type="Button" parent="Login/Layout"]
+[node name="PlayAsGuest" type="Button" parent="Login/Layout"]
 margin_top = 164.0
 margin_right = 180.0
 margin_bottom = 189.0
+rect_min_size = Vector2( 0, 25 )
+text = "Play as Guest"
+
+[node name="GoToRegister" type="Button" parent="Login/Layout"]
+margin_top = 193.0
+margin_right = 180.0
+margin_bottom = 218.0
 rect_min_size = Vector2( 0, 25 )
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 2 )

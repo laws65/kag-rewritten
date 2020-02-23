@@ -38,11 +38,16 @@ func _ready():
 	$Login/Layout/Confirm.connect("pressed", self, "_login")
 	$Register/Layout/Confirm.connect("pressed", self, "_register")
 
+	$Login/Layout/PlayAsGuest.connect("pressed", self, "_guest")
+
 func _login():
 	network._login(login_email.text, login_password.text)
 
 func _register():
 	network._register(register_username.text, register_email.text, register_password.text)
+
+func _guest():
+	network._login_as_guest()
 
 func _on_login_success():
 	get_tree().change_scene("res://rules/content/matchmaking.tscn")

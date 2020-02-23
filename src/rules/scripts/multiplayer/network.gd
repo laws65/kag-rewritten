@@ -78,6 +78,36 @@ func _login_with_token(token):
 	else:
 		emit_signal("login_failure")
 
+var guest_cfg = ConfigFile.new()
+func _login_as_guest():
+	var unique_id
+
+	guest_cfg.load("user://login.cfg")
+
+	if guest_cfg.has_section_key("Login", "UniqueID"):
+		unique_id = guest_cfg.get_value("Login", "UniqueID")
+	else:
+		var arr = PoolStringArray()
+		for _i in range(0, 16):
+			arr.append(str(randi()%10))
+		unique_id = arr.join("")
+
+		guest_cfg.set_value("Login", "UniqueID", unique_id)
+
+	guest_cfg.save("user://login.cfg")
+
+	api = Nakama.create_client(api_key, api_host, api_port, api_scheme)
+	api_session = yield(api.authenticate_device_async(unique_id), "completed")
+
+	if !api_session.is_exception():
+		api_socket = Nakama.create_socket_from(api)
+		yield(api_socket.connect_async(api_session), "completed")
+
+		player.name = "Guest_" + api_session.username
+		emit_signal("login_success")
+	else:
+		emit_signal("login_failure")
+
 func _create_server(server_name: String, server_port: int, is_private: bool = false):
 	$Server._create_server(server_name, server_port, is_private)
 

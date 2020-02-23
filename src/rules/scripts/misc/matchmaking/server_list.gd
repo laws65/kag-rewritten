@@ -17,7 +17,6 @@ func _refresh():
 		_update(json_object.result)
 
 func _update(servers):
-	print(servers)
 	for server in servers:
 		var item = get_node(server_item).duplicate()
 		item.server_name = server.server_name
