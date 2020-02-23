@@ -63,8 +63,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = 204.369
 margin_top = -200.0
-margin_right = 354.37
-margin_bottom = -60.0
+margin_right = 354.369
+margin_bottom = -49.0
 theme = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -73,8 +73,8 @@ __meta__ = {
 [node name="Content" type="VBoxContainer" parent="PanelHost"]
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 140.001
-margin_bottom = 130.0
+margin_right = 140.0
+margin_bottom = 141.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
@@ -83,9 +83,8 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="PanelHost/Content"]
-margin_top = 4.0
 margin_right = 130.0
-margin_bottom = 17.0
+margin_bottom = 13.0
 text = "Server name"
 valign = 1
 __meta__ = {
@@ -93,18 +92,18 @@ __meta__ = {
 }
 
 [node name="txtServerName" type="LineEdit" parent="PanelHost/Content"]
-margin_top = 21.0
+margin_top = 17.0
 margin_right = 130.0
-margin_bottom = 44.0
+margin_bottom = 40.0
 max_length = 50
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label3" type="Label" parent="PanelHost/Content"]
-margin_top = 48.0
+margin_top = 44.0
 margin_right = 130.0
-margin_bottom = 61.0
+margin_bottom = 57.0
 text = "Port"
 valign = 1
 __meta__ = {
@@ -112,19 +111,25 @@ __meta__ = {
 }
 
 [node name="txtServerPort" type="LineEdit" parent="PanelHost/Content"]
-margin_top = 65.0
+margin_top = 61.0
 margin_right = 130.0
-margin_bottom = 88.0
+margin_bottom = 84.0
 text = "3074"
 max_length = 50
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="btCreate" type="Button" parent="PanelHost/Content"]
-margin_top = 92.0
+[node name="btPrivate" type="CheckButton" parent="PanelHost/Content"]
+margin_top = 88.0
 margin_right = 130.0
-margin_bottom = 115.0
+margin_bottom = 104.0
+text = "Private server"
+
+[node name="btCreate" type="Button" parent="PanelHost/Content"]
+margin_top = 108.0
+margin_right = 130.0
+margin_bottom = 131.0
 text = "Host"
 
 [node name="PanelJoin" type="PanelContainer" parent="."]
@@ -133,9 +138,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = 204.369
-margin_top = -54.0
+margin_top = -46.0
 margin_right = 354.369
-margin_bottom = 86.0003
+margin_bottom = 94.0003
 theme = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false

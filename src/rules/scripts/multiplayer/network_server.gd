@@ -25,7 +25,7 @@ func _process(_delta):
 		if server.is_listening():
 			server.poll()
 
-func _create_server(name: String, port: int):
+func _create_server(name: String, port: int, is_private: bool = false):
 	if !name.empty():
 		server_info.server_name = name
 	server_info.server_port = port
@@ -46,12 +46,11 @@ func _create_server(name: String, port: int):
 			emit_signal("create_fail")
 			return
 
-		#yield(network.api_socket.create_match_async(), "completed")
-		var result = yield(network.api_socket.rpc_async("create_server", server_info), "completed")
-		if result.is_exception():
-			printerr(result.get_exception())
-		else:
-			pass
+		if !is_private:
+			var result = yield(network.api_socket.rpc_async("create_server", server_info), "completed")
+
+			if result.is_exception():
+				printerr(result.get_exception())
 
 	get_tree().set_network_peer(server)
 	emit_signal("create_success")

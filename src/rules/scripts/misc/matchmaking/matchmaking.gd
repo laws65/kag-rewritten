@@ -7,6 +7,7 @@ onready var username = $Info/Layout/Username
 ### PanelHost
 onready var hostServerName = $PanelHost/Content/txtServerName
 onready var hostServerPort = $PanelHost/Content/txtServerPort
+onready var hostServerPrivate = $PanelHost/Content/btPrivate
 ### ---
 
 ### PanelJoin
@@ -24,8 +25,9 @@ func _ready():
 func _on_btCreate_pressed():
 	var name = hostServerName.text
 	var port = int(joinServerPort.text)
+	var is_private = hostServerPrivate.pressed
 
-	network._create_server(name, port)
+	network._create_server(name, port, is_private)
 
 func _on_btJoin_pressed():
 	var ip = joinServerIP.text

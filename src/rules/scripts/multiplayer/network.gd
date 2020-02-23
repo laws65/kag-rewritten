@@ -78,8 +78,8 @@ func _login_with_token(token):
 	else:
 		emit_signal("login_failure")
 
-func _create_server(server_name: String, server_port: int):
-	$Server._create_server(server_name, server_port)
+func _create_server(server_name: String, server_port: int, is_private: bool = false):
+	$Server._create_server(server_name, server_port, is_private)
 
 func _join_server(server_ip: String, server_port: int):
 	$Client._join_server(server_ip, server_port)
