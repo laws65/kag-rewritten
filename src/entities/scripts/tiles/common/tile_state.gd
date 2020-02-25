@@ -21,9 +21,10 @@ func _init(t_tile):
 		tile = t_tile
 
 	if tile.tile_behavior is GDScript:
-		behavior = tile.tile_behavior.new(self)
+		behavior = tile.tile_behavior.new()
+		behavior._setup(self)
 
-func _add_to_tilemap(t_tilemap: TileMap, x, y):
+func add_to_tilemap(t_tilemap: TileMap, x, y):
 	map_position = Vector2(x, y)
 	world_position = t_tilemap.map_to_world(map_position)
 
@@ -32,3 +33,6 @@ func _add_to_tilemap(t_tilemap: TileMap, x, y):
 		t_tilemap.add_child(tile)
 	else:
 		t_tilemap.set_cellv(map_position, tile.tileset_id)
+
+	if behavior:
+		behavior._start()

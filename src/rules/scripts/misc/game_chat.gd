@@ -11,14 +11,15 @@ onready var chat_display = $Panel/Layout/ChatDisplay
 onready var chat_input = $Panel/Layout/ChatInput
 
 func _ready():
-	chat_input.connect("text_entered", self, "_send_message")
-	_disable()
+	Globals.game_chat = self
 
-func _enable():
+	chat_input.connect("text_entered", self, "send_message")
+
+func enable():
 	chat_panel.show()
 	set_process_input(true)
 
-func _disable():
+func disable():
 	chat_panel.hide()
 	set_process_input(false)
 
@@ -33,17 +34,17 @@ func _input(event):
 			chat_input.grab_focus()
 			get_tree().set_input_as_handled()
 
-func _send_message(message):
+func send_message(message):
 	chat_input.clear()
 	chat_input.release_focus()
 
-	rpc("_forward_message", message)
+	rpc("forward_message", message)
 
-remotesync func _forward_message(message: String):
+remotesync func forward_message(message: String):
 	if !(message is String) or message.replace(" ", "").empty():
 		return
 
-	var pinfo = network.players[get_tree().get_rpc_sender_id()]
+	var pinfo = Network.players[get_tree().get_rpc_sender_id()]
 
 	var filtered = message.dedent()
 	if max_characters > 0 and message.length() > max_characters:

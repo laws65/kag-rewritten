@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 ### Signals
 signal map_loaded
@@ -28,7 +28,10 @@ var map_width
 var map_height
 ### ---
 
-func _load_tiles():
+func _ready():
+	Globals.game_map = self
+
+func load_tiles():
 	var file = ""
 	var dir = Directory.new()
 	for path in tile_directories:
@@ -40,11 +43,11 @@ func _load_tiles():
 			if file.ends_with(".tscn"):
 				var tile = load(path + file).instance()
 				if tile is TileInfo:
-					_add_to_tileset(tile)
+					add_to_tileset(tile)
 
 			file = dir.get_next()
 
-func _add_to_tileset(tile):
+func add_to_tileset(tile):
 	var key = tile.representative_color.to_html(false)
 	var id = tileset.get_tiles_ids().size()
 
@@ -62,9 +65,9 @@ func _add_to_tileset(tile):
 	if not tile.get_node("Collider").disabled:
 		tileset.tile_add_shape(id, tile.get_node("Collider").shape, tile.get_node("Collider").transform)
 
-func _load_map():
+func load_map():
 	tilemap.tile_set = tileset
-	_load_tiles()
+	load_tiles()
 
 	map_image = load(map_path).get_data()
 	map_width = map_image.get_width()
@@ -95,7 +98,7 @@ func _load_map():
 				tmp_scene = tile_scenes[tmp_key]
 
 				tmp_state = TileState.new(tmp_scene)
-				tmp_state._add_to_tilemap(tilemap, x, y)
+				tmp_state.add_to_tilemap(tilemap, x, y)
 
 				tile_array[tmp_index] = tmp_state
 
@@ -107,12 +110,12 @@ func _load_map():
 				shadow_array[tmp_index] = false
 	map_image.unlock()
 
-	_generate_shadows()
-	_optimize_tilemap()
+	generate_shadows()
+	optimize_tilemap()
 
 	emit_signal("map_loaded")
 
-func _generate_shadows():
+func generate_shadows():
 	var shadow_texture = ImageTexture.new()
 	var shadow_image = Image.new()
 
@@ -135,7 +138,7 @@ func _generate_shadows():
 	material.set_shader_param("Step2", Vector2(0.5 / map_width, -0.5 / map_height))
 
 
-func _optimize_tilemap():
+func optimize_tilemap():
 	var top
 	var bottom
 	var left

@@ -14,7 +14,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://entities/scripts/character/common/character.gd"
 }, {
-"base": "Node2D",
+"base": "Node",
 "class": "GameMode",
 "language": "GDScript",
 "path": "res://rules/scripts/mode/common/game_mode.gd"
@@ -141,7 +141,7 @@ _global_script_class_icons={
 [application]
 
 config/name="KAG Rewritten"
-run/main_scene="res://rules/content/authentication.tscn"
+run/main_scene="res://rules/content/misc/manager.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="KAG Rewritten"
 boot_splash/image="res://entities/resources/misc/icon.png"
@@ -155,11 +155,8 @@ default_bus_layout=""
 
 [autoload]
 
-Nakama="*res://addons/com.heroiclabs.nakama/Nakama.gd"
-network="*res://rules/content/misc/network.tscn"
-game_camera="*res://rules/content/misc/game_camera.tscn"
-game_chat="*res://rules/content/misc/game_chat.tscn"
-game_map="*res://rules/content/misc/game_map.tscn"
+Globals="*res://rules/scripts/globals.gd"
+Network="*res://rules/content/misc/network.tscn"
 
 [debug]
 

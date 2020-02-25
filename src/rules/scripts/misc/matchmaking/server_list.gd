@@ -9,7 +9,7 @@ func _refresh():
 	for child in $Layout/Content.get_children():
 		child.queue_free()
 
-	var result = yield(network.api_socket.rpc_async("get_servers"), "completed")
+	var result = yield(Network.api_socket.rpc_async("get_servers"), "completed")
 	if result.is_exception():
 		printerr(result.get_exception())
 	else:

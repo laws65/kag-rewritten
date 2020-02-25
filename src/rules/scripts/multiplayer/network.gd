@@ -3,15 +3,15 @@ extends Node2D
 signal login_success()
 signal login_failure()
 
-signal connection_opened()
-signal connection_closed()
+signal game_joined()
+signal game_exited()
 
 signal player_added(pinfo)
 signal player_removed(pinfo)
 
 var player = {
 	id = 1,
-	name = "Guest",
+	username = "",
 	character = "",
 }
 
@@ -28,18 +28,22 @@ var api_socket: NakamaSocket
 var api_session: NakamaSession
 ### ---
 
+onready var Nakama = $Nakama
+onready var Server: NetworkServer = $Server
+onready var Client: NetworkClient = $Client
+
 func _ready():
-	get_tree().connect("network_peer_connected", self, "_on_player_connected")
-	get_tree().connect("network_peer_disconnected", self, "_on_player_disconnected")
+	get_tree().connect("network_peer_connected", self, "on_player_connected")
+	get_tree().connect("network_peer_disconnected", self, "on_player_disconnected")
 
-	get_tree().connect("connected_to_server", self, "_on_connection_opened")
-	get_tree().connect("server_disconnected", self, "_on_connection_closed")
-	get_tree().connect("connection_failed", self, "_on_connection_closed")
+	get_tree().connect("connected_to_server", self, "on_connection_opened")
+	get_tree().connect("server_disconnected", self, "on_connection_closed")
+	get_tree().connect("connection_failed", self, "on_connection_closed")
 
-	$Server.connect("create_success", self, "_on_connection_opened")
-	$Server.connect("create_fail", self, "_on_connection_closed")
+	Server.connect("create_success", self, "on_connection_opened")
+	Server.connect("create_fail", self, "on_connection_closed")
 
-func _login(email, password):
+func login(email, password):
 	api = Nakama.create_client(api_key, api_host, api_port, api_scheme)
 	api_session = yield(api.authenticate_email_async(email, password, null, false), "completed")
 
@@ -52,7 +56,7 @@ func _login(email, password):
 	else:
 		emit_signal("login_failure")
 
-func _register(username, email, password):
+func register(username, email, password):
 	api = Nakama.create_client(api_key, api_host, api_port, api_scheme)
 	api_session = yield(api.authenticate_email_async(email, password, username, true), "completed")
 
@@ -65,7 +69,7 @@ func _register(username, email, password):
 	else:
 		emit_signal("login_failure")
 
-func _login_with_token(token):
+func login_with_token(token):
 	api = Nakama.create_client(api_key, api_host, api_port, api_scheme)
 	api_session = NakamaClient.restore_session(token)
 
@@ -79,7 +83,7 @@ func _login_with_token(token):
 		emit_signal("login_failure")
 
 var guest_cfg = ConfigFile.new()
-func _login_as_guest():
+func login_as_guest():
 	var unique_id
 
 	guest_cfg.load("user://login.cfg")
@@ -87,6 +91,8 @@ func _login_as_guest():
 	if guest_cfg.has_section_key("Login", "UniqueID"):
 		unique_id = guest_cfg.get_value("Login", "UniqueID")
 	else:
+		randomize()
+
 		var arr = PoolStringArray()
 		for _i in range(0, 16):
 			arr.append(str(randi()%10))
@@ -108,11 +114,11 @@ func _login_as_guest():
 	else:
 		emit_signal("login_failure")
 
-func _create_server(server_name: String, server_port: int, is_private: bool = false):
-	$Server._create_server(server_name, server_port, is_private)
+func create_server(server_name: String, server_port: int, is_private: bool = false):
+	Server.create_server(server_name, server_port, is_private)
 
-func _join_server(server_ip: String, server_port: int):
-	$Client._join_server(server_ip, server_port)
+func join_server(server_ip: String, server_port: int):
+	Client.join_server(server_ip, server_port)
 
 ### Helper functions
 
@@ -127,26 +133,26 @@ func is_local_player(node):
 
 ### Events
 
-func _on_player_connected(id):
+func on_player_connected(id):
 	if id != 1:
 		rpc_id(id, "register_player", player)
 
-func _on_player_disconnected(id):
+func on_player_disconnected(id):
 	unregister_player(id)
 
-func _on_connection_opened():
-	emit_signal("connection_opened")
+func on_connection_opened():
+	emit_signal("game_joined")
 
 	if get_tree().is_network_server():
 		call_deferred("register_player", player)
 	else:
-		network.player.id = get_tree().get_network_unique_id()
+		player.id = get_tree().get_network_unique_id()
 		register_player(player)
 
-func _on_connection_closed():
+func on_connection_closed():
 	get_tree().set_network_peer(null)
 
-	emit_signal("connection_closed")
+	emit_signal("game_exited")
 
 ### Remote functions
 

@@ -16,19 +16,19 @@ onready var joinServerPort = $PanelJoin/Content/txtJoinPort
 ### ---
 
 func _ready():
-	username.text = network.player.name
+	username.text = Network.player.name
 
 func _on_btCreate_pressed():
 	var name = hostServerName.text
 	var port = int(joinServerPort.text)
 	var is_private = hostServerPrivate.pressed
 
-	network._create_server(name, port, is_private)
+	Network.create_server(name, port, is_private)
 
 func _on_btJoin_pressed():
 	var ip = joinServerIP.text
 	var port = int(joinServerPort.text)
 
-	network._join_server(ip, port)
+	Network.join_server(ip, port)
 
 ### --- Events

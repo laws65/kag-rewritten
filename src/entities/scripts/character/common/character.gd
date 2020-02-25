@@ -49,7 +49,7 @@ func _ready():
 	c_name.text = pinfo.name
 
 	if $Client.is_network_master():
-		game_camera.target = self
+		Globals.game_camera.target = self
 
 func _process(delta):
 	if is_network_master():
@@ -63,7 +63,7 @@ func _physics_process(delta):
 		_process_input(delta)
 		_process_animation(delta)
 
-		velocity.y += (game_map.gravity * mass * gravity_scale) * delta
+		velocity.y += (Globals.game_map.gravity * mass * gravity_scale) * delta
 		velocity = move_and_slide(velocity, Vector2(0, -1))
 
 	_sync(delta)
@@ -90,7 +90,7 @@ func _process_input(_delta):
 
 	# Jump
 	if c_controller.r_jumping && !c_controller.r_crouching && is_on_floor():
-		velocity.y = -(game_map.gravity * jump_speed)
+		velocity.y = -(Globals.game_map.gravity * jump_speed)
 
 func _process_animation(_delta):
 	if is_on_floor():

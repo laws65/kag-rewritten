@@ -215,8 +215,8 @@ custom_styles/normal = SubResource( 5 )
 shortcut_in_tooltip = false
 text = "I don't have an account ->"
 flat = true
-[connection signal="pressed" from="Register/Layout/Confirm" to="." method="_register"]
-[connection signal="pressed" from="Register/Layout/GoToLogin" to="." method="_show_login"]
-[connection signal="pressed" from="Login/Layout/Confirm" to="." method="_login"]
-[connection signal="pressed" from="Login/Layout/ConfirmGuest" to="." method="_login_as_guest"]
-[connection signal="pressed" from="Login/Layout/GoToRegister" to="." method="_show_register"]
+[connection signal="pressed" from="Register/Layout/Confirm" to="." method="register"]
+[connection signal="pressed" from="Register/Layout/GoToLogin" to="." method="show_login"]
+[connection signal="pressed" from="Login/Layout/Confirm" to="." method="login"]
+[connection signal="pressed" from="Login/Layout/ConfirmGuest" to="." method="login_as_guest"]
+[connection signal="pressed" from="Login/Layout/GoToRegister" to="." method="show_register"]

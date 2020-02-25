@@ -7,7 +7,7 @@ var zoom_level = 1
 var target
 
 func _ready():
-	OS.min_window_size = OS.window_size
+	Globals.game_camera = self
 
 var tick = 0.0
 func _physics_process(delta):

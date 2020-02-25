@@ -9,4 +9,4 @@ func _ready():
 	text = "%s (%s:%s)" % [server_name, server_ip, server_port]
 
 func _join():
-	network._join_server(server_ip, server_port)
+	Network.join_server(server_ip, server_port)

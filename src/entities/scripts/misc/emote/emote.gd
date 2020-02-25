@@ -20,8 +20,8 @@ func _ready():
 	animation.playback_speed = 1 / anim_speed
 
 	if is_network_master():
-		game_chat.connect("chat_opened", self, "_on_chat_opened")
-		game_chat.connect("chat_closed", self, "_on_chat_closed")
+		Globals.game_chat.connect("chat_opened", self, "_on_chat_opened")
+		Globals.game_chat.connect("chat_closed", self, "_on_chat_closed")
 	else:
 		set_process_unhandled_input(false)
 

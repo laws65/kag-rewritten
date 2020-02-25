@@ -1,0 +1,13 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://rules/scripts/manager.gd" type="Script" id=1]
+[ext_resource path="res://rules/content/multiplayer.tscn" type="PackedScene" id=2]
+[ext_resource path="res://rules/content/matchmaking.tscn" type="PackedScene" id=3]
+[ext_resource path="res://rules/content/authentication.tscn" type="PackedScene" id=4]
+
+
+[node name="Manager" type="Node"]
+script = ExtResource( 1 )
+authentication_scene = ExtResource( 4 )
+matchmaking_scene = ExtResource( 3 )
+multiplayer_scene = ExtResource( 2 )

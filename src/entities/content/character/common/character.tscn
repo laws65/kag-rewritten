@@ -99,7 +99,7 @@ radius = 7.5
 [node name="Character" type="KinematicBody2D"]
 z_index = -2
 collision_layer = 2
-collision/safe_margin = 0.01
+collision/safe_margin = 0.02
 script = ExtResource( 1 )
 
 [node name="Client" type="Node2D" parent="."]

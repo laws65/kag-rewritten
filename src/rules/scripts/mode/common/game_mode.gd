@@ -1,17 +1,20 @@
-extends Node2D
+extends Node
 class_name GameMode
 
-export (String) var default_character
+export (PackedScene) var default_character
 var spawn_list = {}
 
+onready var chat = $Chat
+onready var map = $Map
+
 func _ready():
-	game_chat._enable()
+	Globals.game_mode = self
 
-	if (get_tree().is_network_server()):
-		network.connect("player_added", self, "_on_player_added")
-		network.connect("player_removed", self, "_on_player_removed")
+	if get_tree().is_network_server():
+		Network.connect("player_added", self, "_on_player_added")
+		Network.connect("player_removed", self, "_on_player_removed")
 
-	game_map._load_map()
+	map.load_map()
 
 ### --- Events
 
@@ -26,12 +29,12 @@ func _on_player_removed(pinfo):
 ### --- Remote functions
 
 remote func spawn_player(pinfo):
-	pinfo.character = default_character
+	pinfo.character = default_character.resource_path
 
 	if (get_tree().is_network_server() && pinfo.id != 1):
-		for id in network.players:
+		for id in Network.players:
 			if (id != pinfo.id):
-				rpc_id(pinfo.id, "spawn_player", network.players[id])
+				rpc_id(pinfo.id, "spawn_player", Network.players[id])
 
 			if (id != 1):
 				rpc_id(id, "spawn_player", pinfo)
@@ -47,7 +50,7 @@ remote func spawn_player(pinfo):
 
 remote func despawn_player(pinfo):
 	if (get_tree().is_network_server()):
-		for id in network.players:
+		for id in Network.players:
 			if (id == pinfo.id || id == 1):
 				continue
 

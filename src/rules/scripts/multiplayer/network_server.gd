@@ -12,8 +12,7 @@ var server_info = {
 }
 
 func _ready():
-	network.connect("connection_opened", self, "_on_server_opened")
-	network.connect("connection_closed", self, "_on_server_closed")
+	Network.connect("game_exited", self, "on_game_exited")
 
 var ping_rate = 28
 var tick = 0.0
@@ -22,13 +21,19 @@ func _process(_delta):
 	if tick > ping_rate:
 		tick = 0.0
 		if server:
-			network.api_socket.rpc_async("ping")
+			Network.api_socket.rpc_async("ping")
 
 	if server is WebSocketServer:
 		if server.is_listening():
 			server.poll()
 
-func _create_server(name: String, port: int, is_private: bool = false):
+func on_game_exited():
+	if server is WebSocketServer:
+		server.stop()
+
+func create_server(name: String, port: int, is_private: bool = false):
+	Network.player.id = 1
+
 	if !name.empty():
 		server_info.server_name = name
 	server_info.server_port = port
@@ -50,16 +55,10 @@ func _create_server(name: String, port: int, is_private: bool = false):
 			return
 
 		if !is_private:
-			var result = yield(network.api_socket.rpc_async("create_server", server_info), "completed")
+			var result = yield(Network.api_socket.rpc_async("create_server", server_info), "completed")
 
 			if result.is_exception():
 				printerr(result.get_exception())
 
 	get_tree().set_network_peer(server)
 	emit_signal("create_success")
-
-func _on_server_opened():
-	get_tree().change_scene("res://rules/content/multiplayer.tscn")
-
-func _on_server_closed():
-	print("An error occurred and the server has closed")
