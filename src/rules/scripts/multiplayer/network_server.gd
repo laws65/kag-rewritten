@@ -8,12 +8,15 @@ var server
 
 var server_info = {
 	server_name = "KAG Server",
-	server_port = 0,
+	server_port = 3074,
 }
+
+func _ready():
+	network.connect("connection_opened", self, "_on_server_opened")
+	network.connect("connection_closed", self, "_on_server_closed")
 
 var ping_rate = 28
 var tick = 0.0
-
 func _process(_delta):
 	tick += _delta
 	if tick > ping_rate:
@@ -36,13 +39,13 @@ func _create_server(name: String, port: int, is_private: bool = false):
 	if OS.has_feature("HTML5"):
 		server = NetworkedMultiplayerENet.new()
 
-		if (server.create_server(server_info.server_port) != OK):
+		if server.create_server(server_info.server_port) != OK:
 			emit_signal("create_fail")
 			return
 	else:
 		server = WebSocketServer.new()
 
-		if (server.listen(server_info.server_port, PoolStringArray(), true) != OK):
+		if server.listen(server_info.server_port, PoolStringArray(), true) != OK:
 			emit_signal("create_fail")
 			return
 
@@ -54,3 +57,9 @@ func _create_server(name: String, port: int, is_private: bool = false):
 
 	get_tree().set_network_peer(server)
 	emit_signal("create_success")
+
+func _on_server_opened():
+	get_tree().change_scene("res://rules/content/multiplayer.tscn")
+
+func _on_server_closed():
+	print("An error occurred and the server has closed")

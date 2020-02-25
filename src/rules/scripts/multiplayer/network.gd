@@ -3,7 +3,7 @@ extends Node2D
 signal login_success()
 signal login_failure()
 
-signal connection_established()
+signal connection_opened()
 signal connection_closed()
 
 signal player_added(pinfo)
@@ -32,11 +32,11 @@ func _ready():
 	get_tree().connect("network_peer_connected", self, "_on_player_connected")
 	get_tree().connect("network_peer_disconnected", self, "_on_player_disconnected")
 
-	get_tree().connect("connected_to_server", self, "_on_connection_established")
+	get_tree().connect("connected_to_server", self, "_on_connection_opened")
 	get_tree().connect("server_disconnected", self, "_on_connection_closed")
 	get_tree().connect("connection_failed", self, "_on_connection_closed")
 
-	$Server.connect("create_success", self, "_on_connection_established")
+	$Server.connect("create_success", self, "_on_connection_opened")
 	$Server.connect("create_fail", self, "_on_connection_closed")
 
 func _login(email, password):
@@ -134,8 +134,8 @@ func _on_player_connected(id):
 func _on_player_disconnected(id):
 	unregister_player(id)
 
-func _on_connection_established():
-	emit_signal("connection_established")
+func _on_connection_opened():
+	emit_signal("connection_opened")
 
 	if get_tree().is_network_server():
 		call_deferred("register_player", player)

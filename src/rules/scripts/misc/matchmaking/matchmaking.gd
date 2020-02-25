@@ -18,10 +18,6 @@ onready var joinServerPort = $PanelJoin/Content/txtJoinPort
 func _ready():
 	username.text = network.player.name
 
-	$Refresh.connect("pressed", $Server_List, "_refresh")
-	network.connect("connection_established", self, "_on_connection_established")
-	network.connect("connection_closed", self, "_on_connection_closed")
-
 func _on_btCreate_pressed():
 	var name = hostServerName.text
 	var port = int(joinServerPort.text)
@@ -36,10 +32,3 @@ func _on_btJoin_pressed():
 	network._join_server(ip, port)
 
 ### --- Events
-
-func _on_connection_established():
-	if get_tree().change_scene("res://rules/content/multiplayer.tscn") != OK:
-		push_error("Failed loading the scene.")
-
-func _on_connection_closed():
-	print("Failed to join server.")

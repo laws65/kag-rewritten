@@ -169,8 +169,8 @@ gdscript/warnings/return_value_discarded=false
 
 [display]
 
-window/size/width=960
-window/size/height=540
+window/size/width=1280
+window/size/height=720
 window/dpi/allow_hidpi=true
 window/vsync/use_vsync=false
 mouse_cursor/custom_image="res://entities/resources/misc/cursor.png"
@@ -309,4 +309,6 @@ quality/intended_usage/framebuffer_allocation.mobile=0
 quality/2d/use_pixel_snap=true
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
+quality/filters/use_nearest_mipmap_filter=true
 quality/depth/hdr=false
+quality/dynamic_fonts/use_oversampling=false

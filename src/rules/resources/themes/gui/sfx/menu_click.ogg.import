@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/menu_click.ogg-541929f3978ccc8b6d23af91a01ee7e4.oggstr"
+
+[deps]
+
+source_file="res://rules/resources/themes/gui/sfx/menu_click.ogg"
+dest_files=[ "res://.import/menu_click.ogg-541929f3978ccc8b6d23af91a01ee7e4.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

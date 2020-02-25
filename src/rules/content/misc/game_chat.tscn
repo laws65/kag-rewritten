@@ -1,9 +1,8 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://rules/scripts/misc/game_chat.gd" type="Script" id=1]
 [ext_resource path="res://rules/resources/themes/fonts/m5x7.tres" type="DynamicFont" id=2]
-[ext_resource path="res://rules/resources/themes/theme.tres" type="Theme" id=3]
-[ext_resource path="res://rules/resources/themes/chat_style.tres" type="StyleBox" id=4]
+[ext_resource path="res://rules/resources/themes/message_style.tres" type="StyleBox" id=4]
 
 [sub_resource type="Animation" id=1]
 resource_name = "close"
@@ -84,17 +83,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -300.0
 margin_top = -100.0
-theme = ExtResource( 3 )
 custom_styles/panel = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Layout" type="VBoxContainer" parent="Panel"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 290.0
-margin_bottom = 90.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 295.0
+margin_bottom = 95.0
 custom_constants/separation = 1
 
 [node name="ChatAnimation" type="AnimationPlayer" parent="Panel/Layout"]
@@ -103,8 +101,8 @@ anims/close = SubResource( 1 )
 anims/open = SubResource( 2 )
 
 [node name="ChatDisplay" type="RichTextLabel" parent="Panel/Layout"]
-margin_right = 280.0
-margin_bottom = 80.0
+margin_right = 290.0
+margin_bottom = 73.0
 focus_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -119,10 +117,9 @@ scroll_following = true
 selection_enabled = true
 
 [node name="ChatInput" type="LineEdit" parent="Panel/Layout"]
-visible = false
-margin_top = 64.0
-margin_right = 280.0
-margin_bottom = 80.0
+margin_top = 74.0
+margin_right = 290.0
+margin_bottom = 90.0
 rect_min_size = Vector2( 0, 16 )
 size_flags_horizontal = 3
 custom_styles/read_only = SubResource( 5 )

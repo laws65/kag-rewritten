@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://rules/scripts/misc/matchmaking/matchmaking.gd" type="Script" id=1]
 [ext_resource path="res://rules/scripts/misc/matchmaking/server_list.gd" type="Script" id=2]
@@ -6,6 +6,9 @@
 [ext_resource path="res://rules/resources/themes/menu.tres" type="Theme" id=4]
 [ext_resource path="res://rules/scripts/misc/matchmaking/server_item.gd" type="Script" id=5]
 [ext_resource path="res://rules/resources/themes/gui/refresh.png" type="Texture" id=6]
+[ext_resource path="res://rules/resources/themes/gui/sfx/menu_click.ogg" type="AudioStream" id=7]
+[ext_resource path="res://rules/scripts/misc/sfx/menu_button.gd" type="Script" id=8]
+[ext_resource path="res://rules/resources/themes/gui/sfx/option.ogg" type="AudioStream" id=9]
 
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 3 )
@@ -45,14 +48,14 @@ __meta__ = {
 server_item = NodePath("../Server_Item")
 
 [node name="Layout" type="ScrollContainer" parent="Server_List"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 390.0
-margin_bottom = 390.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 392.0
+margin_bottom = 392.0
 
 [node name="Content" type="VBoxContainer" parent="Server_List/Layout"]
-margin_right = 380.0
-margin_bottom = 380.0
+margin_right = 384.0
+margin_bottom = 384.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -71,10 +74,10 @@ __meta__ = {
 }
 
 [node name="Content" type="VBoxContainer" parent="PanelHost"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 140.0
-margin_bottom = 141.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 142.0
+margin_bottom = 143.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
@@ -83,8 +86,9 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="PanelHost/Content"]
-margin_right = 130.0
-margin_bottom = 13.0
+margin_top = 2.0
+margin_right = 134.0
+margin_bottom = 15.0
 text = "Server name"
 valign = 1
 __meta__ = {
@@ -92,18 +96,18 @@ __meta__ = {
 }
 
 [node name="txtServerName" type="LineEdit" parent="PanelHost/Content"]
-margin_top = 17.0
-margin_right = 130.0
-margin_bottom = 40.0
+margin_top = 19.0
+margin_right = 134.0
+margin_bottom = 42.0
 max_length = 50
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label3" type="Label" parent="PanelHost/Content"]
-margin_top = 44.0
-margin_right = 130.0
-margin_bottom = 57.0
+margin_top = 46.0
+margin_right = 134.0
+margin_bottom = 59.0
 text = "Port"
 valign = 1
 __meta__ = {
@@ -111,9 +115,9 @@ __meta__ = {
 }
 
 [node name="txtServerPort" type="LineEdit" parent="PanelHost/Content"]
-margin_top = 61.0
-margin_right = 130.0
-margin_bottom = 84.0
+margin_top = 63.0
+margin_right = 134.0
+margin_bottom = 86.0
 text = "3074"
 max_length = 50
 __meta__ = {
@@ -121,16 +125,20 @@ __meta__ = {
 }
 
 [node name="btPrivate" type="CheckButton" parent="PanelHost/Content"]
-margin_top = 88.0
-margin_right = 130.0
-margin_bottom = 104.0
+margin_top = 90.0
+margin_right = 134.0
+margin_bottom = 106.0
 text = "Private server"
+script = ExtResource( 8 )
+audio_file = ExtResource( 9 )
 
 [node name="btCreate" type="Button" parent="PanelHost/Content"]
-margin_top = 108.0
-margin_right = 130.0
-margin_bottom = 131.0
+margin_top = 110.0
+margin_right = 134.0
+margin_bottom = 133.0
 text = "Host"
+script = ExtResource( 8 )
+audio_file = ExtResource( 7 )
 
 [node name="PanelJoin" type="PanelContainer" parent="."]
 anchor_left = 0.5
@@ -147,10 +155,10 @@ __meta__ = {
 }
 
 [node name="Content" type="VBoxContainer" parent="PanelJoin"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 140.0
-margin_bottom = 130.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 142.0
+margin_bottom = 132.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
@@ -159,38 +167,40 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="PanelJoin/Content"]
-margin_top = 4.0
-margin_right = 130.0
-margin_bottom = 17.0
+margin_top = 6.0
+margin_right = 134.0
+margin_bottom = 19.0
 text = "Server IP"
 valign = 1
 
 [node name="txtJoinIP" type="LineEdit" parent="PanelJoin/Content"]
-margin_top = 21.0
-margin_right = 130.0
-margin_bottom = 44.0
+margin_top = 23.0
+margin_right = 134.0
+margin_bottom = 46.0
 text = "127.0.0.1"
 max_length = 50
 
 [node name="Label3" type="Label" parent="PanelJoin/Content"]
-margin_top = 48.0
-margin_right = 130.0
-margin_bottom = 61.0
+margin_top = 50.0
+margin_right = 134.0
+margin_bottom = 63.0
 text = "Port"
 valign = 1
 
 [node name="txtJoinPort" type="LineEdit" parent="PanelJoin/Content"]
-margin_top = 65.0
-margin_right = 130.0
-margin_bottom = 88.0
+margin_top = 67.0
+margin_right = 134.0
+margin_bottom = 90.0
 text = "3074"
 max_length = 50
 
 [node name="btJoin" type="Button" parent="PanelJoin/Content"]
-margin_top = 92.0
-margin_right = 130.0
-margin_bottom = 115.0
+margin_top = 94.0
+margin_right = 134.0
+margin_bottom = 117.0
 text = "Join"
+script = ExtResource( 8 )
+audio_file = ExtResource( 7 )
 
 [node name="Info" type="HBoxContainer" parent="."]
 margin_right = 256.0
@@ -234,8 +244,11 @@ margin_right = 189.353
 margin_bottom = 188.0
 theme = ExtResource( 4 )
 icon = ExtResource( 6 )
+script = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+audio_file = ExtResource( 7 )
 [connection signal="pressed" from="PanelHost/Content/btCreate" to="." method="_on_btCreate_pressed"]
 [connection signal="pressed" from="PanelJoin/Content/btJoin" to="." method="_on_btJoin_pressed"]
+[connection signal="pressed" from="Refresh" to="Server_List" method="_refresh"]

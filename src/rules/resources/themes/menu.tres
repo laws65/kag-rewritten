@@ -9,7 +9,7 @@
 
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 3 )
-region_rect = Rect2( 0, 0, 64, 64 )
+region_rect = Rect2( 0, 0, 32, 32 )
 margin_left = 5.0
 margin_right = 5.0
 margin_top = 5.0
@@ -17,25 +17,24 @@ margin_bottom = 5.0
 
 [sub_resource type="StyleBoxTexture" id=2]
 texture = ExtResource( 3 )
-region_rect = Rect2( 0, 0, 64, 64 )
+region_rect = Rect2( 0, 0, 32, 32 )
 margin_left = 5.0
 margin_right = 5.0
 margin_top = 5.0
 margin_bottom = 5.0
-modulate_color = Color( 0.784314, 0.784314, 0.784314, 1 )
 
 [sub_resource type="StyleBoxTexture" id=3]
 texture = ExtResource( 3 )
-region_rect = Rect2( 0, 0, 64, 64 )
+region_rect = Rect2( 0, 0, 32, 32 )
 margin_left = 5.0
 margin_right = 5.0
 margin_top = 5.0
 margin_bottom = 5.0
-modulate_color = Color( 0.968627, 0.968627, 0.968627, 1 )
+modulate_color = Color( 0.882353, 0.882353, 0.882353, 1 )
 
 [sub_resource type="StyleBoxTexture" id=4]
 texture = ExtResource( 3 )
-region_rect = Rect2( 0, 0, 64, 64 )
+region_rect = Rect2( 0, 0, 32, 32 )
 margin_left = 5.0
 margin_right = 5.0
 margin_top = 5.0
@@ -43,34 +42,35 @@ margin_bottom = 5.0
 
 [sub_resource type="StyleBoxTexture" id=5]
 texture = ExtResource( 3 )
-region_rect = Rect2( 0, 0, 64, 64 )
+region_rect = Rect2( 0, 0, 32, 32 )
 margin_left = 5.0
 margin_right = 5.0
 margin_top = 5.0
 margin_bottom = 5.0
 modulate_color = Color( 0.784314, 0.784314, 0.784314, 1 )
+draw_center = false
 
 [sub_resource type="StyleBoxEmpty" id=6]
 
 [sub_resource type="StyleBoxTexture" id=7]
-texture = ExtResource( 4 )
-region_rect = Rect2( 0, 0, 64, 64 )
+texture = ExtResource( 2 )
+region_rect = Rect2( 0, 0, 32, 32 )
 margin_left = 5.0
 margin_right = 5.0
 margin_top = 5.0
 margin_bottom = 5.0
 
 [sub_resource type="StyleBoxTexture" id=8]
-texture = ExtResource( 4 )
-region_rect = Rect2( 0, 0, 64, 64 )
+texture = ExtResource( 2 )
+region_rect = Rect2( 0, 0, 32, 32 )
 margin_left = 5.0
 margin_right = 5.0
 margin_top = 5.0
 margin_bottom = 5.0
 
 [sub_resource type="StyleBoxTexture" id=9]
-texture = ExtResource( 4 )
-region_rect = Rect2( 0, 0, 64, 64 )
+texture = ExtResource( 2 )
+region_rect = Rect2( 0, 0, 32, 32 )
 margin_left = 5.0
 margin_right = 5.0
 margin_top = 5.0
@@ -81,20 +81,20 @@ content_margin_left = 8.0
 content_margin_right = 8.0
 content_margin_top = 8.0
 content_margin_bottom = 8.0
-texture = ExtResource( 2 )
-region_rect = Rect2( 0, 0, 64, 64 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 32, 32 )
 margin_left = 10.0
 margin_right = 10.0
 margin_top = 10.0
 margin_bottom = 10.0
 
 [sub_resource type="StyleBoxTexture" id=11]
-texture = ExtResource( 2 )
-region_rect = Rect2( 0, 0, 64, 64 )
-margin_left = 10.0
-margin_right = 10.0
-margin_top = 10.0
-margin_bottom = 10.0
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 32, 32 )
+margin_left = 8.0
+margin_right = 8.0
+margin_top = 8.0
+margin_bottom = 8.0
 
 [resource]
 default_font = ExtResource( 1 )
