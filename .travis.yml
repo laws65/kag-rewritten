@@ -5,7 +5,7 @@ git:
 
 os: linux
 
-env: GAME_NAME="KAG Rewritten" GODOT_VERSION="3.2"
+env: GAME_NAME="KAG Rewritten" GODOT_VERSION="3.2.1"
 
 install:
 - sudo apt-get update
