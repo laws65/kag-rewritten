@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -24,14 +25,8 @@ public class AuthenticationMenu : MonoBehaviour
     {
         ShowLogin();
 
-        GameSession.Instance.onLoginSuccess += OnLoginSuccess;
-
-        loginButton.onClick.AddListener(OnLoginClicked);
-        registerButton.onClick.AddListener(OnRegisterClicked);
-        guestButton.onClick.AddListener(OnGuestClicked);
-
-        goToLoginButton.onClick.AddListener(ShowLogin);
-        goToRegisterButton.onClick.AddListener(ShowRegister);
+        GameSession.Instance.OnLoginSuccess += OnLoginSuccess;
+        GameSession.Instance.OnLoginFailure += OnLoginFailure;
     }
 
     private void OnLoginSuccess(PlayerInfo pinfo)
@@ -39,28 +34,33 @@ public class AuthenticationMenu : MonoBehaviour
         SceneManager.LoadScene("Matchmaking");
     }
 
-    private void OnLoginClicked()
+    private void OnLoginFailure()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnLoginClicked()
     {
         GameSession.Instance.Login(loginEmail.text, loginPassword.text);
     }
 
-    private void OnRegisterClicked()
+    public void OnRegisterClicked()
     {
         GameSession.Instance.Register(registerUsername.text, registerEmail.text, registerPassword.text);
     }
 
-    private void OnGuestClicked()
+    public void OnGuestClicked()
     {
         GameSession.Instance.LoginAsGuest();
     }
 
-    private void ShowLogin()
+    public void ShowLogin()
     {
         registerPanel.SetActive(false);
         loginPanel.SetActive(true);
     }
 
-    private void ShowRegister()
+    public void ShowRegister()
     {
         loginPanel.SetActive(false);
         registerPanel.SetActive(true);
