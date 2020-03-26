@@ -1,5 +1,7 @@
 <linker>
-  <assembly fullname="System.Core">
-    <type fullname="System.Linq.Expressions.*" preserve="all"/>
-  </assembly>
+  <!-- Needed to preserve Nakama dependencies during stripping -->
+  <assembly fullname="Nakama" ignoreIfMissing="0" preserve="all" />
+
+  <!-- Needed to preserve Jint dependencies during stripping -->
+  <assembly fullname="System.Linq.Expressions" ignoreIfMissing="0" preserve="all" />
 </linker>

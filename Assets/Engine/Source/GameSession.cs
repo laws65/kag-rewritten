@@ -45,7 +45,7 @@ public class GameSession : MonoBehaviour
     #endregion
 
     #region Nakama specifics
-    Client nakama;
+    IClient nakama;
     ISession session;
     #endregion
 
@@ -63,20 +63,29 @@ public class GameSession : MonoBehaviour
     }
 
     #region Authentication helpers
+    private void Authenticate(ISession p_session)
+    {
+        if (p_session == null)
+        {
+            OnLoginFailure();
+        }
+        else
+        {
+            session = p_session;
+            player = new PlayerInfo(session);
+
+            OnLoginSuccess(player);
+        }
+    }
+
     public async void Login(string email, string password)
     {
-        session = await nakama.AuthenticateEmailAsync(email, password, null, false);
-        player = new PlayerInfo(session);
-
-        OnLoginSuccess(player);
+        Authenticate(await nakama.AuthenticateEmailAsync(email, password, null, false));
     }
 
     public async void Register(string username, string email, string password)
     {
-        session = await nakama.AuthenticateEmailAsync(email, password, username, true);
-        player = new PlayerInfo(session);
-
-        OnLoginSuccess(player);
+        Authenticate(await nakama.AuthenticateEmailAsync(email, password, username, true));
     }
 
     public async void LoginAsGuest()
@@ -88,10 +97,7 @@ public class GameSession : MonoBehaviour
             PlayerPrefs.SetString("Nakama.DeviceId", deviceId);
         }
 
-        session = await nakama.AuthenticateDeviceAsync(deviceId);
-        player = new PlayerInfo(session);
-
-        OnLoginSuccess(player);
+        Authenticate(await nakama.AuthenticateDeviceAsync(deviceId));
     }
     #endregion
 
