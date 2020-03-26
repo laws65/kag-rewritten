@@ -8,6 +8,6 @@ public class ServerItem : MonoBehaviour
 
     private void Start()
     {
-        label.text = string.Format("{0} ({1})", serverInfo.server_name, serverInfo.server_ip);
+        label.text = string.Format("{0} ({1})", serverInfo.Name, serverInfo.IP);
     }
 }

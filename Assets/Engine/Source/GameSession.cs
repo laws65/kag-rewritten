@@ -19,9 +19,8 @@ public class PlayerInfo
 
 public class ServerInfo
 {
-    public string server_name;
-    public string server_ip;
-    public int server_port;
+    public string Name;
+    public string IP;
 }
 
 public class GameSession : MonoBehaviour
@@ -104,13 +103,18 @@ public class GameSession : MonoBehaviour
     #region Matchmaking helpers
     public async void MatchmakeRefresh()
     {
-        var result = await nakama.RpcAsync(session, "get_servers");
+        var result = await nakama.RpcAsync(session, "get_server_list");
         var list = result.Payload.FromJson<List<ServerInfo>>();
 
         if (list != null)
         {
             OnMatchmakeRefresh.Invoke(list);
         }
+    }
+
+    public async void MatchmakeCreate(ServerInfo serverInfo)
+    {
+        await nakama.RpcAsync(api_key, "create_server", serverInfo.ToJson());
     }
     #endregion
 }

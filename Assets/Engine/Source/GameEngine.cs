@@ -42,6 +42,10 @@ public class GameEngine : MonoBehaviour
     public void StartServer()
     {
         mirror.StartServer();
+        GameSession.Instance.MatchmakeCreate(new ServerInfo
+        {
+            Name = "KAG Server"
+        });
     }
 
     public void StartClient(string host_address)
