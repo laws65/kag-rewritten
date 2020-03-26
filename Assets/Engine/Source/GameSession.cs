@@ -30,10 +30,10 @@ public class GameSession : MonoBehaviour
     public PlayerInfo player;
 
     #region Session events
-    public event Action<PlayerInfo> OnLoginSuccess;
-    public event Action OnLoginFailure;
+    public delegate void OnLoginSuccess(PlayerInfo playerInfo);
+    public delegate void OnLoginFailure();
 
-    public event Action<List<ServerInfo>> OnMatchmakeRefresh;
+    public delegate void OnMatchmakeRefresh(List<ServerInfo> serverList);
     #endregion
 
     #region API endpoint
@@ -47,6 +47,8 @@ public class GameSession : MonoBehaviour
     IClient nakama;
     ISession session;
     #endregion
+
+    public bool IsConnected { get => session != null; }
 
     private void Awake()
     {
@@ -62,32 +64,32 @@ public class GameSession : MonoBehaviour
     }
 
     #region Authentication helpers
-    private void Authenticate(ISession p_session)
+    private void Authenticate(ISession p_session, OnLoginSuccess onSuccess = null, OnLoginFailure onFailure = null)
     {
         if (p_session == null)
         {
-            OnLoginFailure();
+            onFailure?.Invoke();
         }
         else
         {
             session = p_session;
             player = new PlayerInfo(session);
 
-            OnLoginSuccess(player);
+            onSuccess?.Invoke(player);
         }
     }
 
-    public async void Login(string email, string password)
+    public async void Login(string email, string password, OnLoginSuccess onSuccess = null, OnLoginFailure onFailure = null)
     {
-        Authenticate(await nakama.AuthenticateEmailAsync(email, password, null, false));
+        Authenticate(await nakama.AuthenticateEmailAsync(email, password, null, false), onSuccess, onFailure);
     }
 
-    public async void Register(string username, string email, string password)
+    public async void Register(string username, string email, string password, OnLoginSuccess onSuccess = null, OnLoginFailure onFailure = null)
     {
-        Authenticate(await nakama.AuthenticateEmailAsync(email, password, username, true));
+        Authenticate(await nakama.AuthenticateEmailAsync(email, password, username, true), onSuccess, onFailure);
     }
 
-    public async void LoginAsGuest()
+    public async void LoginAsGuest(OnLoginSuccess onSuccess = null, OnLoginFailure onFailure = null)
     {
         string deviceId = PlayerPrefs.GetString("Nakama.DeviceId");
         if (string.IsNullOrEmpty(deviceId))
@@ -96,25 +98,25 @@ public class GameSession : MonoBehaviour
             PlayerPrefs.SetString("Nakama.DeviceId", deviceId);
         }
 
-        Authenticate(await nakama.AuthenticateDeviceAsync(deviceId));
+        Authenticate(await nakama.AuthenticateDeviceAsync(deviceId), onSuccess, onFailure);
     }
     #endregion
 
     #region Matchmaking helpers
-    public async void MatchmakeRefresh()
+    public async void MatchmakeRefresh(OnMatchmakeRefresh onResult = null)
     {
         var result = await nakama.RpcAsync(session, "get_server_list");
         var list = result.Payload.FromJson<List<ServerInfo>>();
 
         if (list != null)
         {
-            OnMatchmakeRefresh.Invoke(list);
+            onResult?.Invoke(list);
         }
     }
 
     public async void MatchmakeCreate(ServerInfo serverInfo)
     {
-        await nakama.RpcAsync(api_key, "create_server", serverInfo.ToJson());
+        await nakama.RpcAsync(session, "create_server", serverInfo.ToJson());
     }
     #endregion
 }

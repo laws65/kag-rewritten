@@ -20,26 +20,23 @@ public class MatchmakingMenu : MonoBehaviour
 
     private void Awake()
     {
-        GameSession.Instance.OnMatchmakeRefresh += OnMatchmakeRefresh;
         Refresh();
     }
 
     public void Refresh()
     {
-        GameSession.Instance.MatchmakeRefresh();
-    }
-
-    private void OnMatchmakeRefresh(List<ServerInfo> list)
-    {
-        foreach (Transform child in listContent.transform)
+        GameSession.Instance.MatchmakeRefresh((serverList) =>
         {
-            Destroy(child.gameObject);
-        }
+            foreach (Transform child in listContent.transform)
+            {
+                Destroy(child.gameObject);
+            }
 
-        foreach (ServerInfo server in list)
-        {
-            ServerItem item = Instantiate(listItem, listContent.transform).GetComponent<ServerItem>();
-            item.serverInfo = server;
-        }
+            foreach (ServerInfo server in serverList)
+            {
+                ServerItem item = Instantiate(listItem, listContent.transform).GetComponent<ServerItem>();
+                item.serverInfo = server;
+            }
+        });
     }
 }

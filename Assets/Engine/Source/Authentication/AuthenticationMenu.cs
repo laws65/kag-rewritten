@@ -24,9 +24,6 @@ public class AuthenticationMenu : MonoBehaviour
     private void Awake()
     {
         ShowLogin();
-
-        GameSession.Instance.OnLoginSuccess += OnLoginSuccess;
-        GameSession.Instance.OnLoginFailure += OnLoginFailure;
     }
 
     private void OnLoginSuccess(PlayerInfo pinfo)
@@ -39,19 +36,20 @@ public class AuthenticationMenu : MonoBehaviour
         throw new NotImplementedException();
     }
 
+    #region Dialog UI events
     public void OnLoginClicked()
     {
-        GameSession.Instance.Login(loginEmail.text, loginPassword.text);
+        GameSession.Instance.Login(loginEmail.text, loginPassword.text, OnLoginSuccess, OnLoginFailure);
     }
 
     public void OnRegisterClicked()
     {
-        GameSession.Instance.Register(registerUsername.text, registerEmail.text, registerPassword.text);
+        GameSession.Instance.Register(registerUsername.text, registerEmail.text, registerPassword.text, OnLoginSuccess, OnLoginFailure);
     }
 
     public void OnGuestClicked()
     {
-        GameSession.Instance.LoginAsGuest();
+        GameSession.Instance.LoginAsGuest(OnLoginSuccess, OnLoginFailure);
     }
 
     public void ShowLogin()
@@ -64,5 +62,6 @@ public class AuthenticationMenu : MonoBehaviour
     {
         loginPanel.SetActive(false);
         registerPanel.SetActive(true);
+        #endregion
     }
 }

@@ -25,26 +25,32 @@ public class GameEngine : MonoBehaviour
         }
         Instance = this;
 
-        var args = Environment.GetCommandLineArgs();
-        if (args.Contains("-nographics"))
-        {
-            StartServer();
-        }
-
         DontDestroyOnLoad(this);
     }
 
     private void Start()
     {
-        SceneManager.LoadScene("Authentication");
+        var args = Environment.GetCommandLineArgs();
+        if (args.Contains("-nographics"))
+        {
+            StartServer();
+        }
+        else
+        {
+            SceneManager.LoadScene("Authentication");
+        }
     }
 
     public void StartServer()
     {
         mirror.StartServer();
-        GameSession.Instance.MatchmakeCreate(new ServerInfo
+
+        GameSession.Instance.LoginAsGuest((playerInfo) =>
         {
-            Name = "KAG Server"
+            GameSession.Instance.MatchmakeCreate(new ServerInfo
+            {
+                Name = "KAG Server"
+            });
         });
     }
 
