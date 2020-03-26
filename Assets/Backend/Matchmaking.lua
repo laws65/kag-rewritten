@@ -52,6 +52,6 @@ local function ping(context, payload)
     nk.storage_write(server)
 end
 
+nk.register_rpc(get_server_list, "get_server_list")
 nk.register_rpc(create_server, "create_server")
-nk.register_rpc(get_servers, "get_server_list")
 nk.register_rpc(ping, "ping")
