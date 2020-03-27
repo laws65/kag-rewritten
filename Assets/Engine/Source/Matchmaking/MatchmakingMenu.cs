@@ -1,42 +1,41 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using TMPro;
 
-public class MatchmakingMenu : MonoBehaviour
+namespace KAG
 {
-    public TextMeshProUGUI statsText;
-
-    [Space]
-    public GameObject listContent;
-    public GameObject listItem;
-    public Button refreshButton;
-
-    [Space]
-    public Button playButton;
-
-    private void Awake()
+    public class MatchmakingMenu : MonoBehaviour
     {
-        Refresh();
-    }
+        public TextMeshProUGUI statsText;
 
-    public void Refresh()
-    {
-        GameSession.Instance.MatchmakeRefresh((serverList) =>
+        [Space]
+        public GameObject listContent;
+        public GameObject listItem;
+        public Button refreshButton;
+
+        [Space]
+        public Button playButton;
+
+        private void Awake()
         {
-            foreach (Transform child in listContent.transform)
-            {
-                Destroy(child.gameObject);
-            }
+            Refresh();
+        }
 
-            foreach (ServerInfo server in serverList)
+        public void Refresh()
+        {
+            GameSession.Instance.MatchmakeRefresh((serverList) =>
             {
-                ServerItem item = Instantiate(listItem, listContent.transform).GetComponent<ServerItem>();
-                item.serverInfo = server;
-            }
-        });
+                foreach (Transform child in listContent.transform)
+                {
+                    Destroy(child.gameObject);
+                }
+
+                foreach (ServerInfo server in serverList)
+                {
+                    ServerItem item = Instantiate(listItem, listContent.transform).GetComponent<ServerItem>();
+                    item.serverInfo = server;
+                }
+            });
+        }
     }
 }

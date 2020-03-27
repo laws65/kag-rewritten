@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIDraggable : MonoBehaviour, IDragHandler
+namespace KAG
 {
-    RectTransform rectTransform;
-
-    private void Awake()
+    public class UIDraggable : MonoBehaviour, IDragHandler
     {
-        rectTransform = GetComponent<RectTransform>();
-    }
+        RectTransform rectTransform;
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (rectTransform)
+        private void Awake()
         {
-            rectTransform.localPosition += new Vector3(eventData.delta.x, eventData.delta.y);
+            rectTransform = GetComponent<RectTransform>();
+        }
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            if (rectTransform)
+            {
+                rectTransform.localPosition += new Vector3(eventData.delta.x, eventData.delta.y);
+            }
         }
     }
 }

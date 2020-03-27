@@ -1,67 +1,70 @@
 ﻿using System;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using TMPro;
 
-public class AuthenticationMenu : MonoBehaviour
+namespace KAG
 {
-    public GameObject loginPanel;
-    public TextMeshProUGUI loginEmail;
-    public TextMeshProUGUI loginPassword;
-    public Button loginButton;
-    public Button guestButton;
-    public Button goToRegisterButton;
-
-    [Space]
-    public GameObject registerPanel;
-    public TextMeshProUGUI registerUsername;
-    public TextMeshProUGUI registerEmail;
-    public TextMeshProUGUI registerPassword;
-    public Button registerButton;
-    public Button goToLoginButton;
-
-    private void Awake()
+    public class AuthenticationMenu : MonoBehaviour
     {
-        ShowLogin();
-    }
+        public GameObject loginPanel;
+        public TextMeshProUGUI loginEmail;
+        public TextMeshProUGUI loginPassword;
+        public Button loginButton;
+        public Button guestButton;
+        public Button goToRegisterButton;
 
-    private void OnLoginSuccess(PlayerInfo pinfo)
-    {
-        SceneManager.LoadScene("Matchmaking");
-    }
+        [Space]
+        public GameObject registerPanel;
+        public TextMeshProUGUI registerUsername;
+        public TextMeshProUGUI registerEmail;
+        public TextMeshProUGUI registerPassword;
+        public Button registerButton;
+        public Button goToLoginButton;
 
-    private void OnLoginFailure()
-    {
-        throw new NotImplementedException();
-    }
+        private void Awake()
+        {
+            ShowLogin();
+        }
 
-    #region Dialog UI events
-    public void OnLoginClicked()
-    {
-        GameSession.Instance.Login(loginEmail.text, loginPassword.text, OnLoginSuccess, OnLoginFailure);
-    }
+        private void OnLoginSuccess(PlayerInfo pinfo)
+        {
+            SceneManager.LoadScene("Matchmaking");
+        }
 
-    public void OnRegisterClicked()
-    {
-        GameSession.Instance.Register(registerUsername.text, registerEmail.text, registerPassword.text, OnLoginSuccess, OnLoginFailure);
-    }
+        private void OnLoginFailure()
+        {
+            throw new NotImplementedException();
+        }
 
-    public void OnGuestClicked()
-    {
-        GameSession.Instance.LoginAsGuest(OnLoginSuccess, OnLoginFailure);
-    }
+        #region Dialog UI events
+        public void OnLoginClicked()
+        {
+            GameSession.Instance.Login(loginEmail.text, loginPassword.text, OnLoginSuccess, OnLoginFailure);
+        }
 
-    public void ShowLogin()
-    {
-        registerPanel.SetActive(false);
-        loginPanel.SetActive(true);
-    }
+        public void OnRegisterClicked()
+        {
+            GameSession.Instance.Register(registerUsername.text, registerEmail.text, registerPassword.text, OnLoginSuccess, OnLoginFailure);
+        }
 
-    public void ShowRegister()
-    {
-        loginPanel.SetActive(false);
-        registerPanel.SetActive(true);
-        #endregion
+        public void OnGuestClicked()
+        {
+            GameSession.Instance.LoginAsGuest(OnLoginSuccess, OnLoginFailure);
+        }
+
+        public void ShowLogin()
+        {
+            registerPanel.SetActive(false);
+            loginPanel.SetActive(true);
+        }
+
+        public void ShowRegister()
+        {
+            loginPanel.SetActive(false);
+            registerPanel.SetActive(true);
+            #endregion
+        }
     }
 }

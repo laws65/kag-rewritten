@@ -131,6 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 150606525}
   - component: {fileID: 150606524}
+  - component: {fileID: 150606527}
   - component: {fileID: 150606526}
   m_Layer: 0
   m_Name: GameManager
@@ -182,6 +183,18 @@ MonoBehaviour:
   api_host: vamist.dev
   api_port: 443
   api_key: kag-rewritten
+--- !u!114 &150606527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150606523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bc8e7b50931cfd41bb07e07387d991f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4602047936220929144
 MonoBehaviour:
   m_ObjectHideFlags: 0

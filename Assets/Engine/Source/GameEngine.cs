@@ -1,62 +1,52 @@
-﻿#if UNITY_STANDALONE
-using System.Net.Sockets;
-#endif
-
-using System;
+﻿using System;
 using System.Linq;
-using Jint;
-using Mirror;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Jint;
+using Mirror;
 
-public class GameEngine : MonoBehaviour
+namespace KAG
 {
-    public static GameEngine Instance { get; set; }
-
-    public NetworkManager mirror;
-    public Engine jint = new Engine();
-
-    private void Awake()
+    public class GameEngine : Singleton<GameEngine>
     {
-        if (Instance)
+        public NetworkManager mirror;
+        public Engine jint = new Engine();
+
+        private void Awake()
         {
-            Debug.LogError("This singleton already exists.", this);
-            return;
+            DontDestroyOnLoad(gameObject);
         }
-        Instance = this;
 
-        DontDestroyOnLoad(this);
-    }
-
-    private void Start()
-    {
-        var args = Environment.GetCommandLineArgs();
-        if (args.Contains("-nographics"))
+        private void Start()
         {
-            StartServer();
-        }
-        else
-        {
-            SceneManager.LoadScene("Authentication");
-        }
-    }
-
-    public void StartServer()
-    {
-        mirror.StartServer();
-
-        GameSession.Instance.LoginAsGuest((playerInfo) =>
-        {
-            GameSession.Instance.MatchmakeCreate(new ServerInfo
+            var args = Environment.GetCommandLineArgs();
+            if (args.Contains("-nographics"))
             {
-                Name = "KAG Server"
-            });
-        });
-    }
+                StartServer();
+            }
+            else
+            {
+                SceneManager.LoadScene("Authentication");
+            }
+        }
 
-    public void StartClient(string host_address)
-    {
-        mirror.networkAddress = host_address;
-        mirror.StartClient();
+        public void StartServer()
+        {
+            mirror.StartServer();
+
+            GameSession.Instance.LoginAsGuest((playerInfo) =>
+            {
+                GameSession.Instance.MatchmakeCreate(new ServerInfo
+                {
+                    Name = "KAG Server"
+                });
+            });
+        }
+
+        public void StartClient(string host_address)
+        {
+            mirror.networkAddress = host_address;
+            mirror.StartClient();
+        }
     }
 }

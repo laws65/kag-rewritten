@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace KAG.Runtime
 {
-    public class Character : NetworkBehaviour
+    public class CharacterBrain : NetworkBehaviour
     {
 
     }

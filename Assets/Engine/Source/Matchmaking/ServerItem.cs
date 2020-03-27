@@ -1,13 +1,16 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
+using TMPro;
 
-public class ServerItem : MonoBehaviour
+namespace KAG
 {
-    public TextMeshProUGUI label;
-    public ServerInfo serverInfo;
-
-    private void Start()
+    public class ServerItem : MonoBehaviour
     {
-        label.text = string.Format("{0} ({1})", serverInfo.Name, serverInfo.IP);
+        public TextMeshProUGUI label;
+        public ServerInfo serverInfo;
+
+        private void Start()
+        {
+            label.text = string.Format("{0} ({1})", serverInfo.Name, serverInfo.IP);
+        }
     }
 }

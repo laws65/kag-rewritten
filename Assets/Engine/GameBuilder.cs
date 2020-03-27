@@ -7,50 +7,52 @@ using UnityEditor.Build.Reporting;
 using System.IO.Compression;
 using System.IO;
 
-[InitializeOnLoad]
-public static class ProjectBuild
+namespace KAG
 {
-    public static void Pack(string input_dir, string output_dir)
+    [InitializeOnLoad]
+    public static class ProjectBuild
     {
-        string package_name = new DirectoryInfo(input_dir).Name + ".bytes";
-        string package_path = output_dir + "/" + package_name;
-
-        if (File.Exists(package_path))
+        public static void Pack(string input_dir, string output_dir)
         {
-            File.Delete(package_path);
+            string package_name = new DirectoryInfo(input_dir).Name + ".bytes";
+            string package_path = output_dir + "/" + package_name;
+
+            if (File.Exists(package_path))
+            {
+                File.Delete(package_path);
+            }
+
+            ZipFile.CreateFromDirectory(input_dir, package_path);
         }
 
-        ZipFile.CreateFromDirectory(input_dir, package_path);
+        static ProjectBuild()
+        {
+            EditorApplication.playModeStateChanged += OnPlay;
+        }
+
+        static void OnPlay(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.EnteredPlayMode)
+            {
+                ProjectBuild.Pack(Application.dataPath + "/Base", Application.dataPath + "/__LOCAL__/Resources");
+            }
+        }
     }
 
-    static ProjectBuild()
+    public class ProjectBuildEvent : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
-        EditorApplication.playModeStateChanged += OnPlay;
-    }
+        public int callbackOrder => 0;
 
-    static void OnPlay(PlayModeStateChange state)
-    {
-        if (state == PlayModeStateChange.EnteredPlayMode)
+        public void OnPreprocessBuild(BuildReport report)
         {
             ProjectBuild.Pack(Application.dataPath + "/Base", Application.dataPath + "/__LOCAL__/Resources");
         }
-    }
-}
 
-public class ProjectBuildEvent : IPreprocessBuildWithReport, IPostprocessBuildWithReport
-{
-    public int callbackOrder => 0;
+        public void OnPostprocessBuild(BuildReport report)
+        {
 
-    public void OnPreprocessBuild(BuildReport report)
-    {
-        ProjectBuild.Pack(Application.dataPath + "/Base", Application.dataPath + "/__LOCAL__/Resources");
-        Debug.Log("Initiating build.");
+        }
     }
-
-    public void OnPostprocessBuild(BuildReport report)
-    {
-        Debug.Log("Build finished.");
-    }
-}
 
 #endif
+}
