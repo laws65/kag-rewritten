@@ -1,16 +1,25 @@
 ﻿#if UNITY_EDITOR
-
-using UnityEngine;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
-using System.IO.Compression;
+#endif
+
+using UnityEngine;
 using System.IO;
+using System.IO.Compression;
 
 namespace KAG
 {
+    public static class GamePackager
+    {
+        public static string BASE_PACKAGE = "Base";
+        public static string BASE_DIRECTORY = Application.dataPath + Path.DirectorySeparatorChar + BASE_PACKAGE;
+        public static string CACHE_DIRECTORY = Application.dataPath + Path.DirectorySeparatorChar + "__LOCAL__" + Path.DirectorySeparatorChar + "Resources";
+    }
+
+#if UNITY_EDITOR
     [InitializeOnLoad]
-    public static class ProjectBuild
+    public static class GamePackager_Editor
     {
         public static void Pack(string input_dir, string output_dir)
         {
@@ -25,7 +34,7 @@ namespace KAG
             ZipFile.CreateFromDirectory(input_dir, package_path);
         }
 
-        static ProjectBuild()
+        static GamePackager_Editor()
         {
             EditorApplication.playModeStateChanged += OnPlay;
         }
@@ -34,18 +43,18 @@ namespace KAG
         {
             if (state == PlayModeStateChange.EnteredPlayMode)
             {
-                ProjectBuild.Pack(Application.dataPath + "/Base", Application.dataPath + "/__LOCAL__/Resources");
+                GamePackager_Editor.Pack(GamePackager.BASE_DIRECTORY, GamePackager.CACHE_DIRECTORY);
             }
         }
     }
 
-    public class ProjectBuildEvent : IPreprocessBuildWithReport, IPostprocessBuildWithReport
+    public class GamePackager_Standalone : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
         public int callbackOrder => 0;
 
         public void OnPreprocessBuild(BuildReport report)
         {
-            ProjectBuild.Pack(Application.dataPath + "/Base", Application.dataPath + "/__LOCAL__/Resources");
+            GamePackager_Editor.Pack(GamePackager.BASE_DIRECTORY, GamePackager.CACHE_DIRECTORY);
         }
 
         public void OnPostprocessBuild(BuildReport report)
@@ -53,6 +62,5 @@ namespace KAG
 
         }
     }
-
 #endif
 }
