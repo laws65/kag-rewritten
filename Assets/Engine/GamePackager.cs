@@ -31,7 +31,16 @@ namespace KAG
                 File.Delete(package_path);
             }
 
-            ZipFile.CreateFromDirectory(input_dir, package_path);
+            var zip = ZipFile.Open(package_path, ZipArchiveMode.Create);
+            foreach (var file in Directory.EnumerateFiles(input_dir, "*.*", SearchOption.AllDirectories))
+            {
+                if (Path.GetExtension(file).EndsWith(".meta"))
+                {
+                    continue;
+                }
+                zip.CreateEntry(file.TrimStart(input_dir.ToCharArray()));
+            }
+            zip.Dispose();
         }
 
         static GamePackager_Editor()
