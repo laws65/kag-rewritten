@@ -40,7 +40,7 @@ namespace Mirror.Websocket
             client.NoDelay = NoDelay;
             server.NoDelay = NoDelay;
 
-            Debug.Log("Websocket transport initialized!");
+            //Debug.Log("Websocket transport initialized!");
         }
 
         public override bool Available()
@@ -90,7 +90,7 @@ namespace Mirror.Websocket
         public override Uri ServerUri()
         {
             UriBuilder builder = new UriBuilder();
-            builder.Scheme = Secure? SecureScheme : Scheme;
+            builder.Scheme = Secure ? SecureScheme : Scheme;
             builder.Host = Dns.GetHostName();
             builder.Port = port;
             return builder.Uri;
