@@ -15,12 +15,7 @@ namespace KAG
         public static string BASE_PACKAGE = "Base";
         public static string BASE_DIRECTORY = Application.dataPath + Path.DirectorySeparatorChar + BASE_PACKAGE;
         public static string CACHE_DIRECTORY = Application.dataPath + Path.DirectorySeparatorChar + "__LOCAL__" + Path.DirectorySeparatorChar + "Resources";
-    }
 
-#if UNITY_EDITOR
-    [InitializeOnLoad]
-    public static class GamePackager_Editor
-    {
         public static void Pack(string input_dir, string output_dir)
         {
             string package_name = new DirectoryInfo(input_dir).Name + ".bytes";
@@ -42,7 +37,12 @@ namespace KAG
             }
             zip.Dispose();
         }
+    }
 
+#if UNITY_EDITOR
+    [InitializeOnLoad]
+    public static class GamePackager_Editor
+    {
         static GamePackager_Editor()
         {
             EditorApplication.playModeStateChanged += OnPlay;
@@ -52,7 +52,7 @@ namespace KAG
         {
             if (state == PlayModeStateChange.EnteredPlayMode)
             {
-                GamePackager_Editor.Pack(GamePackager.BASE_DIRECTORY, GamePackager.CACHE_DIRECTORY);
+                GamePackager.Pack(GamePackager.BASE_DIRECTORY, GamePackager.CACHE_DIRECTORY);
             }
         }
     }
@@ -63,7 +63,7 @@ namespace KAG
 
         public void OnPreprocessBuild(BuildReport report)
         {
-            GamePackager_Editor.Pack(GamePackager.BASE_DIRECTORY, GamePackager.CACHE_DIRECTORY);
+            GamePackager.Pack(GamePackager.BASE_DIRECTORY, GamePackager.CACHE_DIRECTORY);
         }
 
         public void OnPostprocessBuild(BuildReport report)
