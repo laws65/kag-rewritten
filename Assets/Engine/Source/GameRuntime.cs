@@ -1,11 +1,12 @@
 ﻿using System.IO;
-using System.IO.Compression;
 using UnityEngine;
 
 namespace KAG
 {
     public class GameRuntime : Singleton<GameRuntime>
     {
+        public GameModule baseModule;
+
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
@@ -14,6 +15,15 @@ namespace KAG
         private void Start()
         {
             LoadBase();
+
+            // Giving it a test
+            foreach (var file in baseModule.fileList)
+            {
+                if (file is GameModuleTextFile)
+                {
+                    Debug.Log(((GameModuleTextFile)file).Content);
+                }
+            }
         }
 
         public void LoadBase()
@@ -21,14 +31,10 @@ namespace KAG
             TextAsset zipBinary = Resources.Load(GamePackager.BASE_PACKAGE) as TextAsset;
             Stream zipStream = new MemoryStream(zipBinary.bytes);
 
-            ZipArchive zipArchive = new ZipArchive(zipStream);
-            foreach (var entry in zipArchive.Entries)
-            {
-                Debug.Log(entry.FullName);
-            }
+            baseModule = new GameModule(zipStream);
         }
 
-        public void LoadMod(string mod_name)
+        public void LoadModule(string url)
         {
 
         }
