@@ -4,9 +4,10 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 #endif
 
-using UnityEngine;
+using System;
 using System.IO;
 using System.IO.Compression;
+using UnityEngine;
 
 namespace KAG
 {
@@ -16,9 +17,9 @@ namespace KAG
         public static string BASE_DIRECTORY = Application.dataPath + Path.DirectorySeparatorChar + BASE_PACKAGE;
         public static string CACHE_DIRECTORY = Application.dataPath + Path.DirectorySeparatorChar + "__LOCAL__" + Path.DirectorySeparatorChar + "Resources";
 
-        public static void Pack(string input_dir, string output_dir)
+        public static void Pack(string input_dir, string output_dir, Action callback = null)
         {
-            string package_name = new DirectoryInfo(input_dir).Name + ".bytes";
+            string package_name = Path.GetFileName(input_dir) + ".bytes";
             string package_path = output_dir + "/" + package_name;
 
             if (File.Exists(package_path))
@@ -26,16 +27,18 @@ namespace KAG
                 File.Delete(package_path);
             }
 
-            var zip = ZipFile.Open(package_path, ZipArchiveMode.Create);
-            foreach (var file in Directory.EnumerateFiles(input_dir, "*.*", SearchOption.AllDirectories))
+            using (var zip = ZipFile.Open(package_path, ZipArchiveMode.Create))
             {
-                if (Path.GetExtension(file).EndsWith(".meta"))
+                foreach (var path in Directory.EnumerateFiles(input_dir, "*.*", SearchOption.AllDirectories))
                 {
-                    continue;
+                    if (Path.GetExtension(path) != ".meta")
+                    {
+                        zip.CreateEntryFromFile(path, path.TrimStart(input_dir.ToCharArray()));
+                    }
                 }
-                zip.CreateEntry(file.TrimStart(input_dir.ToCharArray()));
             }
-            zip.Dispose();
+
+            callback?.Invoke();
         }
     }
 
@@ -43,6 +46,8 @@ namespace KAG
     [InitializeOnLoad]
     public static class GamePackager_Editor
     {
+        static bool requiresUpdate = true;
+
         static GamePackager_Editor()
         {
             EditorApplication.playModeStateChanged += OnPlay;
@@ -50,9 +55,21 @@ namespace KAG
 
         static void OnPlay(PlayModeStateChange state)
         {
+            if (state == PlayModeStateChange.ExitingEditMode && requiresUpdate)
+            {
+                requiresUpdate = false;
+
+                EditorApplication.isPlaying = false;
+                GamePackager.Pack(GamePackager.BASE_DIRECTORY, GamePackager.CACHE_DIRECTORY, () =>
+                {
+                    AssetDatabase.Refresh();
+                    EditorApplication.isPlaying = true;
+                });
+            }
+
             if (state == PlayModeStateChange.EnteredPlayMode)
             {
-                GamePackager.Pack(GamePackager.BASE_DIRECTORY, GamePackager.CACHE_DIRECTORY);
+                requiresUpdate = true;
             }
         }
     }
