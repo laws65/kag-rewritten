@@ -52,10 +52,7 @@ namespace KAG
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
-        }
 
-        private void Start()
-        {
             nakama = new Client(api_scheme, api_host, api_port, api_key);
         }
 
@@ -104,7 +101,11 @@ namespace KAG
             var result = await nakama.RpcAsync(session, "get_server_list");
             var list = result.Payload.FromJson<List<ServerInfo>>();
 
-            if (list != null)
+            if (list == null)
+            {
+                onResult?.Invoke(new List<ServerInfo>());
+            }
+            else
             {
                 onResult?.Invoke(list);
             }

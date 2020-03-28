@@ -30,9 +30,15 @@ namespace KAG
                     Destroy(child.gameObject);
                 }
 
+                serverList.Add(new ServerInfo
+                {
+                    Name = "Localhost",
+                    IP = "127.0.0.1"
+                });
+
                 foreach (ServerInfo server in serverList)
                 {
-                    ServerItem item = Instantiate(listItem, listContent.transform).GetComponent<ServerItem>();
+                    ServerEntry item = Instantiate(listItem, listContent.transform).GetComponent<ServerEntry>();
                     item.serverInfo = server;
                 }
             });
