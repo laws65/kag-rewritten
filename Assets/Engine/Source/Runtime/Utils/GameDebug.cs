@@ -9,9 +9,19 @@ namespace KAG.Runtime
             module.SetGlobalObject("GameDebug", this);
         }
 
-        public void Log(string text)
+        public void Log(object message)
         {
-            Debug.Log(text);
+            Debug.Log(message);
+        }
+
+        public void LogError(object message)
+        {
+            Debug.LogError(message);
+        }
+
+        public void LogWarning(object message)
+        {
+            Debug.LogWarning(message);
         }
     }
 }
