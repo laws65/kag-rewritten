@@ -6,6 +6,7 @@ using System.Text;
 using UnityEngine;
 using Jint;
 using Jint.Native;
+using Jint.Native.Json;
 using Jint.Runtime;
 using Jint.Runtime.Interop;
 
@@ -53,10 +54,13 @@ namespace KAG.Runtime
             switch (fileExtension)
             {
                 case ".js":
-                    file = new GameModuleScriptFile(fileBuffer);
+                    file = new GameModuleScriptFile(this, fileBuffer);
+                    break;
+                case ".json":
+                    file = new GameModuleJsonFile(this, fileBuffer);
                     break;
                 case ".txt":
-                    file = new GameModuleTextFile(fileBuffer);
+                    file = new GameModuleTextFile(this, fileBuffer);
                     break;
             }
 
@@ -73,6 +77,16 @@ namespace KAG.Runtime
         public void Remove(string filePath)
         {
             files.Remove(filePath);
+        }
+
+        public T Get<T>(string filePath)
+        {
+            if (files.ContainsKey(filePath))
+            {
+                return (T)(object)files[filePath];
+            }
+
+            return default;
         }
 
         /// <summary>
@@ -112,21 +126,39 @@ namespace KAG.Runtime
         }
     }
 
-    public class GameModuleFile { }
+    public class GameModuleFile
+    {
+        public GameModule module;
+
+        public GameModuleFile(GameModule gameModule)
+        {
+            module = gameModule;
+        }
+    }
 
     public class GameModuleTextFile : GameModuleFile
     {
-        public string Content { get; } = "";
+        public string Text { get; } = "";
 
-        public GameModuleTextFile(byte[] buffer)
+        public GameModuleTextFile(GameModule gameModule, byte[] buffer) : base(gameModule)
         {
-            Content = Encoding.UTF8.GetString(buffer);
+            Text = Encoding.UTF8.GetString(buffer);
+        }
+    }
+
+    public class GameModuleJsonFile : GameModuleTextFile
+    {
+        public GameModuleJsonFile(GameModule gameModule, byte[] buffer) : base(gameModule, buffer) { }
+
+        public JsValue GetObject()
+        {
+            return new JsonParser(module.jint).Parse(Text);
         }
     }
 
     public class GameModuleScriptFile : GameModuleTextFile
     {
-        public GameModuleScriptFile(byte[] buffer) : base(buffer) { }
+        public GameModuleScriptFile(GameModule gameModule, byte[] buffer) : base(gameModule, buffer) { }
 
         /// <summary>
         /// Execute this script with the specified engine
@@ -134,7 +166,7 @@ namespace KAG.Runtime
         /// <param name="jint">The JavaScript engine to use for executing the script</param>
         public void Run(Engine jint)
         {
-            jint.Execute(Content);
+            jint.Execute(Text);
         }
     }
 }

@@ -10,9 +10,14 @@ namespace KAG.Runtime
             module.SetGlobalObject("GameUtils", this);
         }
 
-        public JsValue ParseJSON(string filePath)
+        public JsValue ParseJson(string filePath)
         {
-            return null;
+            var file = module.Get<GameModuleJsonFile>(filePath);
+            if (file != null)
+            {
+                return file.GetObject();
+            }
+            return JsValue.Null;
         }
     }
 
