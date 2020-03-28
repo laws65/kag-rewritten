@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-namespace KAG.Runtime
+namespace KAG.Runtime.Utils
 {
-    public class GameDebug : BaseUtils
+    public class DebugUtils : BaseUtils
     {
-        public GameDebug(GameModule gameModule) : base(gameModule)
+        public DebugUtils(GameModule gameModule) : base(gameModule)
         {
-            module.SetGlobalObject("GameDebug", this);
+            module.SetGlobalObject("Debug", this);
         }
 
         public void Log(object message)

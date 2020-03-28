@@ -1,13 +1,13 @@
 ﻿using Jint;
 using Jint.Native;
 
-namespace KAG.Runtime
+namespace KAG.Runtime.Utils
 {
     public class GameUtils : BaseUtils
     {
         public GameUtils(GameModule gameModule) : base(gameModule)
         {
-            module.SetGlobalObject("GameUtils", this);
+            module.SetGlobalObject("Utils", this);
         }
 
         public JsValue ParseJson(string filePath)

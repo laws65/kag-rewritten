@@ -12,6 +12,8 @@ using Jint.Runtime.Interop;
 
 namespace KAG.Runtime
 {
+    using KAG.Runtime.Utils;
+
     public class GameModule
     {
         public Engine jint;
@@ -28,8 +30,8 @@ namespace KAG.Runtime
                 Add(entry.FullName, entry.Open());
             }
 
-            utils.Add(new GameUtils(this));
-            utils.Add(new GameDebug(this));
+            utils.Add(new Utils.GameUtils(this));
+            utils.Add(new DebugUtils(this));
         }
 
         /// <summary>
