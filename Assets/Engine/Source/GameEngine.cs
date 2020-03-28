@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.SceneManagement;
-using Jint;
 using Mirror;
 
 namespace KAG
@@ -10,7 +8,6 @@ namespace KAG
     public class GameEngine : Singleton<GameEngine>
     {
         public NetworkManager mirror;
-        public Engine jint = new Engine();
 
         private void Awake()
         {

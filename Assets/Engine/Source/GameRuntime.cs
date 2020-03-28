@@ -1,40 +1,31 @@
 ﻿using System.IO;
 using UnityEngine;
 
-namespace KAG
+namespace KAG.Runtime
 {
     public class GameRuntime : Singleton<GameRuntime>
     {
-        public GameModule baseModule;
+        private GameModule module;
 
         private void Awake()
         {
-            DontDestroyOnLoad(gameObject);
+            LoadBase();
         }
 
         private void Start()
         {
-            LoadBase();
-
-            // Giving it a test
-            foreach (var file in baseModule.fileList)
-            {
-                if (file is GameModuleTextFile)
-                {
-                    Debug.Log(((GameModuleTextFile)file).Content);
-                }
-            }
+            module.Run("Scripts/Main.js");
         }
 
-        public void LoadBase()
+        private void LoadBase()
         {
             TextAsset zipBinary = Resources.Load(GamePackager.BASE_PACKAGE) as TextAsset;
             Stream zipStream = new MemoryStream(zipBinary.bytes);
 
-            baseModule = new GameModule(zipStream);
+            module = new GameModule(zipStream);
         }
 
-        public void LoadModule(string url)
+        private void LoadModule(string url)
         {
 
         }
