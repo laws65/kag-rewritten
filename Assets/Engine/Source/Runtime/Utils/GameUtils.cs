@@ -1,5 +1,6 @@
 ﻿using Jint;
 using Jint.Native;
+using Jint.Native.Json;
 
 namespace KAG.Runtime.Utils
 {
@@ -10,14 +11,16 @@ namespace KAG.Runtime.Utils
             module.SetGlobalObject("Utils", this);
         }
 
-        public JsValue ParseJson(string filePath)
+        public JsValue FromJson(string filePath)
         {
             var file = module.Get<GameModuleJsonFile>(filePath);
-            if (file != null)
-            {
-                return file.GetObject();
-            }
-            return JsValue.Null;
+
+            return file?.Value ?? JsValue.Null;
+        }
+
+        public JsValue ToJson(JsValue value)
+        {
+            return module.ToJson(value);
         }
     }
 

@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Text;
 using System.IO;
 using System.IO.Compression;
 using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
 using Jint;
 using Jint.Native;
 using Jint.Native.Json;
@@ -17,8 +16,12 @@ namespace KAG.Runtime
     public class GameModule
     {
         public Engine jint;
-        public List<BaseUtils> utils = new List<BaseUtils>();
         public Dictionary<string, GameModuleFile> files = new Dictionary<string, GameModuleFile>();
+
+        #region Cached frequently used helpers
+        public JsonSerializer jsonSerializer;
+        public JsonParser jsonParser;
+        #endregion
 
         public GameModule(Stream zipStream)
         {
@@ -30,8 +33,12 @@ namespace KAG.Runtime
                 Add(entry.FullName, entry.Open());
             }
 
-            utils.Add(new Utils.GameUtils(this));
-            utils.Add(new DebugUtils(this));
+            jsonSerializer = new JsonSerializer(jint);
+            jsonParser = new JsonParser(jint);
+
+            new GameUtils(this);
+            new DebugUtils(this);
+            new AssertUtils(this);
         }
 
         /// <summary>
@@ -126,6 +133,23 @@ namespace KAG.Runtime
         {
             jint.SetValue(name, TypeReference.CreateTypeReference(jint, type));
         }
+
+        #region Helpers
+        public JsValue FromJson(string json)
+        {
+            return jsonParser.Parse(json);
+        }
+
+        public JsValue ToJson(JsValue value)
+        {
+            if (value is JsString)
+            {
+                return value;
+            }
+
+            return jsonSerializer.Serialize(value, JsValue.Null, JsValue.Null);
+        }
+        #endregion
     }
 
     public class GameModuleFile
@@ -150,12 +174,15 @@ namespace KAG.Runtime
 
     public class GameModuleJsonFile : GameModuleTextFile
     {
-        public GameModuleJsonFile(GameModule gameModule, byte[] buffer) : base(gameModule, buffer) { }
-
-        public JsValue GetObject()
+        public JsValue Value
         {
-            return new JsonParser(module.jint).Parse(Text);
+            get
+            {
+                return module.FromJson(Text);
+            }
         }
+
+        public GameModuleJsonFile(GameModule gameModule, byte[] buffer) : base(gameModule, buffer) { }
     }
 
     public class GameModuleScriptFile : GameModuleTextFile

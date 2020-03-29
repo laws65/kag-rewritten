@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Jint.Native;
 
 namespace KAG.Runtime.Utils
 {
@@ -9,19 +10,19 @@ namespace KAG.Runtime.Utils
             module.SetGlobalObject("Debug", this);
         }
 
-        public void Log(object message)
+        public void Log(JsValue message)
         {
-            Debug.Log(message);
+            Debug.Log(module.ToJson(message));
         }
 
-        public void LogError(object message)
+        public void LogError(JsValue message)
         {
-            Debug.LogError(message);
+            Debug.LogError(module.ToJson(message));
         }
 
-        public void LogWarning(object message)
+        public void LogWarning(JsValue message)
         {
-            Debug.LogWarning(message);
+            Debug.LogWarning(module.ToJson(message));
         }
     }
 }
