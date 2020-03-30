@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.IO;
-using System.IO.Compression;
 using System.Collections.Generic;
 using Jint;
 using Jint.Native;
@@ -11,6 +10,7 @@ using Jint.Runtime.Interop;
 
 namespace KAG.Runtime
 {
+    using ICSharpCode.SharpZipLib.Zip;
     using KAG.Runtime.Utils;
 
     public class GameModule
@@ -26,11 +26,11 @@ namespace KAG.Runtime
         public GameModule(Stream zipStream)
         {
             jint = new Engine();
-            ZipArchive archive = new ZipArchive(zipStream);
 
-            foreach (var entry in archive.Entries)
+            ZipFile archive = new ZipFile(zipStream);
+            foreach (ZipEntry entry in archive)
             {
-                Add(entry.FullName, entry.Open());
+                Add(entry.Name, archive.GetInputStream(entry));
             }
 
             jsonSerializer = new JsonSerializer(jint);

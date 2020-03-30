@@ -53,7 +53,7 @@ namespace KAG
         {
             DontDestroyOnLoad(gameObject);
 
-            nakama = new Client(api_scheme, api_host, api_port, api_key);
+            nakama = new Client(api_scheme, api_host, api_port, api_key, UnityWebRequestAdapter.Instance);
         }
 
         #region Authentication helpers

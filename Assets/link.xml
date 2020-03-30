@@ -4,4 +4,8 @@
 
   <!-- Needed to preserve Jint dependencies during stripping -->
   <assembly fullname="System.Linq.Expressions" ignoreIfMissing="0" preserve="all" />
+
+  <assembly fullname="mscorlib">
+    <namespace fullname="System.Security.Cryptography" preserve="all" />
+  </assembly>
 </linker>

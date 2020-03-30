@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using UnityEngine;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace KAG
 {
@@ -27,15 +28,18 @@ namespace KAG
                 File.Delete(package_path);
             }
 
-            using (var zip = ZipFile.Open(package_path, ZipArchiveMode.Create))
+            Directory.CreateDirectory(output_dir);
+            using (var zip = ZipFile.Create(package_path))
             {
+                zip.BeginUpdate();
                 foreach (var path in Directory.EnumerateFiles(input_dir, "*.*", SearchOption.AllDirectories))
                 {
                     if (Path.GetExtension(path) != ".meta")
                     {
-                        zip.CreateEntryFromFile(path, path.TrimStart(input_dir.ToCharArray()));
+                        zip.Add(path, path.TrimStart(input_dir.ToCharArray()));
                     }
                 }
+                zip.CommitUpdate();
             }
 
             callback?.Invoke();
