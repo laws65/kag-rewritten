@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace KAG
+namespace KAG.Misc
 {
     public class UIDraggable : MonoBehaviour, IDragHandler
     {

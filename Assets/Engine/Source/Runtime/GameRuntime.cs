@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace KAG.Runtime
 {
+    using KAG.Misc;
+
     public class GameRuntime : Singleton<GameRuntime>
     {
         private GameModule module;

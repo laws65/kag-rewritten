@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace KAG
+namespace KAG.Misc
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
@@ -40,14 +40,7 @@ namespace KAG
             }
         }
 
-
         private void OnApplicationQuit()
-        {
-            m_ShuttingDown = true;
-        }
-
-
-        private void OnDestroy()
         {
             m_ShuttingDown = true;
         }

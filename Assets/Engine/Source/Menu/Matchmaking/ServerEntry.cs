@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using TMPro;
 
-namespace KAG
+namespace KAG.Menu
 {
     public class ServerEntry : MonoBehaviour
     {
@@ -15,6 +16,7 @@ namespace KAG
 
         public void Join()
         {
+            Toast.Instance.Show("Trying to connect to " + serverInfo.IP + "...");
             GameEngine.Instance.StartClient(serverInfo.IP);
         }
     }

@@ -6,6 +6,8 @@ using Nakama.TinyJson;
 
 namespace KAG
 {
+    using KAG.Misc;
+
     public class PlayerInfo
     {
         public string Username;
@@ -29,8 +31,8 @@ namespace KAG
         public PlayerInfo player;
 
         #region Session events
-        public delegate void OnLoginSuccess(PlayerInfo playerInfo);
-        public delegate void OnLoginFailure();
+        public delegate void OnLoginSuccess(PlayerInfo pinfo);
+        public delegate void OnLoginFailure(Exception e);
 
         public delegate void OnMatchmakeRefresh(List<ServerInfo> serverList);
         #endregion
@@ -57,29 +59,38 @@ namespace KAG
         }
 
         #region Authentication helpers
-        private void Authenticate(ISession p_session, OnLoginSuccess onSuccess = null, OnLoginFailure onFailure = null)
+        private void Authenticate(ISession p_session)
         {
-            if (p_session == null)
-            {
-                onFailure?.Invoke();
-            }
-            else
-            {
-                session = p_session;
-                player = new PlayerInfo(session);
+            if (p_session == null) return;
 
-                onSuccess?.Invoke(player);
-            }
+            session = p_session;
+            player = new PlayerInfo(session);
         }
 
         public async void Login(string email, string password, OnLoginSuccess onSuccess = null, OnLoginFailure onFailure = null)
         {
-            Authenticate(await nakama.AuthenticateEmailAsync(email, password, null, false), onSuccess, onFailure);
+            try
+            {
+                Authenticate(await nakama.AuthenticateEmailAsync(email, password, null, false));
+                onSuccess?.Invoke(player);
+            }
+            catch (Exception e)
+            {
+                onFailure?.Invoke(e);
+            }
         }
 
         public async void Register(string username, string email, string password, OnLoginSuccess onSuccess = null, OnLoginFailure onFailure = null)
         {
-            Authenticate(await nakama.AuthenticateEmailAsync(email, password, username, true), onSuccess, onFailure);
+            try
+            {
+                Authenticate(await nakama.AuthenticateEmailAsync(email, password, username, true));
+                onSuccess?.Invoke(player);
+            }
+            catch (Exception e)
+            {
+                onFailure?.Invoke(e);
+            }
         }
 
         public async void LoginAsGuest(OnLoginSuccess onSuccess = null, OnLoginFailure onFailure = null)
@@ -91,7 +102,15 @@ namespace KAG
                 PlayerPrefs.SetString("Nakama.DeviceId", deviceId);
             }
 
-            Authenticate(await nakama.AuthenticateDeviceAsync(deviceId), onSuccess, onFailure);
+            try
+            {
+                Authenticate(await nakama.AuthenticateDeviceAsync(deviceId));
+                onSuccess?.Invoke(player);
+            }
+            catch (Exception e)
+            {
+                onFailure?.Invoke(e);
+            }
         }
         #endregion
 

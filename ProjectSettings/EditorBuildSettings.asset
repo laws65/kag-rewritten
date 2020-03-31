@@ -9,10 +9,10 @@ EditorBuildSettings:
     path: Assets/Engine/Source/Boot.unity
     guid: e5a2b26ff89a32c4aafb91b505a62ee6
   - enabled: 1
-    path: Assets/Engine/Source/Authentication/Authentication.unity
+    path: Assets/Engine/Source/Menu/Authentication/Authentication.unity
     guid: 81b63fd70703aac4c9bed47c86ae09dc
   - enabled: 1
-    path: Assets/Engine/Source/Matchmaking/Matchmaking.unity
+    path: Assets/Engine/Source/Menu/Matchmaking/Matchmaking.unity
     guid: df695b0e1f9700c4ba11558e474d4b41
   - enabled: 1
     path: Assets/Engine/Source/Runtime/Online.unity

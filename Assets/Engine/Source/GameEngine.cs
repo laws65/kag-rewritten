@@ -5,6 +5,8 @@ using Mirror;
 
 namespace KAG
 {
+    using KAG.Misc;
+
     public class GameEngine : Singleton<GameEngine>
     {
         public NetworkManager mirror;

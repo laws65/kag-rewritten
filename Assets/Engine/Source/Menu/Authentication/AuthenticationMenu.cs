@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-namespace KAG
+namespace KAG.Menu
 {
     public class AuthenticationMenu : MonoBehaviour
     {
@@ -33,24 +33,27 @@ namespace KAG
             SceneManager.LoadScene("Matchmaking");
         }
 
-        private void OnLoginFailure()
+        private void OnLoginFailure(Exception e)
         {
-            throw new NotImplementedException();
+            Toast.Instance.ShowError(e.Message);
         }
 
         #region Dialog UI events
         public void OnLoginClicked()
         {
+            Toast.Instance.Show("Logging in...");
             GameSession.Instance.Login(loginEmail.text, loginPassword.text, OnLoginSuccess, OnLoginFailure);
         }
 
         public void OnRegisterClicked()
         {
+            Toast.Instance.Show("Registering...");
             GameSession.Instance.Register(registerUsername.text, registerEmail.text, registerPassword.text, OnLoginSuccess, OnLoginFailure);
         }
 
         public void OnGuestClicked()
         {
+            Toast.Instance.Show("Logging in as a guest...");
             GameSession.Instance.LoginAsGuest(OnLoginSuccess, OnLoginFailure);
         }
 

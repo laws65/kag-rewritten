@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 
-namespace KAG
+namespace KAG.Menu
 {
     public class MatchmakingMenu : MonoBehaviour
     {
@@ -23,6 +23,8 @@ namespace KAG
 
         public void Refresh()
         {
+            Toast.Instance.Show("Refreshing server list...");
+
             GameSession.Instance.MatchmakeRefresh((serverList) =>
             {
                 foreach (Transform child in listContent.transform)
