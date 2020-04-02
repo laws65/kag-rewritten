@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
 
@@ -9,6 +10,11 @@ namespace KAG
 
     public class GameEngine : Singleton<GameEngine>
     {
+        [SerializeField]
+        public UnityEngine.Object authenticationScene;
+        public UnityEngine.Object matchmakingScene;
+        public UnityEngine.Object menuScene;
+
         public NetworkManager mirror;
 
         private void Awake()
@@ -25,7 +31,7 @@ namespace KAG
             }
             else
             {
-                SceneManager.LoadScene("Authentication");
+                SceneManager.LoadScene(authenticationScene.name);
             }
         }
 

@@ -33,6 +33,7 @@ namespace KAG
         #region Session events
         public delegate void OnLoginSuccess(PlayerInfo pinfo);
         public delegate void OnLoginFailure(Exception e);
+        public delegate void OnLogout();
 
         public delegate void OnMatchmakeRefresh(List<ServerInfo> serverList);
         #endregion
@@ -54,8 +55,6 @@ namespace KAG
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
-
-            nakama = new Client(api_scheme, api_host, api_port, api_key, UnityWebRequestAdapter.Instance);
         }
 
         #region Authentication helpers
@@ -69,6 +68,8 @@ namespace KAG
 
         public async void Login(string email, string password, OnLoginSuccess onSuccess = null, OnLoginFailure onFailure = null)
         {
+            nakama = new Client(api_scheme, api_host, api_port, api_key, UnityWebRequestAdapter.Instance);
+
             try
             {
                 Authenticate(await nakama.AuthenticateEmailAsync(email, password, null, false));
@@ -82,6 +83,8 @@ namespace KAG
 
         public async void Register(string username, string email, string password, OnLoginSuccess onSuccess = null, OnLoginFailure onFailure = null)
         {
+            nakama = new Client(api_scheme, api_host, api_port, api_key, UnityWebRequestAdapter.Instance);
+
             try
             {
                 Authenticate(await nakama.AuthenticateEmailAsync(email, password, username, true));
@@ -95,6 +98,8 @@ namespace KAG
 
         public async void LoginAsGuest(OnLoginSuccess onSuccess = null, OnLoginFailure onFailure = null)
         {
+            nakama = new Client(api_scheme, api_host, api_port, api_key, UnityWebRequestAdapter.Instance);
+
             string deviceId = PlayerPrefs.GetString("Nakama.DeviceId");
             if (string.IsNullOrEmpty(deviceId))
             {
@@ -111,6 +116,15 @@ namespace KAG
             {
                 onFailure?.Invoke(e);
             }
+        }
+
+        public void Logout(OnLogout callback)
+        {
+            player = null;
+            session = null;
+            nakama = null;
+
+            callback?.Invoke();
         }
         #endregion
 

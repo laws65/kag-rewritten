@@ -150,6 +150,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32b608e42849bf54294bb73ecea76f66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authenticationScene: {fileID: 102900000, guid: 81b63fd70703aac4c9bed47c86ae09dc,
+    type: 3}
+  matchmakingScene: {fileID: 102900000, guid: df695b0e1f9700c4ba11558e474d4b41, type: 3}
+  menuScene: {fileID: 102900000, guid: 6dd4fde58de5a1f4ba8fac7ea509e25e, type: 3}
   mirror: {fileID: 4602047936220929146}
 --- !u!4 &150606525
 Transform:

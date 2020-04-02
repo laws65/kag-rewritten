@@ -30,7 +30,7 @@ namespace KAG.Menu
 
         private void OnLoginSuccess(PlayerInfo pinfo)
         {
-            SceneManager.LoadScene("Matchmaking");
+            SceneManager.LoadScene(GameEngine.Instance.menuScene.name);
         }
 
         private void OnLoginFailure(Exception e)

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 namespace KAG.Menu
@@ -11,14 +12,15 @@ namespace KAG.Menu
         [Space]
         public GameObject listContent;
         public GameObject listItem;
-        public Button refreshButton;
-
-        [Space]
-        public Button playButton;
 
         private void Awake()
         {
             Refresh();
+        }
+
+        public void Close()
+        {
+            SceneManager.LoadScene(GameEngine.Instance.menuScene.name);
         }
 
         public void Refresh()

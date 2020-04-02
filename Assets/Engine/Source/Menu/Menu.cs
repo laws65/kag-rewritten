@@ -1,0 +1,31 @@
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+
+namespace KAG.Menu
+{
+    public class Menu : MonoBehaviour
+    {
+        public void ShowSingleplayer()
+        {
+
+        }
+
+        public void ShowMultiplayer()
+        {
+            SceneManager.LoadScene(GameEngine.Instance.matchmakingScene.name);
+        }
+
+        public void Settings()
+        {
+
+        }
+
+        public void Logout()
+        {
+            GameSession.Instance.Logout(() =>
+            {
+                SceneManager.LoadScene(GameEngine.Instance.authenticationScene.name);
+            });
+        }
+    }
+}
