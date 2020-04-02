@@ -44,7 +44,7 @@ namespace Mirror
         void OnEnable()
         {
             if (target == null) { Debug.LogWarning("NetworkBehaviourInspector had no target object"); return; }
-           
+
             // If target's base class is changed from NetworkBehaviour to MonoBehaviour
             // then Unity temporarily keep using this Inspector causing things to break
             if (!(target is NetworkBehaviour)) { return; }
@@ -132,11 +132,11 @@ namespace Mirror
 
             for (int i = 0; i < syncListFields.Count; i++)
             {
-                drawSyncList(syncListFields[i]);
+                DrawSyncList(syncListFields[i]);
             }
         }
 
-        void drawSyncList(SyncListField syncListField)
+        void DrawSyncList(SyncListField syncListField)
         {
             syncListField.visible = EditorGUILayout.Foldout(syncListField.visible, syncListField.label);
             if (syncListField.visible)

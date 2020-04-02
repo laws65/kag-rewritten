@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Mirror
 {
@@ -24,7 +23,7 @@ namespace Mirror
         /// <summary>
         /// Diagnostic flag indicating whether this player is ready for the game to begin.
         /// <para>Invoke CmdChangeReadyState method on the client to set this flag.</para>
-        /// <para>When all players are ready to begin, the game will start. This should not be set directly, the SendReadyToBeginMessage function should be called on the client to set it on the server.</para>
+        /// <para>When all players are ready to begin, the game will start. This should not be set directly, CmdChangeReadyState should be called on the client to set it on the server.</para>
         /// </summary>
         [Tooltip("Diagnostic flag indicating whether this player is ready for the game to begin")]
         [SyncVar(hook = nameof(ReadyStateChanged))]
@@ -80,7 +79,7 @@ namespace Mirror
 
         #region SyncVar Hooks
 
-        void ReadyStateChanged(bool oldReadyState, bool newReadyState)
+        void ReadyStateChanged(bool _, bool newReadyState)
         {
             OnClientReady(newReadyState);
         }
@@ -102,7 +101,7 @@ namespace Mirror
 
         /// <summary>
         /// This is a hook that is invoked on clients when a RoomPlayer switches between ready or not ready.
-        /// <para>This function is called when the a client player calls SendReadyToBeginMessage() or SendNotReadyToBeginMessage().</para>
+        /// <para>This function is called when the a client player calls CmdChangeReadyState.</para>
         /// </summary>
         /// <param name="readyState">Whether the player is ready or not.</param>
         public virtual void OnClientReady(bool readyState) { }
@@ -125,46 +124,55 @@ namespace Mirror
                 if (!room.showRoomGUI)
                     return;
 
-                if (SceneManager.GetActiveScene().name != room.RoomScene)
+                if (!NetworkManager.IsSceneActive(room.RoomScene))
                     return;
 
-                GUILayout.BeginArea(new Rect(20f + (index * 100), 200f, 90f, 130f));
+                DrawPlayerReadyState();
+                DrawPlayerReadyButton();
+            }
+        }
 
-                GUILayout.Label($"Player [{index + 1}]");
+        void DrawPlayerReadyButton()
+        {
+            if (NetworkClient.active && isLocalPlayer)
+            {
+                GUILayout.BeginArea(new Rect(20f, 300f, 120f, 20f));
 
                 if (readyToBegin)
-                    GUILayout.Label("Ready");
-                else
-                    GUILayout.Label("Not Ready");
-
-                if (((isServer && index > 0) || isServerOnly) && GUILayout.Button("REMOVE"))
                 {
-                    // This button only shows on the Host for all players other than the Host
-                    // Host and Players can't remove themselves (stop the client instead)
-                    // Host can kick a Player this way.
-                    GetComponent<NetworkIdentity>().connectionToClient.Disconnect();
+                    if (GUILayout.Button("Cancel"))
+                        CmdChangeReadyState(false);
+                }
+                else
+                {
+                    if (GUILayout.Button("Ready"))
+                        CmdChangeReadyState(true);
                 }
 
                 GUILayout.EndArea();
-
-                if (NetworkClient.active && isLocalPlayer)
-                {
-                    GUILayout.BeginArea(new Rect(20f, 300f, 120f, 20f));
-
-                    if (readyToBegin)
-                    {
-                        if (GUILayout.Button("Cancel"))
-                            CmdChangeReadyState(false);
-                    }
-                    else
-                    {
-                        if (GUILayout.Button("Ready"))
-                            CmdChangeReadyState(true);
-                    }
-
-                    GUILayout.EndArea();
-                }
             }
+        }
+
+        void DrawPlayerReadyState()
+        {
+            GUILayout.BeginArea(new Rect(20f + (index * 100), 200f, 90f, 130f));
+
+            GUILayout.Label($"Player [{index + 1}]");
+
+            if (readyToBegin)
+                GUILayout.Label("Ready");
+            else
+                GUILayout.Label("Not Ready");
+
+            if (((isServer && index > 0) || isServerOnly) && GUILayout.Button("REMOVE"))
+            {
+                // This button only shows on the Host for all players other than the Host
+                // Host and Players can't remove themselves (stop the client instead)
+                // Host can kick a Player this way.
+                GetComponent<NetworkIdentity>().connectionToClient.Disconnect();
+            }
+
+            GUILayout.EndArea();
         }
 
         #endregion

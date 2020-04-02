@@ -138,7 +138,7 @@ namespace Mirror
         /// <summary>
         /// NetworkManager singleton
         /// </summary>
-        public static NetworkManager singleton;
+        public static NetworkManager singleton { get; private set; }
 
         /// <summary>
         /// Number of active player objects across all connections on the server.
@@ -212,13 +212,14 @@ namespace Mirror
         /// </summary>
         public virtual void Awake()
         {
+            // Don't allow collision-destroyed second instance to continue.
+            if (!InitializeSingleton()) return;
+
             //Debug.Log("Thank you for using Mirror! https://mirror-networking.com");
 
             // Set the networkSceneName to prevent a scene reload
             // if client connection to server fails.
             networkSceneName = offlineScene;
-
-            InitializeSingleton();
 
             // setup OnSceneLoaded callback
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -263,8 +264,13 @@ namespace Mirror
         bool IsServerOnlineSceneChangeNeeded()
         {
             // Only change scene if the requested online scene is not blank, and is not already loaded
-            string loadedSceneName = SceneManager.GetActiveScene().name;
-            return !string.IsNullOrEmpty(onlineScene) && onlineScene != loadedSceneName && onlineScene != offlineScene;
+            return !string.IsNullOrEmpty(onlineScene) && !IsSceneActive(onlineScene) && onlineScene != offlineScene;
+        }
+
+        public static bool IsSceneActive(string scene)
+        {
+            Scene activeScene = SceneManager.GetActiveScene();
+            return activeScene.path == scene || activeScene.name == scene;
         }
 
         // full server setup code, without spawning objects yet
@@ -404,7 +410,7 @@ namespace Mirror
             RegisterClientMessages();
 
             if (LogFilter.Debug) Debug.Log("NetworkManager StartClient address:" + uri);
-            this.networkAddress = uri.Host;
+            networkAddress = uri.Host;
 
             NetworkClient.Connect(uri);
 
@@ -542,8 +548,17 @@ namespace Mirror
         public void StopHost()
         {
             OnStopHost();
-            StopServer();
+
+            // TODO try to move DisconnectLocalServer into StopClient(), and
+            // then call StopClient() before StopServer(). needs testing!.
+
+            // DisconnectLocalServer needs to be called so that the host client
+            // receives a DisconnectMessage too.
+            // fixes: https://github.com/vis2k/Mirror/issues/1515
+            NetworkClient.DisconnectLocalServer();
+
             StopClient();
+            StopServer();
         }
 
         /// <summary>
@@ -599,7 +614,7 @@ namespace Mirror
 
             // If this is the host player, StopServer will already be changing scenes.
             // Check loadingSceneAsync to ensure we don't double-invoke the scene change.
-            if (!string.IsNullOrEmpty(offlineScene) && SceneManager.GetActiveScene().name != offlineScene && loadingSceneAsync == null)
+            if (!string.IsNullOrEmpty(offlineScene) && !IsSceneActive(offlineScene) && loadingSceneAsync == null)
             {
                 ClientChangeScene(offlineScene, SceneOperation.Normal);
             }
@@ -648,12 +663,9 @@ namespace Mirror
 #endif
         }
 
-        void InitializeSingleton()
+        bool InitializeSingleton()
         {
-            if (singleton != null && singleton == this)
-            {
-                return;
-            }
+            if (singleton != null && singleton == this) return true;
 
             // do this early
             LogFilter.Debug = showDebugMessages;
@@ -664,7 +676,9 @@ namespace Mirror
                 {
                     Debug.LogWarning("Multiple NetworkManagers detected in the scene. Only one NetworkManager can exist at a time. The duplicate NetworkManager will be destroyed.");
                     Destroy(gameObject);
-                    return;
+
+                    // Return false to not allow collision-destroyed second instance to continue.
+                    return false;
                 }
                 if (LogFilter.Debug) Debug.Log("NetworkManager created singleton (DontDestroyOnLoad)");
                 singleton = this;
@@ -679,6 +693,8 @@ namespace Mirror
             // set active transport AFTER setting singleton.
             // so only if we didn't destroy ourselves.
             Transport.activeTransport = transport;
+
+            return true;
         }
 
         void RegisterServerMessages()
@@ -1173,8 +1189,7 @@ namespace Mirror
             conn.isAuthenticated = true;
 
             // proceed with the login handshake by calling OnClientConnect
-            string loadedSceneName = SceneManager.GetActiveScene().name;
-            if (string.IsNullOrEmpty(onlineScene) || onlineScene == offlineScene || loadedSceneName == onlineScene)
+            if (string.IsNullOrEmpty(onlineScene) || onlineScene == offlineScene || IsSceneActive(onlineScene))
             {
                 clientLoadedScene = false;
                 OnClientConnect(conn);
