@@ -314,7 +314,7 @@ MonoBehaviour:
   showDebugMessages: 0
   serverTickRate: 30
   offlineScene: 
-  onlineScene: Online
+  onlineScene: Assets/Engine/Source/Runtime/Online.unity
   transport: {fileID: 4602047936220929145}
   networkAddress: localhost
   maxConnections: 64

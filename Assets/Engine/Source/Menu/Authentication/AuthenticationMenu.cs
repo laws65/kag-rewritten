@@ -30,7 +30,7 @@ namespace KAG.Menu
 
         private void OnLoginSuccess(PlayerInfo pinfo)
         {
-            SceneManager.LoadScene(GameEngine.Instance.menuScene.name);
+            SceneManager.LoadScene(GameEngine.menuScene);
         }
 
         private void OnLoginFailure(Exception e)

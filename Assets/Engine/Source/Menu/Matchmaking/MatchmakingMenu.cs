@@ -20,7 +20,7 @@ namespace KAG.Menu
 
         public void Close()
         {
-            SceneManager.LoadScene(GameEngine.Instance.menuScene.name);
+            SceneManager.LoadScene(GameEngine.menuScene);
         }
 
         public void Refresh()

@@ -10,10 +10,9 @@ namespace KAG
 
     public class GameEngine : Singleton<GameEngine>
     {
-        [SerializeField]
-        public UnityEngine.Object authenticationScene;
-        public UnityEngine.Object matchmakingScene;
-        public UnityEngine.Object menuScene;
+        public static string authenticationScene = "Authentication";
+        public static string matchmakingScene = "Matchmaking";
+        public static string menuScene = "Menu";
 
         public NetworkManager mirror;
 
@@ -31,7 +30,7 @@ namespace KAG
             }
             else
             {
-                SceneManager.LoadScene(authenticationScene.name);
+                SceneManager.LoadScene(authenticationScene);
             }
         }
 

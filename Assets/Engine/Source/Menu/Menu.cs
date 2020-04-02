@@ -12,7 +12,7 @@ namespace KAG.Menu
 
         public void ShowMultiplayer()
         {
-            SceneManager.LoadScene(GameEngine.Instance.matchmakingScene.name);
+            SceneManager.LoadScene(GameEngine.matchmakingScene);
         }
 
         public void Settings()
@@ -24,7 +24,7 @@ namespace KAG.Menu
         {
             GameSession.Instance.Logout(() =>
             {
-                SceneManager.LoadScene(GameEngine.Instance.authenticationScene.name);
+                SceneManager.LoadScene(GameEngine.authenticationScene);
             });
         }
     }
