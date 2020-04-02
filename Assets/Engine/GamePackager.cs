@@ -29,18 +29,9 @@ namespace KAG
             }
 
             Directory.CreateDirectory(output_dir);
-            using (var zip = ZipFile.Create(package_path))
-            {
-                zip.BeginUpdate();
-                foreach (var path in Directory.EnumerateFiles(input_dir, "*.*", SearchOption.AllDirectories))
-                {
-                    if (Path.GetExtension(path) != ".meta")
-                    {
-                        zip.Add(path, path.TrimStart(input_dir.ToCharArray()));
-                    }
-                }
-                zip.CommitUpdate();
-            }
+
+            FastZip zip = new FastZip();
+            zip.CreateZip(package_path, input_dir, true, @"-\.meta$");
 
             callback?.Invoke();
         }
