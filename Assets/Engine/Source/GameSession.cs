@@ -72,10 +72,18 @@ namespace KAG
 
             try
             {
+                email = email.Replace("\u200B", "");
+                password = password.Replace("\u200B", "");
+
+                if (string.IsNullOrWhiteSpace(email))
+                    email = "invalid";
+                if (string.IsNullOrWhiteSpace(password))
+                    password = "invalid";
+
                 Authenticate(await nakama.AuthenticateEmailAsync(email, password, null, false));
                 onSuccess?.Invoke(player);
             }
-            catch (Exception e)
+            catch (ApiResponseException e)
             {
                 onFailure?.Invoke(e);
             }
@@ -87,10 +95,21 @@ namespace KAG
 
             try
             {
+                username = username.Replace("\u200B", "");
+                email = email.Replace("\u200B", "");
+                password = password.Replace("\u200B", "");
+
+                if (string.IsNullOrWhiteSpace(username))
+                    username = "invalid";
+                if (string.IsNullOrWhiteSpace(email))
+                    email = "invalid";
+                if (string.IsNullOrWhiteSpace(password))
+                    password = "invalid";
+
                 Authenticate(await nakama.AuthenticateEmailAsync(email, password, username, true));
                 onSuccess?.Invoke(player);
             }
-            catch (Exception e)
+            catch (ApiResponseException e)
             {
                 onFailure?.Invoke(e);
             }
@@ -101,9 +120,13 @@ namespace KAG
             nakama = new Client(api_scheme, api_host, api_port, api_key, UnityWebRequestAdapter.Instance);
 
             string deviceId = PlayerPrefs.GetString("Nakama.DeviceId");
-            if (string.IsNullOrEmpty(deviceId))
+            if (string.IsNullOrWhiteSpace(deviceId))
             {
-                deviceId = SystemInfo.deviceUniqueIdentifier;
+                deviceId = "";
+                for (var i = 0; i < 10; i++)
+                {
+                    deviceId += ((char)('A' + UnityEngine.Random.Range(0, 26))).ToString();
+                }
                 PlayerPrefs.SetString("Nakama.DeviceId", deviceId);
             }
 
@@ -112,7 +135,7 @@ namespace KAG
                 Authenticate(await nakama.AuthenticateDeviceAsync(deviceId));
                 onSuccess?.Invoke(player);
             }
-            catch (Exception e)
+            catch (ApiResponseException e)
             {
                 onFailure?.Invoke(e);
             }
