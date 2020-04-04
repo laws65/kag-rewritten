@@ -7,7 +7,7 @@ namespace KAG.Menu
     {
         public void ShowSingleplayer()
         {
-
+            GameEngine.Instance.StartSingleplayer();
         }
 
         public void ShowMultiplayer()

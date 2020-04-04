@@ -1,0 +1,8 @@
+[
+	{
+		"Type": "Tile",
+		"Name": "Sky",
+		"Sprite": "Sprites/Sky.png",
+		"Color": "A5BDC8"
+	}
+]

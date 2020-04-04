@@ -1,11 +1,7 @@
-Debug.Log("Testing logging")
-Debug.LogError("Testing error logging")
-Debug.LogWarning("Testing warning logging")
+Engine.Include("Scripts/Map/MapLoader.js");
 
-var obj = Utils.FromJson("Scripts/Map/Colors.json")
-Debug.Log(obj)
-
-var json = Utils.ToJson(obj)
-Debug.Log(json)
-
-Assert.AreEqual(obj, json)
+var Main = {
+    Start: function(gamemode = "") {
+        MapLoader.Load("Maps/Mazey_Epic.png")
+    }
+}

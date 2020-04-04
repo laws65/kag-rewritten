@@ -4,6 +4,8 @@ using UnityEngine;
 namespace KAG.Runtime
 {
     using KAG.Misc;
+    using KAG.Runtime.Types;
+    using KAG.Runtime.Utils;
 
     public class GameRuntime : Singleton<GameRuntime>
     {
@@ -12,11 +14,20 @@ namespace KAG.Runtime
         private void Awake()
         {
             LoadBase();
+
+            module.SetGlobalType("Tile", typeof(KTile));
+
+            new GameUtils(module);
+            new EngineUtils(module);
+            new MapUtils(module);
+            new DebugUtils(module);
+            new AssertUtils(module);
         }
 
         private void Start()
         {
-            module.Run("Scripts/Main.js");
+            module.Execute("Scripts/Main.js");
+            module.ExecuteString("Main.Start()");
         }
 
         private void LoadBase()

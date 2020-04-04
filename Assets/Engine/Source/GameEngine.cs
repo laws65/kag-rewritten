@@ -26,7 +26,7 @@ namespace KAG
             var args = Environment.GetCommandLineArgs();
             if (args.Contains("-nographics"))
             {
-                StartServer();
+                StartMultiplayerServer();
             }
             else
             {
@@ -34,7 +34,7 @@ namespace KAG
             }
         }
 
-        public void StartServer()
+        public void StartMultiplayerServer()
         {
             mirror.StartServer();
 
@@ -47,10 +47,15 @@ namespace KAG
             });
         }
 
-        public void StartClient(string host_address)
+        public void StartMultiplayerClient(string networkAddress)
         {
-            mirror.networkAddress = host_address;
+            mirror.networkAddress = networkAddress;
             mirror.StartClient();
+        }
+
+        public void StartSingleplayer()
+        {
+            mirror.StartHost();
         }
     }
 }

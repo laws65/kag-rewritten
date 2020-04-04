@@ -17,7 +17,7 @@ namespace KAG.Menu
         public void Join()
         {
             Toast.Instance.Show("Trying to connect to " + serverInfo.IP + "...");
-            GameEngine.Instance.StartClient(serverInfo.IP);
+            GameEngine.Instance.StartMultiplayerClient(serverInfo.IP);
         }
     }
 }

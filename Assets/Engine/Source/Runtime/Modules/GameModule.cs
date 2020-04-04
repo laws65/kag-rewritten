@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Text;
 using System.IO;
 using System.Collections.Generic;
+using ICSharpCode.SharpZipLib.Zip;
 using Jint;
 using Jint.Native;
 using Jint.Native.Json;
@@ -10,35 +10,29 @@ using Jint.Runtime.Interop;
 
 namespace KAG.Runtime
 {
-    using ICSharpCode.SharpZipLib.Zip;
     using KAG.Runtime.Utils;
 
     public class GameModule
     {
-        public Engine jint;
-        public Dictionary<string, GameModuleFile> files = new Dictionary<string, GameModuleFile>();
-
         #region Cached frequently used helpers
         public JsonSerializer jsonSerializer;
         public JsonParser jsonParser;
         #endregion
 
+        public Engine engine;
+        public Dictionary<string, GameModuleFile> files = new Dictionary<string, GameModuleFile>();
+
         public GameModule(Stream zipStream)
         {
-            jint = new Engine();
+            engine = new Engine();
+            jsonParser = new JsonParser(engine);
+            jsonSerializer = new JsonSerializer(engine);
 
             ZipFile archive = new ZipFile(zipStream);
             foreach (ZipEntry entry in archive)
             {
                 Add(entry.Name, archive.GetInputStream(entry));
             }
-
-            jsonSerializer = new JsonSerializer(jint);
-            jsonParser = new JsonParser(jint);
-
-            new GameUtils(this);
-            new DebugUtils(this);
-            new AssertUtils(this);
         }
 
         /// <summary>
@@ -60,7 +54,7 @@ namespace KAG.Runtime
             }
 
             GameModuleFile file = null;
-            switch (fileExtension)
+            switch (fileExtension.ToLower())
             {
                 case ".js":
                     file = new GameModuleScriptFile(this, fileBuffer);
@@ -70,6 +64,11 @@ namespace KAG.Runtime
                     break;
                 case ".txt":
                     file = new GameModuleTextFile(this, fileBuffer);
+                    break;
+                case ".jpg":
+                case ".jpeg":
+                case ".png":
+                    file = new GameModuleSpriteFile(this, fileBuffer);
                     break;
             }
 
@@ -102,16 +101,15 @@ namespace KAG.Runtime
         /// Execute a script from a specified file
         /// </summary>
         /// <param name="filePath">The path to the script file</param>
-        public void Run(string filePath)
+        public void Execute(string filePath)
         {
-            foreach (var pair in files)
-            {
-                if (pair.Key == filePath && pair.Value is GameModuleScriptFile)
-                {
-                    var script = pair.Value as GameModuleScriptFile;
-                    script.Run(jint);
-                }
-            }
+            var script = Get<GameModuleScriptFile>(filePath);
+            script?.Run();
+        }
+
+        public void ExecuteString(string script)
+        {
+            engine.Execute(script);
         }
 
         /// <summary>
@@ -121,7 +119,7 @@ namespace KAG.Runtime
         /// <param name="obj">The object to bind</param>
         public void SetGlobalObject(string name, object obj)
         {
-            jint.SetValue(name, JsValue.FromObject(jint, obj));
+            engine.SetValue(name, JsValue.FromObject(engine, obj));
         }
 
         /// <summary>
@@ -131,71 +129,7 @@ namespace KAG.Runtime
         /// <param name="obj">The type to bind</param>
         public void SetGlobalType(string name, Type type)
         {
-            jint.SetValue(name, TypeReference.CreateTypeReference(jint, type));
-        }
-
-        #region Helpers
-        public JsValue FromJson(string json)
-        {
-            return jsonParser.Parse(json);
-        }
-
-        public JsValue ToJson(JsValue value)
-        {
-            if (value is JsString)
-            {
-                return value;
-            }
-
-            return jsonSerializer.Serialize(value, JsValue.Null, JsValue.Null);
-        }
-        #endregion
-    }
-
-    public class GameModuleFile
-    {
-        public GameModule module;
-
-        public GameModuleFile(GameModule gameModule)
-        {
-            module = gameModule;
-        }
-    }
-
-    public class GameModuleTextFile : GameModuleFile
-    {
-        public string Text { get; } = "";
-
-        public GameModuleTextFile(GameModule gameModule, byte[] buffer) : base(gameModule)
-        {
-            Text = Encoding.UTF8.GetString(buffer);
-        }
-    }
-
-    public class GameModuleJsonFile : GameModuleTextFile
-    {
-        public JsValue Value
-        {
-            get
-            {
-                return module.FromJson(Text);
-            }
-        }
-
-        public GameModuleJsonFile(GameModule gameModule, byte[] buffer) : base(gameModule, buffer) { }
-    }
-
-    public class GameModuleScriptFile : GameModuleTextFile
-    {
-        public GameModuleScriptFile(GameModule gameModule, byte[] buffer) : base(gameModule, buffer) { }
-
-        /// <summary>
-        /// Execute this script with the specified engine
-        /// </summary>
-        /// <param name="jint">The JavaScript engine to use for executing the script</param>
-        public void Run(Engine jint)
-        {
-            jint.Execute(Text);
+            engine.SetValue(name, TypeReference.CreateTypeReference(engine, type));
         }
     }
 }

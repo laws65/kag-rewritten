@@ -2,6 +2,7 @@
 using UnityEngine.Assertions;
 using Jint;
 using Jint.Native;
+using Nakama.TinyJson;
 
 namespace KAG.Runtime.Utils
 {
@@ -12,9 +13,9 @@ namespace KAG.Runtime.Utils
             module.SetGlobalObject("Assert", this);
         }
 
-        public void AreEqual(JsValue expected, JsValue actual)
+        public void AreEqual(object expected, object actual)
         {
-            Assert.AreEqual(module.ToJson(expected), module.ToJson(actual));
+            Assert.AreEqual(expected.ToJson(), actual.ToJson());
         }
     }
 }

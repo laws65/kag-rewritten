@@ -309,14 +309,13 @@ MonoBehaviour:
   startOnHeadless: 0
   showDebugMessages: 0
   serverTickRate: 30
-  offlineScene: 
-  onlineScene: Assets/Engine/Source/Runtime/Online.unity
+  offlineScene: Assets/Engine/Source/Menu/Menu.unity
+  onlineScene: Assets/Engine/Source/Runtime/Match.unity
   transport: {fileID: 4602047936220929145}
   networkAddress: localhost
   maxConnections: 64
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 1138177892893126453, guid: aa79a628770ae81469eb0dfb593f30a6,
-    type: 3}
+  playerPrefab: {fileID: 0}
   autoCreatePlayer: 0
   playerSpawnMethod: 0
   spawnPrefabs: []

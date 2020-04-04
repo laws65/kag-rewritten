@@ -1,6 +1,7 @@
 ﻿using Jint;
 using Jint.Native;
 using Jint.Native.Json;
+using Nakama.TinyJson;
 
 namespace KAG.Runtime.Utils
 {
@@ -11,16 +12,20 @@ namespace KAG.Runtime.Utils
             module.SetGlobalObject("Utils", this);
         }
 
-        public JsValue FromJson(string filePath)
+        public object FromJson(string filePath)
         {
-            var file = module.Get<GameModuleJsonFile>(filePath);
-
-            return file?.Value ?? JsValue.Null;
+            GameModuleJsonFile file = module.Get<GameModuleJsonFile>(filePath);
+            return file?.Value;
         }
 
-        public JsValue ToJson(JsValue value)
+        public string ToJson(object value)
         {
-            return module.ToJson(value);
+            return value.ToJson();
+        }
+
+        public object GetSprite(string filePath)
+        {
+            return module.Get<GameModuleSpriteFile>(filePath).Sprite;
         }
     }
 
@@ -31,6 +36,16 @@ namespace KAG.Runtime.Utils
         public BaseUtils(GameModule gameModule)
         {
             module = gameModule;
+        }
+
+        public JsValue ToValue(object obj)
+        {
+            return JsValue.FromObject(module.engine, obj);
+        }
+
+        public T ToObject<T>(JsValue val)
+        {
+            return (T)val.ToObject();
         }
     }
 }
