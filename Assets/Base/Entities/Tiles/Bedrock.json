@@ -1,0 +1,10 @@
+{
+  "Name": "Bedrock",
+  "Sprite": {
+    "File": "Sprites/Materials/Bedrock.png",
+    "Width": 8,
+    "Height": 8,
+    "Frame": 0
+  },
+  "Color": "2D342D"
+}

@@ -14,6 +14,7 @@ namespace KAG.Runtime.Types
 
         public KSprite(byte[] buffer)
         {
+            texture.filterMode = FilterMode.Point;
             ImageConversion.LoadImage(texture, buffer);
         }
 

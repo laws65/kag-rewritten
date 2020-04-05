@@ -1,0 +1,10 @@
+{
+  "Name": "Stone",
+  "Sprite": {
+    "File": "Sprites/Materials/Stone.png",
+    "Width": 8,
+    "Height": 8,
+    "Frame": 0
+  },
+  "Color": "8B6849"
+}

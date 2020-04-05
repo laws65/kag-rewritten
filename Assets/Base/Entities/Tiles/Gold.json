@@ -1,0 +1,10 @@
+{
+  "Name": "Gold",
+  "Sprite": {
+    "File": "Sprites/Materials/Gold.png",
+    "Width": 8,
+    "Height": 8,
+  "Frame": 0
+  },
+  "Color": "FEA53D"
+}

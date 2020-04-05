@@ -1,0 +1,10 @@
+{
+  "Name": "Thick Stone",
+  "Sprite": {
+    "File": "Sprites/Materials/Stone (Thick).png",
+    "Width": 8,
+    "Height": 8,
+    "Frame": 0
+  },
+  "Color": "42484B"
+}

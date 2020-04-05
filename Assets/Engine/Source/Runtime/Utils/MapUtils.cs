@@ -21,14 +21,14 @@ namespace KAG.Runtime.Utils
             tilemap.transform.SetParent(grid.transform);
         }
 
-        public void SetCellSize(float width, float height)
-        {
-            grid.cellSize = new Vector3(width / 100f, height / 100f);
-        }
-
         public void SetTile(int x, int y, KTile tile)
         {
             tilemap.SetTile(new Vector3Int(x, y, 0), tile.tile);
+        }
+
+        public void SetTileSize(float width, float height)
+        {
+            grid.cellSize = new Vector3(width / 100f, height / 100f);
         }
     }
 }

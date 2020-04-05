@@ -1,0 +1,10 @@
+{
+  "Name": "Dirt",
+  "Sprite": {
+    "File": "Sprites/Materials/Dirt.png",
+    "Width": 8,
+    "Height": 8,
+    "Frame": 0
+  },
+  "Color": "844715"
+  }
