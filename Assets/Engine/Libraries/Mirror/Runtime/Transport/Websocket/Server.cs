@@ -93,7 +93,7 @@ namespace Mirror.Websocket
                 listener = TcpListener.Create(port);
                 listener.Server.NoDelay = NoDelay;
                 listener.Start();
-                Debug.Log($"Websocket server started listening on port {port}");
+                //Debug.Log($"Websocket server started listening on port {port}");
                 while (true)
                 {
                     TcpClient tcpClient = await listener.AcceptTcpClientAsync();
