@@ -4,7 +4,13 @@
     "File": "Sprites/Materials/Dirt.png",
     "Width": 8,
     "Height": 8,
-    "Frame": 0
+    "Frame": 0,
+    "Vertices": [
+      { "x": 0, "y": 0 },
+      { "x": 0, "y": 1 },
+      { "x": 1, "y": 0 },
+      { "x": 1, "y": 1 }
+    ]
   },
   "Color": "844715"
-  }
+}

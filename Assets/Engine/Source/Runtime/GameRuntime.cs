@@ -16,6 +16,8 @@ namespace KAG.Runtime
             LoadBase();
 
             module.SetGlobalType("Tile", typeof(KTile));
+            module.SetGlobalType("Color", typeof(KColor));
+            module.SetGlobalType("Vector", typeof(KVector));
 
             new GameUtils(module);
             new EngineUtils(module);

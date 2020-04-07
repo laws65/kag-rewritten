@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace KAG.Runtime.Types
 {
-    [Serializable]
     public class KSprite
     {
         [NonSerialized]

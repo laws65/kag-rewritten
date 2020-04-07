@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace KAG.Runtime.Types
 {
-    [Serializable]
     public class KColor
     {
         public byte r = 0;

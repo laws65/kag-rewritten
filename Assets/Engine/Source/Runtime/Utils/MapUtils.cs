@@ -10,6 +10,9 @@ namespace KAG.Runtime.Utils
         public Grid grid;
         public Tilemap tilemap;
         public TilemapRenderer tilemapRenderer;
+        public TilemapCollider2D tilemapCollider;
+        public Rigidbody2D tilemapRigidbody;
+        public CompositeCollider2D tilemapComposite;
 
         public MapUtils(GameModule gameModule) : base(gameModule)
         {
@@ -18,6 +21,13 @@ namespace KAG.Runtime.Utils
             grid = new GameObject("Grid").AddComponent<Grid>();
             tilemap = new GameObject("Tilemap").AddComponent<Tilemap>();
             tilemapRenderer = tilemap.gameObject.AddComponent<TilemapRenderer>();
+            tilemapCollider = tilemap.gameObject.AddComponent<TilemapCollider2D>();
+            tilemapComposite = tilemap.gameObject.AddComponent<CompositeCollider2D>();
+            tilemapRigidbody = tilemap.gameObject.GetComponent<Rigidbody2D>();
+
+            tilemapRigidbody.bodyType = RigidbodyType2D.Static;
+            tilemapCollider.usedByComposite = true;
+
             tilemap.transform.SetParent(grid.transform);
         }
 
