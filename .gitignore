@@ -67,5 +67,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Project specific
+.vscode/
 /[Aa]ssets/__LOCAL__/
 /[Aa]ssets/__LOCAL__.meta
