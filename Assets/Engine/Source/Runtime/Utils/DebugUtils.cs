@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-using Nakama.TinyJson;
 
 namespace KAG.Runtime.Utils
 {
+    using KAG.Runtime.Modules;
+
     public class DebugUtils : BaseUtils
     {
         public DebugUtils(GameModule gameModule) : base(gameModule)
@@ -12,17 +13,17 @@ namespace KAG.Runtime.Utils
 
         public void Log(object message)
         {
-            Debug.Log(message.ToJson());
+            Debug.Log(message);
         }
 
         public void LogError(object message)
         {
-            Debug.LogError(message.ToJson());
+            Debug.LogError(message);
         }
 
         public void LogWarning(object message)
         {
-            Debug.LogWarning(message.ToJson());
+            Debug.LogWarning(message);
         }
     }
 }

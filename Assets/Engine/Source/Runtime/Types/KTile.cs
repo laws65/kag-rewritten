@@ -1,68 +1,40 @@
-﻿using Boo.Lang;
-using Jint.Native;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 namespace KAG.Runtime.Types
 {
-    public class KTileBase : Tile
-    {
+    using KAG.Runtime.Modules;
 
-    }
-
-    public class KTile
+    public class KTile : KType
     {
         [NonSerialized]
         public KTileBase tile;
 
-        [NonSerialized]
-        public KSprite sprite;
+        public string name = "";
+        public string color = "";
 
-        [NonSerialized]
-        public Vector2 pivot = new Vector2(0.5f, 0.5f);
+        public List<KSprite> sprites;
 
-        public int Width = 1;
-        public int Height = 1;
-
-        public KTile()
+        public KTile(string path)
         {
             tile = ScriptableObject.CreateInstance<KTileBase>();
-        }
 
-        public void SetSprite(KSprite sprite)
-        {
-            this.sprite = sprite;
-        }
+            var json = runtime.module.Get<GameModuleJsonFile>(path).Text;
+            JsonUtility.FromJsonOverwrite(json, this);
 
-        public void SetFrame(int frame)
-        {
-            int x = (frame % (sprite.Width / Width)) * Width;
-            int y = (frame / (sprite.Width / Width)) * Height;
-            tile.sprite = Sprite.Create(sprite.texture, new Rect(x, y, Width, Height), pivot);
-        }
+            sprites[0].Refresh();
 
-        public void SetGeometry(KVector[] vertices)
-        {
-            List<Vector2> arr = new List<Vector2>();
-            foreach (var vec in vertices)
-            {
-                arr.Push(new Vector2(vec.x * Width, vec.y * Height));
-            }
-
+            tile.sprite = sprites[0].sprite;
             tile.colliderType = Tile.ColliderType.Sprite;
-            tile.sprite.OverrideGeometry(arr.ToArray(), tile.sprite.triangles);
+            tile.sprite.OverrideGeometry(sprites[0].GetGeometry().ToNative().ToArray(), tile.sprite.triangles);
         }
+    }
 
-        public void SetSize(int width, int height)
-        {
-            Width = width;
-            Height = height;
-        }
+    public class KTileBase : Tile
+    {
 
-        public void SetPivot(float x, float y)
-        {
-            pivot = new Vector2(x, y);
-        }
     }
 }

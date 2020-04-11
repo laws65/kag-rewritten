@@ -1,10 +1,22 @@
 {
-  "Name": "Gold",
-  "Sprite": {
-    "File": "Sprites/Materials/Gold.png",
-    "Width": 8,
-    "Height": 8,
-  "Frame": 0
-  },
-  "Color": "FEA53D"
+    "name": "Gold",
+    "color": "FEA53D",
+    "sprites": [
+        {
+            "name": "default",
+            "texture": {
+                "file": "Sprites/Materials/Gold.png"
+            },
+            "frame": 0,
+            "width": 8,
+            "height": 8,
+            "geometry": [
+                { "x": 0, "y": 0 },
+                { "x": 0, "y": 8 },
+                { "x": 8, "y": 0 },
+                { "x": 8, "y": 8 }
+            ],
+            "pivot": { "x": 0.5, "y": 0.5 }
+        }
+    ]
 }

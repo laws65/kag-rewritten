@@ -1,10 +1,22 @@
 {
-  "Name": "Bedrock",
-  "Sprite": {
-    "File": "Sprites/Materials/Bedrock.png",
-    "Width": 8,
-    "Height": 8,
-    "Frame": 0
-  },
-  "Color": "2D342D"
+    "name": "Bedrock",
+    "color": "2D342D",
+    "sprites": [
+        {
+            "name": "default",
+            "texture": {
+                "file": "Sprites/Materials/Bedrock.png"
+            },
+            "frame": 0,
+            "width": 8,
+            "height": 8,
+            "geometry": [
+                { "x": 0, "y": 0 },
+                { "x": 0, "y": 8 },
+                { "x": 8, "y": 0 },
+                { "x": 8, "y": 8 }
+            ],
+            "pivot": { "x": 0.5, "y": 0.5 }
+        }
+    ]
 }

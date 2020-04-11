@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace KAG.Runtime
+namespace KAG.Runtime.Modules
 {
     public class GameModuleTextFile : GameModuleFile
     {

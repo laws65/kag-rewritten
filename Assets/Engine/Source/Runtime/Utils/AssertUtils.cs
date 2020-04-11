@@ -2,10 +2,11 @@
 using UnityEngine.Assertions;
 using Jint;
 using Jint.Native;
-using Nakama.TinyJson;
 
 namespace KAG.Runtime.Utils
 {
+    using KAG.Runtime.Modules;
+
     public class AssertUtils : BaseUtils
     {
         public AssertUtils(GameModule gameModule) : base(gameModule)
@@ -15,7 +16,7 @@ namespace KAG.Runtime.Utils
 
         public void AreEqual(object expected, object actual)
         {
-            Assert.AreEqual(expected.ToJson(), actual.ToJson());
+            Assert.AreEqual(expected, actual);
         }
     }
 }

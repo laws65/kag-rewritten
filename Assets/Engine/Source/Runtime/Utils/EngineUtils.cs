@@ -1,5 +1,7 @@
 ﻿namespace KAG.Runtime.Utils
 {
+    using KAG.Runtime.Modules;
+
     public class EngineUtils : BaseUtils
     {
         public EngineUtils(GameModule gameModule) : base(gameModule)

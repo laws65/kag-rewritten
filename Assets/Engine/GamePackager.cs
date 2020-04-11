@@ -6,7 +6,6 @@ using UnityEditor.Build.Reporting;
 
 using System;
 using System.IO;
-using System.IO.Compression;
 using UnityEngine;
 using ICSharpCode.SharpZipLib.Zip;
 

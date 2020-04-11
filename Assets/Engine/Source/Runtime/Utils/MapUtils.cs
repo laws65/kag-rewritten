@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 namespace KAG.Runtime.Utils
 {
     using KAG.Runtime.Types;
+    using KAG.Runtime.Modules;
 
     public class MapUtils : BaseUtils
     {

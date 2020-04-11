@@ -1,13 +1,10 @@
 ﻿using System;
-using Jint;
-using Jint.Native;
-using Jint.Native.Object;
-using Jint.Runtime.Interop;
 using UnityEngine;
 
 namespace KAG.Runtime.Types
 {
-    public class KColor
+    [Serializable]
+    public class KColor : KType
     {
         public byte r = 0;
         public byte g = 0;
@@ -28,6 +25,18 @@ namespace KAG.Runtime.Types
             g = color.g;
             b = color.b;
             a = color.a;
+        }
+
+        public KColor(string html)
+        {
+            if (ColorUtility.TryParseHtmlString("#" + html, out Color color))
+            {
+                Color32 color32 = color;
+                r = color32.r;
+                g = color32.g;
+                b = color32.b;
+                a = color32.a;
+            }
         }
 
         public string ToHtmlRGB()

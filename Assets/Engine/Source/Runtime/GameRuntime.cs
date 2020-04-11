@@ -4,20 +4,24 @@ using UnityEngine;
 namespace KAG.Runtime
 {
     using KAG.Misc;
-    using KAG.Runtime.Types;
     using KAG.Runtime.Utils;
+    using KAG.Runtime.Types;
+    using KAG.Runtime.Modules;
 
     public class GameRuntime : Singleton<GameRuntime>
     {
-        private GameModule module;
+        public GameModule module;
 
         private void Awake()
         {
             LoadBase();
 
+            module.SetGlobalType("Texture", typeof(KTexture));
+            module.SetGlobalType("Sprite", typeof(KSprite));
             module.SetGlobalType("Tile", typeof(KTile));
             module.SetGlobalType("Color", typeof(KColor));
-            module.SetGlobalType("Vector", typeof(KVector));
+            module.SetGlobalType("Vector2", typeof(KVector2));
+            module.SetGlobalType("Vector3", typeof(KVector3));
 
             new GameUtils(module);
             new EngineUtils(module);

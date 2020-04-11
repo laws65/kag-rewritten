@@ -1,6 +1,6 @@
 ﻿using Jint;
 
-namespace KAG.Runtime
+namespace KAG.Runtime.Modules
 {
     public class GameModuleScriptFile : GameModuleTextFile
     {

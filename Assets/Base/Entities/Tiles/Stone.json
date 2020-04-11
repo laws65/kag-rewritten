@@ -1,10 +1,22 @@
 {
-  "Name": "Stone",
-  "Sprite": {
-    "File": "Sprites/Materials/Stone.png",
-    "Width": 8,
-    "Height": 8,
-    "Frame": 0
-  },
-  "Color": "8B6849"
+    "name": "Stone",
+    "color": "8B6849",
+    "sprites": [
+        {
+            "name": "default",
+            "texture": {
+                "file": "Sprites/Materials/Stone.png"
+            },
+            "frame": 0,
+            "width": 8,
+            "height": 8,
+            "geometry": [
+                { "x": 0, "y": 0 },
+                { "x": 0, "y": 8 },
+                { "x": 8, "y": 0 },
+                { "x": 8, "y": 8 }
+            ],
+            "pivot": { "x": 0.5, "y": 0.5 }
+        }
+    ]
 }

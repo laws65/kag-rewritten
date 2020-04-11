@@ -1,7 +1,6 @@
 ﻿using Jint.Native;
-using Jint.Native.Json;
 
-namespace KAG.Runtime
+namespace KAG.Runtime.Modules
 {
     public class GameModuleJsonFile : GameModuleTextFile
     {

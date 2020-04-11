@@ -1,10 +1,11 @@
-﻿using Jint;
+﻿using UnityEngine;
+using Jint;
 using Jint.Native;
-using Jint.Native.Json;
-using Nakama.TinyJson;
 
 namespace KAG.Runtime.Utils
 {
+    using KAG.Runtime.Modules;
+
     public class GameUtils : BaseUtils
     {
         public GameUtils(GameModule gameModule) : base(gameModule)
@@ -18,14 +19,9 @@ namespace KAG.Runtime.Utils
             return file?.Value;
         }
 
-        public string ToJson(object value)
+        public string ToJson(object value, bool prettify = false)
         {
-            return value.ToJson();
-        }
-
-        public object GetSprite(string filePath)
-        {
-            return module.Get<GameModuleSpriteFile>(filePath).Sprite;
+            return JsonUtility.ToJson(value, prettify);
         }
     }
 

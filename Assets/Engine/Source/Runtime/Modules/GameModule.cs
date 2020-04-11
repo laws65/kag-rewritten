@@ -8,14 +8,13 @@ using Jint.Native.Json;
 using Jint.Runtime;
 using Jint.Runtime.Interop;
 
-namespace KAG.Runtime
+namespace KAG.Runtime.Modules
 {
     using KAG.Runtime.Utils;
 
     public class GameModule
     {
         #region Cached frequently used helpers
-        public JsonSerializer jsonSerializer;
         public JsonParser jsonParser;
         #endregion
 
@@ -26,7 +25,6 @@ namespace KAG.Runtime
         {
             engine = new Engine();
             jsonParser = new JsonParser(engine);
-            jsonSerializer = new JsonSerializer(engine);
 
             ZipFile archive = new ZipFile(zipStream);
             foreach (ZipEntry entry in archive)
@@ -68,7 +66,7 @@ namespace KAG.Runtime
                 case ".jpg":
                 case ".jpeg":
                 case ".png":
-                    file = new GameModuleSpriteFile(this, fileBuffer);
+                    file = new GameModuleTextureFile(this, fileBuffer);
                     break;
             }
 
