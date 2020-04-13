@@ -145,7 +145,43 @@ namespace Mirror
         /// </summary>
         public static readonly Dictionary<uint, NetworkIdentity> spawned = new Dictionary<uint, NetworkIdentity>();
 
-        public NetworkBehaviour[] NetworkBehaviours => networkBehavioursCache = networkBehavioursCache ?? GetComponents<NetworkBehaviour>();
+        public NetworkBehaviour[] NetworkBehaviours
+        {
+            get
+            {
+                if (networkBehavioursCache == null)
+                {
+                    CreateNetworkBehavioursCache();
+                }
+                return networkBehavioursCache;
+            }
+        }
+
+        void CreateNetworkBehavioursCache()
+        {
+            networkBehavioursCache = GetComponents<NetworkBehaviour>();
+            if (NetworkBehaviours.Length > 64)
+            {
+                Debug.LogError($"Only 64 NetworkBehaviour components are allowed for NetworkIdentity: {name} because of the dirtyComponentMask", this);
+                // Log error once then resize array so that NetworkIdentity does not throw exceptions later
+                Array.Resize(ref networkBehavioursCache, 64);
+            }
+        }
+
+
+        // NetworkProximityChecker caching
+        NetworkVisibility visibilityCache;
+        public NetworkVisibility visibility
+        {
+            get
+            {
+                if (visibilityCache == null)
+                {
+                    visibilityCache = GetComponent<NetworkVisibility>();
+                }
+                return visibilityCache;
+            }
+        }
 
         [SerializeField, HideInInspector] string m_AssetId;
 
@@ -227,7 +263,7 @@ namespace Mirror
 
         /// <summary>
         /// A callback that can be populated to be notified when the client-authority state of objects changes.
-        /// <para>Whenever an object is spawned using SpawnWithClientAuthority, or the client authority status of an object is changed with AssignClientAuthority or RemoveClientAuthority, then this callback will be invoked.</para>
+        /// <para>Whenever an object is spawned with client authority, or the client authority status of an object is changed with AssignClientAuthority or RemoveClientAuthority, then this callback will be invoked.</para>
         /// <para>This callback is only invoked on the server.</para>
         /// </summary>
         public static ClientAuthorityCallback clientAuthorityCallback;
@@ -668,11 +704,11 @@ namespace Mirror
 
         internal void OnSetHostVisibility(bool visible)
         {
-            foreach (NetworkBehaviour comp in NetworkBehaviours)
+            if (visibility != null)
             {
                 try
                 {
-                    comp.OnSetHostVisibility(visible);
+                    visibility.OnSetHostVisibility(visible);
                 }
                 catch (Exception e)
                 {
@@ -681,14 +717,17 @@ namespace Mirror
             }
         }
 
+        // check if observer can be seen by connection.
+        // * returns true if seen.
+        // * returns true if we have no proximity checker, so by default all are
+        //   seen.
         internal bool OnCheckObserver(NetworkConnection conn)
         {
-            foreach (NetworkBehaviour comp in NetworkBehaviours)
+            if (visibility != null)
             {
                 try
                 {
-                    if (!comp.OnCheckObserver(conn))
-                        return false;
+                    return visibility.OnCheckObserver(conn);
                 }
                 catch (Exception e)
                 {
@@ -763,11 +802,6 @@ namespace Mirror
             // clear 'written' variables
             ownerWritten = observersWritten = 0;
 
-            if (NetworkBehaviours.Length > 64)
-            {
-                Debug.LogError("Only 64 NetworkBehaviour components are allowed for NetworkIdentity: " + name + " because of the dirtyComponentMask");
-                return;
-            }
             ulong dirtyComponentsMask = GetDirtyMask(initialState);
 
             if (dirtyComponentsMask == 0L)
@@ -988,20 +1022,21 @@ namespace Mirror
 
         // helper function to call OnRebuildObservers in all components
         // -> HashSet is passed in so we can cache it!
-        // -> returns true if any of the components implemented
-        //    OnRebuildObservers, false otherwise
+        // -> returns true if we have a proxchecker, false otherwise
         // -> initialize is true on first rebuild, false on consecutive rebuilds
         internal bool GetNewObservers(HashSet<NetworkConnection> observersSet, bool initialize)
         {
-            bool rebuildOverwritten = false;
             observersSet.Clear();
 
-            foreach (NetworkBehaviour comp in NetworkBehaviours)
+            if (visibility != null)
             {
-                rebuildOverwritten |= comp.OnRebuildObservers(observersSet, initialize);
+                visibility.OnRebuildObservers(observersSet, initialize);
+                return true;
             }
 
-            return rebuildOverwritten;
+            // we have no proximity checker. return false to indicate that we
+            // should use the default implementation.
+            return false;
         }
 
         // helper function to add all server connections as observers.
@@ -1037,7 +1072,7 @@ namespace Mirror
 
             bool changed = false;
 
-            // call OnRebuildObservers function in all components
+            // call OnRebuildObservers function
             bool rebuildOverwritten = GetNewObservers(newObservers, initialize);
 
             // if player connection: ensure player always see himself no matter what.

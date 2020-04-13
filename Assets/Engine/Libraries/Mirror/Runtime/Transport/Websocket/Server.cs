@@ -256,7 +256,7 @@ namespace Mirror.Websocket
             if (!Active)
                 return;
 
-            Debug.Log("Server: stopping...");
+            //Debug.Log("Server: stopping...");
             cancellation.Cancel();
 
             // stop listening to connections so that no one can connect while we

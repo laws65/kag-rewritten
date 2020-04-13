@@ -161,8 +161,8 @@ namespace Telepathy
                 // UnityEditor causes AbortException if thread is still
                 // running when we press Play again next time. that's okay.
                 Logger.Log("Server thread aborted. That's okay. " + exception);
-            }*/
-            /*catch (SocketException exception)
+            }
+            catch (SocketException exception)
             {
                 // calling StopServer will interrupt this thread with a
                 // 'SocketException: interrupted'. that's okay.
