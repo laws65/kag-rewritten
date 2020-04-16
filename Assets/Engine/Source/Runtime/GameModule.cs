@@ -10,6 +10,7 @@ using Jint.Runtime.Interop;
 
 namespace KAG.Runtime.Modules
 {
+    using KAG.Runtime.Types;
     using KAG.Runtime.Utils;
 
     public class GameModule
@@ -19,7 +20,7 @@ namespace KAG.Runtime.Modules
         #endregion
 
         public Engine engine;
-        public Dictionary<string, GameModuleFile> files = new Dictionary<string, GameModuleFile>();
+        public Dictionary<string, File> files = new Dictionary<string, File>();
 
         public GameModule(Stream zipStream)
         {
@@ -31,6 +32,19 @@ namespace KAG.Runtime.Modules
             {
                 Add(entry.Name, archive.GetInputStream(entry));
             }
+
+            SetGlobalType("Tile", typeof(KTile));
+            SetGlobalType("Sprite", typeof(KSprite));
+            SetGlobalType("Texture", typeof(KTexture));
+            SetGlobalType("Vector2", typeof(KVector2));
+            SetGlobalType("Vector3", typeof(KVector3));
+            SetGlobalType("Color", typeof(KColor));
+
+            new GameUtils(this);
+            new EngineUtils(this);
+            new MapUtils(this);
+            new DebugUtils(this);
+            new AssertUtils(this);
         }
 
         /// <summary>
@@ -51,26 +65,26 @@ namespace KAG.Runtime.Modules
                 fileBuffer = ms.ToArray();
             }
 
-            GameModuleFile file = null;
+            File file = null;
             switch (fileExtension.ToLower())
             {
                 case ".js":
-                    file = new GameModuleScriptFile(this, fileBuffer);
+                    file = new ScriptFile(this, fileBuffer);
                     break;
                 case ".json":
-                    file = new GameModuleJsonFile(this, fileBuffer);
+                    file = new JsonFile(this, fileBuffer);
                     break;
                 case ".txt":
-                    file = new GameModuleTextFile(this, fileBuffer);
+                    file = new TextFile(this, fileBuffer);
                     break;
                 case ".jpg":
                 case ".jpeg":
                 case ".png":
-                    file = new GameModuleTextureFile(this, fileBuffer);
+                    file = new TextureFile(this, fileBuffer);
                     break;
             }
 
-            if (file is GameModuleFile)
+            if (file != null)
             {
                 files.Add(filePath, file);
             }
@@ -101,8 +115,8 @@ namespace KAG.Runtime.Modules
         /// <param name="filePath">The path to the script file</param>
         public void Execute(string filePath)
         {
-            var script = Get<GameModuleScriptFile>(filePath);
-            script?.Run();
+            var script = Get<ScriptFile>(filePath);
+            engine.Execute(script.Text);
         }
 
         public void ExecuteString(string script)

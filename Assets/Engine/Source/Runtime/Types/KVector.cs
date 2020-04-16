@@ -12,6 +12,7 @@ namespace KAG.Runtime.Types
         public float y = 0;
         public float z = 0;
 
+        public KVector3() { }
         public KVector3(float x, float y, float z = 0)
         {
             this.x = x;
@@ -26,10 +27,41 @@ namespace KAG.Runtime.Types
         public float x = 0;
         public float y = 0;
 
+        public KVector2() { }
         public KVector2(float x, float y)
         {
             this.x = x;
             this.y = y;
+        }
+    }
+
+    [Serializable]
+    public class KVector2Int
+    {
+        public int x = 0;
+        public int y = 0;
+
+        public KVector2Int() { }
+        public KVector2Int(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    [Serializable]
+    public class KVector3Int
+    {
+        public int x = 0;
+        public int y = 0;
+        public int z = 0;
+
+        public KVector3Int() { }
+        public KVector3Int(int x, int y, int z)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
     }
 
@@ -50,14 +82,16 @@ namespace KAG.Runtime.Types
             return new Vector3(runtime.x, runtime.y, runtime.z);
         }
 
-        public static IEnumerable<Vector2> ToNative(this IEnumerable<KVector2> runtime)
+        public static Vector2[] ToNative(this IEnumerable<KVector2> runtime)
         {
             List<Vector2> native = new List<Vector2>();
+
             foreach (var item in runtime)
             {
                 native.Add(item.ToNative());
             }
-            return native;
+
+            return native.ToArray();
         }
 
         public static Vector2 ToNative(this KVector2 runtime)

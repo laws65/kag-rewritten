@@ -5,15 +5,15 @@ var MapLoader = {
         this.LoadTiles()
 
         // Fill the map with respective tiles
-        var texture = new Texture(path)
+        var texture = Texture.FromFile(path)
         var colorArray = texture.GetPixels()
 
-        Map.SetTileSize(8, 8);
-        for (var x = 0; x < texture.width; ++x)
+        Map.SetTileSize(8, 8)
+        for (var x = 0; x < texture.size.x; ++x)
         {
-            for (var y = 0; y < texture.height; ++y)
+            for (var y = 0; y < texture.size.y; ++y)
             {
-                var color = colorArray[x + texture.width * y].ToHtmlRGB()
+                var color = colorArray[x + texture.size.x * y].ToHtmlRGB()
                 
                 if (this.tileArray[color] !== undefined) {
                     Map.SetTile(x, y, this.tileArray[color])
@@ -32,8 +32,8 @@ var MapLoader = {
     },
 
     AddTile(path) {
-        var tile = new Tile(path);
+        var tile = Tile.FromFile(path)
 
-        this.tileArray[tile.color] = tile;
+        this.tileArray[tile.color] = tile
     }
 };

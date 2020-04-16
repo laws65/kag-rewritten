@@ -10,24 +10,11 @@ namespace KAG.Runtime
 
     public class GameRuntime : Singleton<GameRuntime>
     {
-        public GameModule module;
+        GameModule module;
 
         private void Awake()
         {
             LoadBase();
-
-            module.SetGlobalType("Texture", typeof(KTexture));
-            module.SetGlobalType("Sprite", typeof(KSprite));
-            module.SetGlobalType("Tile", typeof(KTile));
-            module.SetGlobalType("Color", typeof(KColor));
-            module.SetGlobalType("Vector2", typeof(KVector2));
-            module.SetGlobalType("Vector3", typeof(KVector3));
-
-            new GameUtils(module);
-            new EngineUtils(module);
-            new MapUtils(module);
-            new DebugUtils(module);
-            new AssertUtils(module);
         }
 
         private void Start()
@@ -47,6 +34,11 @@ namespace KAG.Runtime
         private void LoadModule(string url)
         {
 
+        }
+
+        public T Get<T>(string path)
+        {
+            return module.Get<T>(path);
         }
     }
 }

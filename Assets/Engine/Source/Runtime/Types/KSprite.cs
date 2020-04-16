@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TinyJSON;
 using UnityEngine;
 
 namespace KAG.Runtime.Types
@@ -7,61 +8,29 @@ namespace KAG.Runtime.Types
     [Serializable]
     public class KSprite : KType
     {
-        [NonSerialized]
+        [Exclude]
         public Sprite sprite;
 
+        public int frame;
         public string name;
         public KTexture texture;
+        public KVector2Int size;
 
-        public int frame = 0;
-        public int width = 0;
-        public int height = 0;
+        public KVector2[] geometry;
+        public KVector2 pivot = new KVector2(0.5f, 0.5f);
 
-        public KVector2 pivot;
-        public List<KVector2> geometry;
-
-        public KSprite(string path)
-        {
-            texture = new KTexture(path);
-        }
-
-        public void SetFrame(int value)
-        {
-            frame = value;
-
-            int x = frame % (texture.width / width) * width;
-            int y = frame / (texture.width / width) * height;
-            sprite = Sprite.Create(texture.texture, new Rect(x, y, width, height), new Vector2(pivot.x, pivot.y));
-        }
-
-        public void SetSize(int width, int height)
-        {
-            this.width = width;
-            this.height = height;
-        }
-
-        public void SetSize(KVector2 size)
-        {
-            SetSize(Mathf.RoundToInt(size.x), Mathf.RoundToInt(size.y));
-        }
-
-        public void SetGeometry(List<KVector2> vertices)
-        {
-            geometry = vertices;
-        }
-
-        public List<KVector2> GetGeometry()
-        {
-            return geometry;
-        }
-
+        [AfterDecode]
         public void Refresh()
         {
-            texture.Refresh();
+            int x = frame % (texture.size.x / size.x) * size.x;
+            int y = frame / (texture.size.x / size.x) * size.y;
 
-            SetSize(width, height);
-            SetGeometry(geometry);
-            SetFrame(frame);
+            sprite = Sprite.Create(texture.texture, new Rect(x, y, size.x, size.y), pivot.ToNative());
+
+            if (geometry != null)
+            {
+                sprite.OverrideGeometry(geometry.ToNative(), sprite.triangles);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-Engine.Include("Scripts/Map/MapLoader.js");
+Engine.Include("Scripts/Map/MapLoader.js")
 
 var Main = {
     Start: function(gamemode = "") {

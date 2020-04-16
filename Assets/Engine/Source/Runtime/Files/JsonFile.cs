@@ -2,7 +2,7 @@
 
 namespace KAG.Runtime.Modules
 {
-    public class GameModuleJsonFile : GameModuleTextFile
+    public class JsonFile : TextFile
     {
         public JsValue Value
         {
@@ -12,6 +12,6 @@ namespace KAG.Runtime.Modules
             }
         }
 
-        public GameModuleJsonFile(GameModule gameModule, byte[] buffer) : base(gameModule, buffer) { }
+        public JsonFile(GameModule gameModule, byte[] buffer) : base(gameModule, buffer) { }
     }
 }

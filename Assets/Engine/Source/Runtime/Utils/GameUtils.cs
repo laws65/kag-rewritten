@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TinyJSON;
+using UnityEngine;
 using Jint;
 using Jint.Native;
 
@@ -15,13 +16,19 @@ namespace KAG.Runtime.Utils
 
         public object FromJson(string filePath)
         {
-            GameModuleJsonFile file = module.Get<GameModuleJsonFile>(filePath);
+            JsonFile file = module.Get<JsonFile>(filePath);
             return file?.Value;
         }
 
         public string ToJson(object value, bool prettify = false)
         {
-            return JsonUtility.ToJson(value, prettify);
+            EncodeOptions options = EncodeOptions.NoTypeHints;
+            if (prettify)
+            {
+                options |= EncodeOptions.PrettyPrint;
+            }
+
+            return JSON.Dump(value, options);
         }
     }
 

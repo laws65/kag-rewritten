@@ -1,10 +1,10 @@
 ﻿namespace KAG.Runtime.Modules
 {
-    public class GameModuleFile
+    public class File
     {
         public GameModule module;
 
-        public GameModuleFile(GameModule gameModule)
+        public File(GameModule gameModule)
         {
             module = gameModule;
         }

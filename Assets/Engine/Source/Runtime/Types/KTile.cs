@@ -1,40 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using TinyJSON;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 namespace KAG.Runtime.Types
 {
     using KAG.Runtime.Modules;
+    using System.Runtime.InteropServices;
 
+    [Serializable]
     public class KTile : KType
     {
-        [NonSerialized]
-        public KTileBase tile;
+        [Exclude]
+        public KTileBase tile = ScriptableObject.CreateInstance<KTileBase>();
 
         public string name = "";
         public string color = "";
+        public KSprite[] sprites;
 
-        public List<KSprite> sprites;
-
-        public KTile(string path)
+        public KSprite GetSprite(string name)
         {
-            tile = ScriptableObject.CreateInstance<KTileBase>();
+            foreach (var sprite in sprites)
+            {
+                if (sprite.name == name)
+                {
+                    return sprite;
+                }
+            }
 
-            var json = runtime.module.Get<GameModuleJsonFile>(path).Text;
-            JsonUtility.FromJsonOverwrite(json, this);
+            return null;
+        }
 
-            sprites[0].Refresh();
+        public void SetSprite(string name)
+        {
+            var sprite = GetSprite(name);
 
-            tile.sprite = sprites[0].sprite;
-            tile.colliderType = Tile.ColliderType.Sprite;
-            tile.sprite.OverrideGeometry(sprites[0].GetGeometry().ToNative().ToArray(), tile.sprite.triangles);
+            if (sprite != null)
+            {
+                tile.sprite = sprite.sprite;
+            }
+        }
+
+        [AfterDecode]
+        public void Refresh()
+        {
+            SetSprite("default");
+        }
+
+        public static KTile FromFile(string path)
+        {
+            var json = runtime.Get<JsonFile>(path).Text;
+            return JSON.Load(json).Make<KTile>();
         }
     }
 
     public class KTileBase : Tile
     {
-
+        public void Awake()
+        {
+            colliderType = ColliderType.Sprite;
+        }
     }
 }

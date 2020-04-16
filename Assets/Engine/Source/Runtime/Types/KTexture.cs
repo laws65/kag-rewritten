@@ -1,4 +1,5 @@
 ﻿using System;
+using TinyJSON;
 using UnityEngine;
 
 namespace KAG.Runtime.Types
@@ -8,23 +9,16 @@ namespace KAG.Runtime.Types
     [Serializable]
     public class KTexture : KType
     {
-        [NonSerialized]
+        [Exclude]
         public Texture2D texture = new Texture2D(1, 1);
 
-        public string file = "";
-        public int width = 0;
-        public int height = 0;
-
-        public KTexture(string path)
-        {
-            file = path;
-            Refresh();
-        }
+        public string file;
+        public KVector2Int size;
 
         public KColor[] GetPixels()
         {
             Color32[] original = texture.GetPixels32();
-            KColor[] pixels = new KColor[width * height];
+            KColor[] pixels = new KColor[size.x * size.y];
 
             for (int i = 0; i < pixels.Length; ++i)
             {
@@ -34,13 +28,21 @@ namespace KAG.Runtime.Types
             return pixels;
         }
 
+        [AfterDecode]
         public void Refresh()
         {
-            var textureFile = runtime.module.Get<GameModuleTextureFile>(file);
-            texture = textureFile.texture;
+            texture = runtime.Get<TextureFile>(file).texture;
 
-            width = texture.width;
-            height = texture.height;
+            size = new KVector2Int(texture.width, texture.height);
+        }
+
+        public static KTexture FromFile(string path)
+        {
+            KTexture texture = new KTexture();
+            texture.file = path;
+            texture.Refresh();
+
+            return texture;
         }
     }
 }
