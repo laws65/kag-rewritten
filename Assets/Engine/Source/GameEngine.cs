@@ -24,7 +24,7 @@ namespace KAG
         private void Start()
         {
             var args = Environment.GetCommandLineArgs();
-            if (args.Contains("-nographics"))
+            if (args.Contains("-host"))
             {
                 StartMultiplayerServer();
             }
