@@ -24,7 +24,7 @@ var MapLoader = {
 
     LoadTiles() {
         // First get the list of tiles
-        var pathArray = Utils.FromJson("Scripts/Map/MapKeys.json")
+        var pathArray = Engine.FromJson("Maps/MapKeys.json")
 
         for (var i = 0; i < pathArray.length; ++i) {
             this.AddTile(pathArray[i])

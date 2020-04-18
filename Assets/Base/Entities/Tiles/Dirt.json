@@ -5,7 +5,7 @@
         {
             "name": "default",
             "texture": {
-                "file": "Sprites/Materials/Dirt.png"
+                "file": "Entities/Tiles/Sprites/Dirt.png"
             },
             "frame": 0,
             "size": { "x": 8, "y": 8 }

@@ -5,7 +5,7 @@
         {
             "name": "default",
             "texture": {
-                "file": "Sprites/Materials/Stone (Thick).png"
+                "file": "Entities/Tiles/Sprites/Stone (Thick).png"
             },
             "frame": 0,
             "size": { "x": 8, "y": 8 }

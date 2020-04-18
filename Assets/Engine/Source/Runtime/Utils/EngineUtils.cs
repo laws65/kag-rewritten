@@ -1,9 +1,9 @@
-﻿using Jint.Native;
+﻿using TinyJSON;
+using UnityEngine;
 
 namespace KAG.Runtime.Utils
 {
     using KAG.Runtime.Modules;
-    using UnityEngine;
 
     public class EngineUtils : BaseUtils
     {
@@ -12,18 +12,29 @@ namespace KAG.Runtime.Utils
 
         public EngineUtils(GameModule gameModule) : base(gameModule)
         {
-            module.SetGlobalObject("Engine", this);
-        }
-
-        public void Instantiate(JsValue controller)
-        {
-            GameBehaviour obj = Object.Instantiate(new GameObject()).AddComponent<GameBehaviour>();
-            obj.controller = controller;
+            module.SetObject("Engine", this);
         }
 
         public void Include(string filePath)
         {
             module.Execute(filePath);
+        }
+
+        public object FromJson(string filePath)
+        {
+            JsonFile file = module.Get<JsonFile>(filePath);
+            return file?.Value;
+        }
+
+        public string ToJson(object value, bool prettify = false)
+        {
+            EncodeOptions options = EncodeOptions.NoTypeHints;
+            if (prettify)
+            {
+                options |= EncodeOptions.PrettyPrint;
+            }
+
+            return JSON.Dump(value, options);
         }
     }
 }

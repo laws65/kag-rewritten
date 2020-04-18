@@ -8,7 +8,7 @@ namespace KAG.Runtime.Utils
     {
         public DebugUtils(GameModule gameModule) : base(gameModule)
         {
-            module.SetGlobalObject("Debug", this);
+            module.SetObject("Debug", this);
         }
 
         public void Log(object message)

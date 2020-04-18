@@ -17,7 +17,7 @@ namespace KAG.Runtime.Utils
 
         public MapUtils(GameModule gameModule) : base(gameModule)
         {
-            module.SetGlobalObject("Map", this);
+            module.SetObject("Map", this);
 
             grid = new GameObject("Grid").AddComponent<Grid>();
             tilemap = new GameObject("Tilemap").AddComponent<Tilemap>();

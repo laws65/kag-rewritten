@@ -19,7 +19,7 @@ namespace KAG.Runtime
 
         private void Start()
         {
-            module.Execute("Scripts/Main.js");
+            module.Execute("Main.js");
             module.ExecuteString("Main.Start()");
         }
 

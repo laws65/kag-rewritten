@@ -11,7 +11,7 @@ namespace KAG.Runtime.Utils
     {
         public AssertUtils(GameModule gameModule) : base(gameModule)
         {
-            module.SetGlobalObject("Assert", this);
+            module.SetObject("Assert", this);
         }
 
         public void AreEqual(object expected, object actual)

@@ -33,12 +33,12 @@ namespace KAG.Runtime.Modules
                 Add(entry.Name, archive.GetInputStream(entry));
             }
 
-            SetGlobalType("Tile", typeof(KTile));
-            SetGlobalType("Sprite", typeof(KSprite));
-            SetGlobalType("Texture", typeof(KTexture));
-            SetGlobalType("Vector2", typeof(KVector2));
-            SetGlobalType("Vector3", typeof(KVector3));
-            SetGlobalType("Color", typeof(KColor));
+            SetType("Tile", typeof(KTile));
+            SetType("Sprite", typeof(KSprite));
+            SetType("Texture", typeof(KTexture));
+            SetType("Vector2", typeof(KVector2));
+            SetType("Vector3", typeof(KVector3));
+            SetType("Color", typeof(KColor));
 
             new GameUtils(this);
             new EngineUtils(this);
@@ -129,7 +129,7 @@ namespace KAG.Runtime.Modules
         /// </summary>
         /// <param name="name">The name that will be used when referring to it in JavaScript</param>
         /// <param name="obj">The object to bind</param>
-        public void SetGlobalObject(string name, object obj)
+        public void SetObject(string name, object obj)
         {
             engine.SetValue(name, JsValue.FromObject(engine, obj));
         }
@@ -139,7 +139,7 @@ namespace KAG.Runtime.Modules
         /// </summary>
         /// <param name="name">The name that will be used when referring to it in JavaScript</param>
         /// <param name="obj">The type to bind</param>
-        public void SetGlobalType(string name, Type type)
+        public void SetType(string name, Type type)
         {
             engine.SetValue(name, TypeReference.CreateTypeReference(engine, type));
         }
