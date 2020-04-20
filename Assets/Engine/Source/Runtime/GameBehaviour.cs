@@ -11,6 +11,10 @@ namespace KAG.Runtime
 
         private void Start()
         {
+            SetValue("isMine", isLocalPlayer);
+            SetValue("isClient", isClient);
+            SetValue("isServer", isServer);
+
             Call("Start");
         }
 
@@ -19,9 +23,22 @@ namespace KAG.Runtime
             Call("Update");
         }
 
-        private void Call(string function_name, params JsValue[] arguments)
+        public void SetValue(string propertyName, JsValue value)
         {
-            controller?.Get(function_name)?.Invoke(arguments);
+            controller.AsObject().Set(propertyName, value);
+        }
+
+        public JsValue GetValue(string propertyName)
+        {
+            return controller.AsObject().Get(propertyName);
+        }
+
+        public void Call(string functionName, params JsValue[] arguments)
+        {
+            if (controller != null)
+            {
+                GameRuntime.Instance.Engine.Invoke(controller.Get(functionName), controller, arguments);
+            }
         }
     }
 }

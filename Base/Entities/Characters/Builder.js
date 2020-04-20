@@ -1,9 +1,15 @@
-function Builder() {
-	this.Start = function() {
-		
+class Builder {
+	constructor() {
+
 	}
 
-	this.Update = function() {
-	
+	Start() {
+		Debug.Log(this.isMine)
+		Debug.Log(this.isClient)
+		Debug.Log(this.isServer)
+	}
+
+	Update() {
+		
 	}
 }

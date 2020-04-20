@@ -12,6 +12,7 @@ namespace KAG.Runtime.Modules
 {
     using KAG.Runtime.Types;
     using KAG.Runtime.Utils;
+    using System.Diagnostics;
 
     public class GameModule
     {
@@ -101,7 +102,11 @@ namespace KAG.Runtime.Modules
 
         public T Get<T>(string filePath)
         {
-            if (files.ContainsKey(filePath))
+            if (files.ContainsKey("Build/" + filePath))
+            {
+                return (T)(object)files["Build/" + filePath];
+            }
+            else if (files.ContainsKey(filePath))
             {
                 return (T)(object)files[filePath];
             }

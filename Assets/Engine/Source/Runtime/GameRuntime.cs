@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Jint;
 using UnityEngine;
 
 namespace KAG.Runtime
@@ -10,6 +11,7 @@ namespace KAG.Runtime
 
     public class GameRuntime : Singleton<GameRuntime>
     {
+        public Engine Engine { get => module.engine; }
         GameModule module;
 
         private void Awake()
