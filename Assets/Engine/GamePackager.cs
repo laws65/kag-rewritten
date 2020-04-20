@@ -14,7 +14,7 @@ namespace KAG
     public static class GamePackager
     {
         public static string BASE_PACKAGE = "Base";
-        public static string BASE_DIRECTORY = Application.dataPath + Path.DirectorySeparatorChar + BASE_PACKAGE;
+        public static string BASE_DIRECTORY = Application.dataPath + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + BASE_PACKAGE;
         public static string CACHE_DIRECTORY = Application.dataPath + Path.DirectorySeparatorChar + "__LOCAL__" + Path.DirectorySeparatorChar + "Resources";
 
         public static void Pack(string input_dir, string output_dir, Action callback = null)
@@ -30,7 +30,7 @@ namespace KAG
             Directory.CreateDirectory(output_dir);
 
             FastZip zip = new FastZip();
-            zip.CreateZip(package_path, input_dir, true, @"-\.meta$");
+            zip.CreateZip(package_path, input_dir, true, null);
 
             callback?.Invoke();
         }
