@@ -83,7 +83,7 @@ namespace KAG
 
         private void Start()
         {
-            gameSession = new GameSession("https", "vamist.dev", 443, "kag_rewritten");
+            gameSession = new GameSession("https", "vamist.dev", 443, "kag-rewritten");
 
             var args = Environment.GetCommandLineArgs();
             if (args.Contains("-host"))
