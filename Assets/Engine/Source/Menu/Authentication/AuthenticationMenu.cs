@@ -1,13 +1,15 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
 
 namespace KAG.Menu
 {
     public class AuthenticationMenu : MonoBehaviour
     {
+        private GameEngine gameEngine;
+        private GameSession gameSession;
+
         public GameObject loginPanel;
         public TextMeshProUGUI loginEmail;
         public TextMeshProUGUI loginPassword;
@@ -25,36 +27,13 @@ namespace KAG.Menu
 
         private void Awake()
         {
+            gameEngine = GameEngine.Instance;
+            gameSession = GameEngine.Instance.gameSession;
+        }
+
+        private void Start()
+        {
             ShowLogin();
-        }
-
-        private void OnLoginSuccess(PlayerInfo pinfo)
-        {
-            SceneManager.LoadScene(GameEngine.menuScene);
-        }
-
-        private void OnLoginFailure(Exception e)
-        {
-            Toast.Instance.ShowError(e.Message);
-        }
-
-        #region Dialog UI events
-        public void OnLoginClicked()
-        {
-            Toast.Instance.Show("Logging in...");
-            GameSession.Instance.Login(loginEmail.text, loginPassword.text, OnLoginSuccess, OnLoginFailure);
-        }
-
-        public void OnRegisterClicked()
-        {
-            Toast.Instance.Show("Registering...");
-            GameSession.Instance.Register(registerUsername.text, registerEmail.text, registerPassword.text, OnLoginSuccess, OnLoginFailure);
-        }
-
-        public void OnGuestClicked()
-        {
-            Toast.Instance.Show("Logging in as a guest...");
-            GameSession.Instance.LoginAsGuest(OnLoginSuccess, OnLoginFailure);
         }
 
         public void ShowLogin()
@@ -67,7 +46,36 @@ namespace KAG.Menu
         {
             loginPanel.SetActive(false);
             registerPanel.SetActive(true);
-            #endregion
         }
+
+        private void OnLoginSuccess(PlayerInfo pinfo)
+        {
+            gameEngine.LoadScene(GameScene.Menu);
+        }
+
+        private void OnLoginFailure(Exception e)
+        {
+            gameEngine.ShowError(e.Message);
+        }
+
+        #region Dialog UI events
+        public void OnLoginClicked()
+        {
+            gameEngine.ShowMessage("Logging in...");
+            gameSession.Login(loginEmail.text, loginPassword.text, OnLoginSuccess, OnLoginFailure);
+        }
+
+        public void OnRegisterClicked()
+        {
+            gameEngine.ShowMessage("Registering...");
+            gameSession.Register(registerUsername.text, registerEmail.text, registerPassword.text, OnLoginSuccess, OnLoginFailure);
+        }
+
+        public void OnGuestClicked()
+        {
+            gameEngine.ShowMessage("Logging in as a guest...");
+            gameSession.LoginAsGuest(OnLoginSuccess, OnLoginFailure);
+        }
+        #endregion
     }
 }

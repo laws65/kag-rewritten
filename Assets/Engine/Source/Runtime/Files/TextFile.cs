@@ -1,12 +1,12 @@
 ﻿using System.Text;
 
-namespace KAG.Runtime.Modules
+namespace KAG.Runtime
 {
     public class TextFile : File
     {
         public string Text { get; protected set; } = "";
 
-        public TextFile(GameModule gameModule, byte[] buffer) : base(gameModule)
+        public TextFile(GameRuntime gameRuntime, byte[] buffer) : base(gameRuntime)
         {
             Text = Encoding.UTF8.GetString(buffer);
         }

@@ -6,8 +6,15 @@ namespace KAG.Menu
 {
     public class ServerEntry : MonoBehaviour
     {
+        private GameEngine gameEngine;
+
         public TextMeshProUGUI label;
         public ServerInfo serverInfo;
+
+        private void Awake()
+        {
+            gameEngine = GameEngine.Instance;
+        }
 
         private void Start()
         {
@@ -16,8 +23,8 @@ namespace KAG.Menu
 
         public void Join()
         {
-            Toast.Instance.Show("Trying to connect to " + serverInfo.IP + "...");
-            GameEngine.Instance.StartMultiplayerClient(serverInfo.IP);
+            gameEngine.ShowMessage("Trying to connect to " + serverInfo.IP + "...");
+            gameEngine.StartMultiplayerClient(serverInfo.IP);
         }
     }
 }

@@ -1,12 +1,12 @@
-﻿namespace KAG.Runtime.Modules
+﻿namespace KAG.Runtime
 {
     public class File
     {
-        public GameModule module;
+        protected GameRuntime gameRuntime;
 
-        public File(GameModule gameModule)
+        public File(GameRuntime gameRuntime)
         {
-            module = gameModule;
+            this.gameRuntime = gameRuntime;
         }
     }
 }

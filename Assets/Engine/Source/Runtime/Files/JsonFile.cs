@@ -1,6 +1,6 @@
 ﻿using Jint.Native;
 
-namespace KAG.Runtime.Modules
+namespace KAG.Runtime
 {
     public class JsonFile : TextFile
     {
@@ -8,10 +8,10 @@ namespace KAG.Runtime.Modules
         {
             get
             {
-                return module.jsonParser.Parse(Text);
+                return gameRuntime.jsonParser.Parse(Text);
             }
         }
 
-        public JsonFile(GameModule gameModule, byte[] buffer) : base(gameModule, buffer) { }
+        public JsonFile(GameRuntime gameRuntime, byte[] buffer) : base(gameRuntime, buffer) { }
     }
 }

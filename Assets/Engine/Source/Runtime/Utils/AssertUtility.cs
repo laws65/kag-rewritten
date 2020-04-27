@@ -1,17 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
-using Jint;
-using Jint.Native;
 
 namespace KAG.Runtime.Utils
 {
-    using KAG.Runtime.Modules;
-
-    public class AssertUtils : BaseUtils
+    public class AssertUtility : BaseUtility
     {
-        public AssertUtils(GameModule gameModule) : base(gameModule)
+        public AssertUtility(GameRuntime gameRuntime) : base(gameRuntime)
         {
-            module.SetObject("Assert", this);
+            gameRuntime.SetObject("Assert", this);
         }
 
         public void AreEqual(object expected, object actual)

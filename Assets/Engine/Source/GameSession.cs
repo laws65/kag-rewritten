@@ -6,8 +6,6 @@ using Nakama.TinyJson;
 
 namespace KAG
 {
-    using KAG.Misc;
-
     public class PlayerInfo
     {
         public string Username;
@@ -26,7 +24,7 @@ namespace KAG
         public string IP;
     }
 
-    public class GameSession : Singleton<GameSession>
+    public class GameSession
     {
         public PlayerInfo player;
 
@@ -39,10 +37,10 @@ namespace KAG
         #endregion
 
         #region API endpoint
-        public string api_scheme = "http";
-        public string api_host = "127.0.0.1";
-        public int api_port = 7350;
-        public string api_key = "defaultKey";
+        string api_scheme;
+        string api_host;
+        int api_port;
+        string api_key;
         #endregion
 
         #region Nakama specifics
@@ -52,9 +50,12 @@ namespace KAG
 
         public bool IsConnected { get => session != null; }
 
-        private void Awake()
+        public GameSession(string api_scheme, string api_host, int api_port, string api_key)
         {
-            DontDestroyOnLoad(gameObject);
+            this.api_scheme = api_scheme;
+            this.api_host = api_host;
+            this.api_port = api_port;
+            this.api_key = api_key;
         }
 
         #region Authentication helpers

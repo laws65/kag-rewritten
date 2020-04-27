@@ -5,6 +5,13 @@ namespace KAG.Menu
 {
     public class Menu : MonoBehaviour
     {
+        private GameSession gameSession;
+
+        private void Start()
+        {
+            gameSession = GameEngine.Instance.gameSession;
+        }
+
         public void ShowSingleplayer()
         {
             GameEngine.Instance.StartSingleplayer();
@@ -12,7 +19,7 @@ namespace KAG.Menu
 
         public void ShowMultiplayer()
         {
-            SceneManager.LoadScene(GameEngine.matchmakingScene);
+            GameEngine.Instance.LoadScene(GameScene.Matchmaking);
         }
 
         public void Settings()
@@ -22,9 +29,9 @@ namespace KAG.Menu
 
         public void Logout()
         {
-            GameSession.Instance.Logout(() =>
+            gameSession.Logout(() =>
             {
-                SceneManager.LoadScene(GameEngine.authenticationScene);
+                GameEngine.Instance.LoadScene(GameScene.Authentication);
             });
         }
     }

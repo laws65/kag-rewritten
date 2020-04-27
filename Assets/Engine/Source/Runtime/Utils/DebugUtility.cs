@@ -2,13 +2,11 @@
 
 namespace KAG.Runtime.Utils
 {
-    using KAG.Runtime.Modules;
-
-    public class DebugUtils : BaseUtils
+    public class DebugUtility : BaseUtility
     {
-        public DebugUtils(GameModule gameModule) : base(gameModule)
+        public DebugUtility(GameRuntime gameRuntime) : base(gameRuntime)
         {
-            module.SetObject("Debug", this);
+            gameRuntime.SetObject("Debug", this);
         }
 
         public void Log(object message)

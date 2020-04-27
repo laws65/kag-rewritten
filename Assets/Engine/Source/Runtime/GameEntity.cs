@@ -1,19 +1,25 @@
 ﻿using Mirror;
 using Jint;
 using Jint.Native;
+using System.IO;
 using UnityEngine;
 
 namespace KAG.Runtime
 {
-    public class GameBehaviour : NetworkBehaviour
+    public class GameEntity : NetworkBehaviour
     {
+        private GameRuntime gameRuntime;
+
         public JsValue controller;
 
         private void Start()
         {
+            gameRuntime = GameEngine.Instance.gameRuntime;
+
             SetValue("isMine", isLocalPlayer);
             SetValue("isClient", isClient);
             SetValue("isServer", isServer);
+            //SetValue("Instantiate", Instantiate);
 
             Call("Start");
         }
@@ -37,7 +43,7 @@ namespace KAG.Runtime
         {
             if (controller != null)
             {
-                GameRuntime.Instance.Engine.Invoke(controller.Get(functionName), controller, arguments);
+                gameRuntime.jint.Invoke(controller.Get(functionName), controller, arguments);
             }
         }
     }

@@ -7,27 +7,36 @@ namespace KAG.Menu
 {
     public class MatchmakingMenu : MonoBehaviour
     {
-        public TextMeshProUGUI statsText;
+        private GameEngine gameEngine;
+        private GameSession gameSession;
 
-        [Space]
         public GameObject listContent;
         public GameObject listItem;
 
+        [Space]
+        public TextMeshProUGUI statsText;
+
         private void Awake()
+        {
+            gameEngine = GameEngine.Instance;
+            gameSession = GameEngine.Instance.gameSession;
+        }
+
+        private void Start()
         {
             Refresh();
         }
 
         public void Close()
         {
-            SceneManager.LoadScene(GameEngine.menuScene);
+            gameEngine.LoadScene(GameScene.Authentication);
         }
 
         public void Refresh()
         {
-            Toast.Instance.Show("Refreshing server list...");
+            gameEngine.ShowMessage("Refreshing server list...");
 
-            GameSession.Instance.MatchmakeRefresh((serverList) =>
+            gameSession.MatchmakeRefresh((serverList) =>
             {
                 foreach (Transform child in listContent.transform)
                 {

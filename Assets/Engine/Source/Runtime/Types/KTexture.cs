@@ -4,8 +4,6 @@ using UnityEngine;
 
 namespace KAG.Runtime.Types
 {
-    using KAG.Runtime.Modules;
-
     [Serializable]
     public class KTexture : KType
     {
@@ -31,7 +29,7 @@ namespace KAG.Runtime.Types
         [AfterDecode]
         public void Refresh()
         {
-            texture = runtime.Get<TextureFile>(file).texture;
+            texture = gameRuntime.Get<TextureFile>(file).texture;
 
             size = new KVector2Int(texture.width, texture.height);
         }

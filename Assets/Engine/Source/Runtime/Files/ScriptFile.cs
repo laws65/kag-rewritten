@@ -1,9 +1,7 @@
-﻿using Jint;
-
-namespace KAG.Runtime.Modules
+﻿namespace KAG.Runtime
 {
     public class ScriptFile : TextFile
     {
-        public ScriptFile(GameModule gameModule, byte[] buffer) : base(gameModule, buffer) { }
+        public ScriptFile(GameRuntime gameRuntime, byte[] buffer) : base(gameRuntime, buffer) { }
     }
 }

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using TinyJSON;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 namespace KAG.Runtime.Types
 {
-    using KAG.Runtime.Modules;
-    using System.Runtime.InteropServices;
-
     [Serializable]
     public class KTile : KType
     {
@@ -50,7 +46,7 @@ namespace KAG.Runtime.Types
 
         public static KTile FromFile(string path)
         {
-            var json = runtime.Get<JsonFile>(path).Text;
+            var json = gameRuntime.Get<JsonFile>(path).Text;
             return JSON.Load(json).Make<KTile>();
         }
     }

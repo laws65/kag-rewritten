@@ -4,9 +4,8 @@ using UnityEngine.Tilemaps;
 namespace KAG.Runtime.Utils
 {
     using KAG.Runtime.Types;
-    using KAG.Runtime.Modules;
 
-    public class MapUtils : BaseUtils
+    public class MapUtility : BaseUtility
     {
         public Grid grid;
         public Tilemap tilemap;
@@ -15,9 +14,9 @@ namespace KAG.Runtime.Utils
         public Rigidbody2D tilemapRigidbody;
         public CompositeCollider2D tilemapComposite;
 
-        public MapUtils(GameModule gameModule) : base(gameModule)
+        public MapUtility(GameRuntime gameRuntime) : base(gameRuntime)
         {
-            module.SetObject("Map", this);
+            gameRuntime.SetObject("Map", this);
 
             grid = new GameObject("Grid").AddComponent<Grid>();
             tilemap = new GameObject("Tilemap").AddComponent<Tilemap>();
