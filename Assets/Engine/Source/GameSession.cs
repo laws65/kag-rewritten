@@ -11,6 +11,12 @@ namespace KAG
         public string Username;
         public string UserId;
 
+        public PlayerInfo()
+        {
+            Username = "Peasant";
+            UserId = "[invalid]";
+        }
+
         public PlayerInfo(ISession session)
         {
             Username = session.Username;
@@ -26,7 +32,7 @@ namespace KAG
 
     public class GameSession
     {
-        public PlayerInfo player;
+        public PlayerInfo player = new PlayerInfo();
 
         #region Session events
         public delegate void OnLoginSuccess(PlayerInfo pinfo);
@@ -140,6 +146,11 @@ namespace KAG
             {
                 onFailure?.Invoke(e);
             }
+        }
+
+        public void LoginOffline(OnLoginSuccess onSuccess = null)
+        {
+            onSuccess?.Invoke(player);
         }
 
         public void Logout(OnLogout callback)

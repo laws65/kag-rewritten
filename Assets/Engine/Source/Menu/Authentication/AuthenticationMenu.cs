@@ -76,6 +76,11 @@ namespace KAG.Menu
             gameEngine.ShowMessage("Logging in as a guest...");
             gameSession.LoginAsGuest(OnLoginSuccess, OnLoginFailure);
         }
+
+        public void OnOfflineClicked()
+        {
+            gameSession.LoginOffline(OnLoginSuccess);
+        }
         #endregion
     }
 }
