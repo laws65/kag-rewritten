@@ -44,6 +44,8 @@ namespace KAG.Runtime
             SetType("Texture", typeof(KTexture));
             SetType("Vector2", typeof(KVector2));
             SetType("Vector3", typeof(KVector3));
+            SetType("Vector2Int", typeof(KVector2Int));
+            SetType("Vector3Int", typeof(KVector3Int));
             SetType("Color", typeof(KColor));
 
             new AssertUtility(this);

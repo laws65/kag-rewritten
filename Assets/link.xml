@@ -1,4 +1,7 @@
 <linker>
+  <!-- Needed to preserve TinyJSON dependencies during stripping -->
+  <assembly fullname="TinyJSON" ignoreIfMissing="0" preserve="all" />
+
   <!-- Needed to preserve Nakama dependencies during stripping -->
   <assembly fullname="Nakama" ignoreIfMissing="0" preserve="all" />
 

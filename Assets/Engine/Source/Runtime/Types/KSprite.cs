@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using TinyJSON;
 using UnityEngine;
 
@@ -29,7 +28,7 @@ namespace KAG.Runtime.Types
 
             if (geometry != null)
             {
-                sprite.OverrideGeometry(geometry.ToNative(), sprite.triangles);
+                sprite.OverrideGeometry(geometry.ToNative().ToArray(), sprite.triangles);
             }
         }
     }
