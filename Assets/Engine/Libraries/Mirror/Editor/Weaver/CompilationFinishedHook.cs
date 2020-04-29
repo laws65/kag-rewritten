@@ -45,7 +45,7 @@ namespace Mirror.Weaver
         }
 
         [InitializeOnLoadMethod]
-        static void OnInitializeOnLoad()
+        public static void OnInitializeOnLoad()
         {
             CompilationPipeline.assemblyCompilationFinished += OnCompilationFinished;
 
@@ -100,7 +100,7 @@ namespace Mirror.Weaver
             // Do nothing if there were compile errors on the target
             if (CompilerMessagesContainError(messages))
             {
-                //Debug.Log("Weaver: stop because compile errors on target");
+                Debug.Log("Weaver: stop because compile errors on target");
                 return;
             }
 
@@ -159,7 +159,7 @@ namespace Mirror.Weaver
             }
         }
 
-        private static HashSet<string> GetDependecyPaths(string assemblyPath)
+        static HashSet<string> GetDependecyPaths(string assemblyPath)
         {
             // build directory list for later asm/symbol resolving using CompilationPipeline refs
             HashSet<string> dependencyPaths = new HashSet<string>();

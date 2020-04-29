@@ -80,7 +80,7 @@ namespace Mirror
         public uint netId => netIdentity.netId;
 
         /// <summary>
-        /// The <see cref="NetworkConnection">NetworkConnection</see> associated with this <see cref="NetworkIdentity">NetworkIdentity.</see> This is only valid for player objects on the server.
+        /// The <see cref="NetworkConnection">NetworkConnection</see> associated with this <see cref="NetworkIdentity">NetworkIdentity.</see> This is only valid for player objects on the client.
         /// </summary>
         public NetworkConnection connectionToServer => netIdentity.connectionToServer;
 
@@ -685,23 +685,23 @@ namespace Mirror
         /// <returns>True if data was written.</returns>
         public virtual bool OnSerialize(NetworkWriter writer, bool initialState)
         {
+            bool objectWritten = false;
+            // if initialState: write all SyncVars.
+            // otherwise write dirtyBits+dirty SyncVars
             if (initialState)
             {
-                return SerializeObjectsAll(writer);
+                objectWritten = SerializeObjectsAll(writer);
             }
             else
             {
-                return SerializeObjectsDelta(writer);
+                objectWritten = SerializeObjectsDelta(writer);
             }
 
-            // SyncVar are writen here in subclass
+            bool syncVarWritten = SerializeSyncVars(writer, initialState);
 
-            // if initialState
-            //   write all SyncVars
-            // else
-            //   write syncVarDirtyBits
-            //   write dirty SyncVars
+            return objectWritten || syncVarWritten;
         }
+
 
         /// <summary>
         /// Virtual function to override to receive custom serialization data. The corresponding function to send serialization data is OnSerialize().
@@ -719,6 +719,26 @@ namespace Mirror
                 DeSerializeObjectsDelta(reader);
             }
 
+            DeserializeSyncVars(reader, initialState);
+        }
+
+        // Don't rename. Weaver uses this exact function name.
+        public virtual bool SerializeSyncVars(NetworkWriter writer, bool initialState)
+        {
+            return false;
+
+            // SyncVar are writen here in subclass
+
+            // if initialState
+            //   write all SyncVars
+            // else
+            //   write syncVarDirtyBits
+            //   write dirty SyncVars
+        }
+
+        // Don't rename. Weaver uses this exact function name.
+        public virtual void DeserializeSyncVars(NetworkReader reader, bool initialState)
+        {
             // SyncVars are read here in subclass
 
             // if initialState
@@ -794,12 +814,32 @@ namespace Mirror
             }
         }
 
+        internal void ResetSyncObjects()
+        {
+            foreach (SyncObject syncObject in syncObjects)
+            {
+                syncObject.Reset();
+            }
+        }
+
+        // Deprecated 04/20/2020
+        /// <summary>
+        /// Obsolete: Use <see cref="OnStopClient()"/> instead
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Override OnStopClient() instead")]
+        public virtual void OnNetworkDestroy() { }
+
         /// <summary>
         /// This is invoked on clients when the server has caused this object to be destroyed.
         /// <para>This can be used as a hook to invoke effects or do client specific cleanup.</para>
         /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual void OnNetworkDestroy() { }
+        public virtual void OnStopClient()
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            // backwards compatibility
+            OnNetworkDestroy();
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
 
         /// <summary>
         /// This is invoked for NetworkBehaviour objects when they become active on the server.
@@ -807,6 +847,12 @@ namespace Mirror
         /// <para>This will be called for objects on a "host" as well as for object on a dedicated server.</para>
         /// </summary>
         public virtual void OnStartServer() { }
+
+        /// <summary>
+        /// Invoked on the server when the object is unspawned
+        /// <para>Useful for saving object data in persistant storage</para>
+        /// </summary>
+        public virtual void OnStopServer() { }
 
         /// <summary>
         /// Called on every NetworkBehaviour when it is activated on a client.
