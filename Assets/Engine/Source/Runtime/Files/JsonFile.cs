@@ -8,10 +8,10 @@ namespace KAG.Runtime
         {
             get
             {
-                return gameRuntime.jsonParser.Parse(Text);
+                return engine.jsonParser.Parse(Text);
             }
         }
 
-        public JsonFile(GameRuntime gameRuntime, byte[] buffer) : base(gameRuntime, buffer) { }
+        public JsonFile(GameEngine engine, byte[] buffer) : base(engine, buffer) { }
     }
 }

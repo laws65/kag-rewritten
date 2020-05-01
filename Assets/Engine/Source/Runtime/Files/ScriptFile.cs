@@ -2,6 +2,6 @@
 {
     public class ScriptFile : TextFile
     {
-        public ScriptFile(GameRuntime gameRuntime, byte[] buffer) : base(gameRuntime, buffer) { }
+        public ScriptFile(GameEngine engine, byte[] buffer) : base(engine, buffer) { }
     }
 }

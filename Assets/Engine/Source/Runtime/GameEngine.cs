@@ -14,30 +14,19 @@ namespace KAG.Runtime
     using KAG.Runtime.Types;
     using KAG.Runtime.Utils;
 
-    public class GameRuntime
+    public class GameEngine : Engine
     {
-        public GameEngine gameEngine;
-        public GameSession gameSession;
-
-        public Engine jint;
         public Dictionary<string, File> files;
 
         #region Cached helpers
         public JsonParser jsonParser;
         #endregion
 
-        public GameRuntime(GameEngine engine)
+        public GameEngine() : base()
         {
-            jint = new Engine();
-            jsonParser = new JsonParser(jint);
-
+            jsonParser = new JsonParser(this);
             files = new Dictionary<string, File>();
-            gameEngine = engine;
-            gameSession = engine.gameSession;
-        }
 
-        public void Init()
-        {
             LoadBase();
             SetType("Tile", typeof(KTile));
             SetType("Sprite", typeof(KSprite));
@@ -53,9 +42,6 @@ namespace KAG.Runtime
             new EngineUtility(this);
             new GameUtility(this);
             new MapUtility(this);
-
-            Execute("Main.js");
-            ExecuteString("Main.Start()");
         }
 
         private void LoadBase()
@@ -145,15 +131,10 @@ namespace KAG.Runtime
         /// Execute a script from a specified file
         /// </summary>
         /// <param name="filePath">The path to the script file</param>
-        public Engine Execute(string filePath)
+        public Engine ExecuteFile(string filePath)
         {
             var script = Get<ScriptFile>(filePath);
-            return jint.Execute(script.Text);
-        }
-
-        public Engine ExecuteString(string script)
-        {
-            return jint.Execute(script);
+            return Execute(script.Text);
         }
 
         /// <summary>
@@ -163,7 +144,7 @@ namespace KAG.Runtime
         /// <param name="obj">The object to bind</param>
         public void SetObject(string name, object obj)
         {
-            jint.SetValue(name, JsValue.FromObject(jint, obj));
+            SetValue(name, JsValue.FromObject(this, obj));
         }
 
         /// <summary>
@@ -173,7 +154,12 @@ namespace KAG.Runtime
         /// <param name="obj">The type to bind</param>
         public void SetType(string name, Type type)
         {
-            jint.SetValue(name, TypeReference.CreateTypeReference(jint, type));
+            SetValue(name, TypeReference.CreateTypeReference(this, type));
+        }
+
+        public JsValue FromClass(string className)
+        {
+            return Execute($"new {className}()").GetCompletionValue();
         }
     }
 }

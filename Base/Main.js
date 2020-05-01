@@ -1,8 +1,16 @@
 Engine.Include("Maps/MapLoader.js")
-Engine.Include("Entities/Characters/Builder.js")
 
-var Main = {
-    Start: function(gameMode = "") {
-        MapLoader.Load("Maps/CTF/Mazey_Epic.png")
+class Main {
+    Start(gameMode = "") {
+        let mapLoader = new MapLoader()
+        mapLoader.Load("Maps/CTF/Mazey_Epic.png")
+    }
+
+    OnPlayerConnected(player) {
+        Debug.Log(player.Username)
+    }
+
+    OnPlayerDisconnected(player) {
+        Debug.Log(player.Username)
     }
 }

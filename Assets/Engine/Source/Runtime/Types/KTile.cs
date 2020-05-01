@@ -46,7 +46,7 @@ namespace KAG.Runtime.Types
 
         public static KTile FromFile(string path)
         {
-            var json = gameRuntime.Get<JsonFile>(path).Text;
+            var json = engine.Get<JsonFile>(path).Text;
             return JSON.Load(json).Make<KTile>();
         }
     }

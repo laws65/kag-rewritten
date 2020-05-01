@@ -4,9 +4,9 @@ namespace KAG.Runtime.Utils
 {
     public class DebugUtility : BaseUtility
     {
-        public DebugUtility(GameRuntime gameRuntime) : base(gameRuntime)
+        public DebugUtility(GameEngine engine) : base(engine)
         {
-            gameRuntime.SetObject("Debug", this);
+            engine.SetObject("Debug", this);
         }
 
         public void Log(object message)

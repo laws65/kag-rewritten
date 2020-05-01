@@ -6,11 +6,11 @@ namespace KAG.Runtime.Types
     [Serializable]
     public class KType
     {
-        protected static GameRuntime gameRuntime
+        protected static GameEngine engine
         {
             get
             {
-                return GameEngine.Instance.gameRuntime;
+                return GameManager.Instance.engine;
             }
         }
     }

@@ -29,7 +29,7 @@ namespace KAG.Runtime.Types
         [AfterDecode]
         public void Refresh()
         {
-            texture = gameRuntime.Get<TextureFile>(file).texture;
+            texture = engine.Get<TextureFile>(file).texture;
 
             size = new KVector2Int(texture.width, texture.height);
         }

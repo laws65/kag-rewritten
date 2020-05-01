@@ -14,9 +14,9 @@ namespace KAG.Runtime.Utils
         public Rigidbody2D tilemapRigidbody;
         public CompositeCollider2D tilemapComposite;
 
-        public MapUtility(GameRuntime gameRuntime) : base(gameRuntime)
+        public MapUtility(GameEngine engine) : base(engine)
         {
-            gameRuntime.SetObject("Map", this);
+            engine.SetObject("Map", this);
 
             grid = new GameObject("Grid").AddComponent<Grid>();
             tilemap = new GameObject("Tilemap").AddComponent<Tilemap>();

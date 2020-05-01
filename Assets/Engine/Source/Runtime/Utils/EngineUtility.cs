@@ -8,19 +8,19 @@ namespace KAG.Runtime.Utils
         public float deltaTime { get { return Time.deltaTime; } }
         public float fixedDeltaTime { get { return Time.fixedDeltaTime; } }
 
-        public EngineUtility(GameRuntime gameRuntime) : base(gameRuntime)
+        public EngineUtility(GameEngine engine) : base(engine)
         {
-            gameRuntime.SetObject("Engine", this);
+            engine.SetObject("Engine", this);
         }
 
         public void Include(string filePath)
         {
-            gameRuntime.Execute(filePath);
+            engine.ExecuteFile(filePath);
         }
 
         public object FromJson(string filePath)
         {
-            JsonFile file = gameRuntime.Get<JsonFile>(filePath);
+            JsonFile file = engine.Get<JsonFile>(filePath);
             return file?.Value;
         }
 

@@ -6,7 +6,7 @@ namespace KAG.Runtime
     {
         public string Text { get; protected set; } = "";
 
-        public TextFile(GameRuntime gameRuntime, byte[] buffer) : base(gameRuntime)
+        public TextFile(GameEngine engine, byte[] buffer) : base(engine)
         {
             Text = Encoding.UTF8.GetString(buffer);
         }

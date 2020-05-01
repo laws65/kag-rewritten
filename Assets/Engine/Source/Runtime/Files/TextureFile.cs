@@ -6,7 +6,7 @@ namespace KAG.Runtime
     {
         public Texture2D texture = new Texture2D(1, 1);
 
-        public TextureFile(GameRuntime gameRuntime, byte[] buffer) : base(gameRuntime)
+        public TextureFile(GameEngine engine, byte[] buffer) : base(engine)
         {
             texture.filterMode = FilterMode.Point;
             ImageConversion.LoadImage(texture, buffer);

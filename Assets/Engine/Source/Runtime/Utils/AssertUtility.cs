@@ -5,9 +5,9 @@ namespace KAG.Runtime.Utils
 {
     public class AssertUtility : BaseUtility
     {
-        public AssertUtility(GameRuntime gameRuntime) : base(gameRuntime)
+        public AssertUtility(GameEngine engine) : base(engine)
         {
-            gameRuntime.SetObject("Assert", this);
+            engine.SetObject("Assert", this);
         }
 
         public void AreEqual(object expected, object actual)

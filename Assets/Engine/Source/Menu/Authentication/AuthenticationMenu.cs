@@ -7,7 +7,7 @@ namespace KAG.Menu
 {
     public class AuthenticationMenu : MonoBehaviour
     {
-        private GameEngine gameEngine;
+        private GameManager gameManager;
         private GameSession gameSession;
 
         public GameObject loginPanel;
@@ -25,14 +25,11 @@ namespace KAG.Menu
         public Button registerButton;
         public Button goToLoginButton;
 
-        private void Awake()
-        {
-            gameEngine = GameEngine.Instance;
-            gameSession = GameEngine.Instance.gameSession;
-        }
-
         private void Start()
         {
+            gameManager = GameManager.Instance;
+            gameSession = GameManager.Instance.session;
+
             ShowLogin();
         }
 
@@ -50,30 +47,30 @@ namespace KAG.Menu
 
         private void OnLoginSuccess(PlayerInfo pinfo)
         {
-            gameEngine.LoadScene(GameScene.Menu);
+            gameManager.LoadScene(GameScene.Menu);
         }
 
         private void OnLoginFailure(Exception e)
         {
-            gameEngine.ShowError(e.Message);
+            gameManager.ShowError(e.Message);
         }
 
         #region Dialog UI events
         public void OnLoginClicked()
         {
-            gameEngine.ShowMessage("Logging in...");
+            gameManager.ShowMessage("Logging in...");
             gameSession.Login(loginEmail.text, loginPassword.text, OnLoginSuccess, OnLoginFailure);
         }
 
         public void OnRegisterClicked()
         {
-            gameEngine.ShowMessage("Registering...");
+            gameManager.ShowMessage("Registering...");
             gameSession.Register(registerUsername.text, registerEmail.text, registerPassword.text, OnLoginSuccess, OnLoginFailure);
         }
 
         public void OnGuestClicked()
         {
-            gameEngine.ShowMessage("Logging in as a guest...");
+            gameManager.ShowMessage("Logging in as a guest...");
             gameSession.LoginAsGuest(OnLoginSuccess, OnLoginFailure);
         }
 

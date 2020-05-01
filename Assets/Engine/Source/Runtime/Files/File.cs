@@ -2,11 +2,11 @@
 {
     public class File
     {
-        protected GameRuntime gameRuntime;
+        protected GameEngine engine;
 
-        public File(GameRuntime gameRuntime)
+        public File(GameEngine engine)
         {
-            this.gameRuntime = gameRuntime;
+            this.engine = engine;
         }
     }
 }

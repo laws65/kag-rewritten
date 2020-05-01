@@ -5,24 +5,24 @@ namespace KAG.Runtime.Utils
 {
     public class GameUtility : BaseUtility
     {
-        public GameUtility(GameRuntime gameRuntime) : base(gameRuntime)
+        public GameUtility(GameEngine engine) : base(engine)
         {
-            gameRuntime.SetObject("Game", this);
+            engine.SetObject("Game", this);
         }
     }
 
     public class BaseUtility
     {
-        protected GameRuntime gameRuntime;
+        protected GameEngine engine;
 
-        public BaseUtility(GameRuntime gameRuntime)
+        public BaseUtility(GameEngine engine)
         {
-            this.gameRuntime = gameRuntime;
+            this.engine = engine;
         }
 
         public JsValue ToValue(object obj)
         {
-            return JsValue.FromObject(gameRuntime.jint, obj);
+            return JsValue.FromObject(engine, obj);
         }
 
         public T ToObject<T>(JsValue val)

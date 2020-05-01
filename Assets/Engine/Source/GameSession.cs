@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 using Nakama;
 using Nakama.TinyJson;
 
 namespace KAG
 {
-    public class PlayerInfo
+    public class PlayerInfo : MessageBase
     {
         public string Username;
         public string UserId;

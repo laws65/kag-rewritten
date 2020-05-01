@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
 
 namespace KAG.Menu
 {
     public class MatchmakingMenu : MonoBehaviour
     {
-        private GameEngine gameEngine;
+        private GameManager gameManager;
         private GameSession gameSession;
 
         public GameObject listContent;
@@ -16,25 +14,22 @@ namespace KAG.Menu
         [Space]
         public TextMeshProUGUI statsText;
 
-        private void Awake()
-        {
-            gameEngine = GameEngine.Instance;
-            gameSession = GameEngine.Instance.gameSession;
-        }
-
         private void Start()
         {
+            gameManager = GameManager.Instance;
+            gameSession = GameManager.Instance.session;
+
             Refresh();
         }
 
         public void Close()
         {
-            gameEngine.LoadScene(GameScene.Authentication);
+            gameManager.LoadScene(GameScene.Authentication);
         }
 
         public void Refresh()
         {
-            gameEngine.ShowMessage("Refreshing server list...");
+            gameManager.ShowMessage("Refreshing server list...");
 
             gameSession.MatchmakeRefresh((serverList) =>
             {

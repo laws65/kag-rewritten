@@ -1,27 +1,31 @@
-﻿using Mirror;
-using Jint;
-using Jint.Native;
+﻿using Jint.Native;
 
 namespace KAG.Runtime
 {
-    public class GameEntity : NetworkBehaviour
+    public class GameMain
     {
-        protected GameEngine engine => GameManager.Instance.engine;
-
+        protected GameEngine engine;
         public JsValue controller;
 
-        protected virtual void Start()
+        public GameMain(GameManager manager)
         {
-            SetValue("isMine", isLocalPlayer);
-            SetValue("isClient", isClient);
-            SetValue("isServer", isServer);
-
-            Call("Start");
+            engine = manager.engine;
+            controller = engine.FromClass("Main");
         }
 
-        protected virtual void Update()
+        public void Start(string gameMode)
         {
-            Call("Update");
+            Call("Start", gameMode);
+        }
+
+        public void OnPlayerConnected(PlayerInfo player)
+        {
+            Call("OnPlayerConnected", player);
+        }
+
+        public void OnPlayerDisconnected(PlayerInfo player)
+        {
+            Call("OnPlayerConnected", player);
         }
 
         public JsValue GetValue(string property)
