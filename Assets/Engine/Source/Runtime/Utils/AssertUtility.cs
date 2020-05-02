@@ -3,7 +3,7 @@ using UnityEngine.Assertions;
 
 namespace KAG.Runtime.Utils
 {
-    public class AssertUtility : BaseUtility
+    public class AssertUtility : Utility
     {
         public AssertUtility(GameEngine engine) : base(engine)
         {

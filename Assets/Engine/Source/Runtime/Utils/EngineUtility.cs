@@ -1,10 +1,15 @@
-﻿using TinyJSON;
+﻿using System.Collections.Generic;
+using TinyJSON;
+using Jint;
+using Jint.Native;
 using UnityEngine;
 
 namespace KAG.Runtime.Utils
 {
-    public class EngineUtility : BaseUtility
+    public class EngineUtility : Utility
     {
+        private Dictionary<string, JsValue> includes = new Dictionary<string, JsValue>();
+
         public float deltaTime { get { return Time.deltaTime; } }
         public float fixedDeltaTime { get { return Time.fixedDeltaTime; } }
 
@@ -13,9 +18,24 @@ namespace KAG.Runtime.Utils
             engine.SetObject("Engine", this);
         }
 
-        public void Include(string filePath)
+        public JsValue Import(string filePath)
         {
-            engine.ExecuteFile(filePath);
+            if (!includes.ContainsKey(filePath))
+            {
+                includes[filePath] = engine.ExecuteFile(filePath).GetCompletionValue();
+            }
+
+            return includes[filePath];
+        }
+
+        public JsValue ImportUnsafe(string filePath)
+        {
+            return engine.ExecuteFile(filePath).GetCompletionValue();
+        }
+
+        public JsValue Export(JsValue obj)
+        {
+            return obj;
         }
 
         public object FromJson(string filePath)

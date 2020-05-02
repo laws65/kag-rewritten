@@ -1,9 +1,11 @@
-Engine.Include("Maps/MapLoader.js")
-
 class Main {
-    Start(gameMode = "") {
-        let mapLoader = new MapLoader()
-        mapLoader.Load("Maps/CTF/Mazey_Epic.png")
+    constructor() {
+        this.rules = null
+    }
+
+    Start(rulesPath) {
+        this.rules = Engine.Import(rulesPath)
+        this.rules.Start()
     }
 
     OnPlayerConnected(player) {

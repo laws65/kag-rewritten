@@ -13,9 +13,9 @@ namespace KAG.Runtime
             controller = engine.FromClass("Main");
         }
 
-        public void Start(string gameMode)
+        public void Start(string rulesPath)
         {
-            Call("Start", gameMode);
+            Call("Start", rulesPath);
         }
 
         public void OnPlayerConnected(PlayerInfo player)

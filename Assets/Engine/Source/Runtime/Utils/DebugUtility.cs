@@ -1,12 +1,18 @@
-﻿using UnityEngine;
+﻿using TinyJSON;
+using UnityEngine;
 
 namespace KAG.Runtime.Utils
 {
-    public class DebugUtility : BaseUtility
+    public class DebugUtility : Utility
     {
         public DebugUtility(GameEngine engine) : base(engine)
         {
             engine.SetObject("Debug", this);
+        }
+
+        public void Dump(object data)
+        {
+            Debug.Log(JSON.Dump(data));
         }
 
         public void Log(object message)

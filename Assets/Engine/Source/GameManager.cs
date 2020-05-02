@@ -123,7 +123,7 @@ namespace KAG
                 engine.ExecuteFile("Main.js");
 
                 main = new GameMain(this);
-                main.Start("");
+                main.Start("Rules/Sandbox/SandboxRules.js");
 
                 session.LoginAsGuest((playerInfo) =>
                 {
@@ -147,7 +147,7 @@ namespace KAG
                 engine.ExecuteFile("Main.js");
 
                 main = new GameMain(this);
-                main.Start("");
+                main.Start("Rules/Sandbox/SandboxRules.js");
 
                 LoadScene(GameScene.Match);
             }

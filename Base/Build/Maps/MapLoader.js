@@ -9,11 +9,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var MapLoader = /*#__PURE__*/function () {
   function MapLoader() {
     _classCallCheck(this, MapLoader);
-
-    this.tileArray = [];
   }
 
-  _createClass(MapLoader, [{
+  _createClass(MapLoader, null, [{
     key: "Load",
     value: function Load(path) {
       this.LoadTiles(); // Fill the map with respective tiles
@@ -52,3 +50,5 @@ var MapLoader = /*#__PURE__*/function () {
 
   return MapLoader;
 }();
+
+MapLoader.tileArray = [];

@@ -4,23 +4,23 @@ namespace KAG.Menu
 {
     public class Menu : MonoBehaviour
     {
-        private GameManager gameManager;
-        private GameSession gameSession;
+        private GameManager manager;
+        private GameSession session;
 
         private void Start()
         {
-            gameManager = GameManager.Instance;
-            gameSession = GameManager.Instance.session;
+            manager = GameManager.Instance;
+            session = GameManager.Instance.session;
         }
 
         public void ShowSingleplayer()
         {
-            gameManager.StartHost();
+            manager.StartHost();
         }
 
         public void ShowMultiplayer()
         {
-            gameManager.LoadScene(GameScene.Matchmaking);
+            manager.LoadScene(GameScene.Matchmaking);
         }
 
         public void Settings()
@@ -30,7 +30,7 @@ namespace KAG.Menu
 
         public void Logout()
         {
-            gameSession.Logout(() =>
+            session.Logout(() =>
             {
                 GameManager.Instance.LoadScene(GameScene.Authentication);
             });

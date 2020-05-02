@@ -40,7 +40,6 @@ namespace KAG.Runtime
             new AssertUtility(this);
             new DebugUtility(this);
             new EngineUtility(this);
-            new GameUtility(this);
             new MapUtility(this);
         }
 

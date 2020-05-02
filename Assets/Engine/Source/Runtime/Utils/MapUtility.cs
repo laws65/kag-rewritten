@@ -5,7 +5,7 @@ namespace KAG.Runtime.Utils
 {
     using KAG.Runtime.Types;
 
-    public class MapUtility : BaseUtility
+    public class MapUtility : Utility
     {
         public Grid grid;
         public Tilemap tilemap;

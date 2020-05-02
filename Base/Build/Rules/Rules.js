@@ -6,30 +6,20 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Main = /*#__PURE__*/function () {
-  function Main() {
-    _classCallCheck(this, Main);
+Engine.Import("Maps/MapLoader.js");
 
-    this.rules = null;
+var Rules = /*#__PURE__*/function () {
+  function Rules() {
+    _classCallCheck(this, Rules);
+
+    this.name = "Generic game mode";
+    this.description = "No description provided.";
   }
 
-  _createClass(Main, [{
+  _createClass(Rules, [{
     key: "Start",
-    value: function Start(rulesPath) {
-      this.rules = Engine.Import(rulesPath);
-      this.rules.Start();
-    }
-  }, {
-    key: "OnPlayerConnected",
-    value: function OnPlayerConnected(player) {
-      Debug.Log(player.Username);
-    }
-  }, {
-    key: "OnPlayerDisconnected",
-    value: function OnPlayerDisconnected(player) {
-      Debug.Log(player.Username);
-    }
+    value: function Start() {}
   }]);
 
-  return Main;
+  return Rules;
 }();

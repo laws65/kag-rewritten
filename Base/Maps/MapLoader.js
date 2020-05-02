@@ -1,9 +1,5 @@
 class MapLoader {
-    constructor() {
-        this.tileArray = []
-    }
-
-    Load(path) {
+    static Load(path) {
         this.LoadTiles()
 
         // Fill the map with respective tiles
@@ -24,7 +20,7 @@ class MapLoader {
         }
     }
 
-    LoadTiles() {
+    static LoadTiles() {
         // First get the list of tiles
         let pathArray = Engine.FromJson("Maps/MapKeys.json")
 
@@ -33,9 +29,11 @@ class MapLoader {
         }
     }
 
-    AddTile(path) {
+    static AddTile(path) {
         let tile = Tile.FromFile(path)
 
         this.tileArray[tile.color] = tile
     }
 }
+
+MapLoader.tileArray = []
