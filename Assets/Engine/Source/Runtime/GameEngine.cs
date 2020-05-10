@@ -22,6 +22,7 @@ namespace KAG.Runtime
         public JsonParser jsonParser;
         #endregion
 
+        #region Initializing
         public GameEngine() : base()
         {
             jsonParser = new JsonParser(this);
@@ -59,13 +60,9 @@ namespace KAG.Runtime
         {
 
         }
+        #endregion
 
-        /// <summary>
-        /// Add a file to this module
-        /// </summary>
-        /// <param name="filePath">The path that will be used when retrieving this file</param>
-        /// <param name="fileStream">The file's binary data</param>
-        /// <param name="fileExtension">If left null, will use the filePath extension to decide the type of data the file represents</param>
+        #region File management
         public void Add(string filePath, Stream fileStream, string fileExtension = null)
         {
             filePath = filePath.Replace("\\", "/");
@@ -102,11 +99,7 @@ namespace KAG.Runtime
                 files.Add(filePath, file);
             }
         }
-
-        /// <summary>
-        /// Remove a file from this module
-        /// </summary>
-        /// <param name="filePath">The path where the file is located</param>
+        
         public void Remove(string filePath)
         {
             files.Remove(filePath);
@@ -125,32 +118,35 @@ namespace KAG.Runtime
 
             return default;
         }
+        #endregion
 
-        /// <summary>
-        /// Execute a script from a specified file
-        /// </summary>
-        /// <param name="filePath">The path to the script file</param>
-        public Engine ExecuteFile(string filePath)
+        #region Runtime utilities
+        public JsValue Import(string scriptPath)
         {
-            var script = Get<ScriptFile>(filePath);
-            return Execute(script.Text);
+            var file = Get<ScriptFile>(scriptPath);
+            if (file.imported == false)
+            {
+                file.importedValue = ExecuteFile(scriptPath).GetCompletionValue();
+            }
+            return file.importedValue;
         }
 
-        /// <summary>
-        /// Bind a .NET object in the JavaScript runtime
-        /// </summary>
-        /// <param name="name">The name that will be used when referring to it in JavaScript</param>
-        /// <param name="obj">The object to bind</param>
+        public Engine ExecuteFile(string scriptPath)
+        {
+            var script = Get<ScriptFile>(scriptPath);
+            return ExecuteScript(script.Text);
+        }
+
+        public Engine ExecuteScript(string scriptText)
+        {
+            return Execute(scriptText);
+        }
+
         public void SetObject(string name, object obj)
         {
             SetValue(name, JsValue.FromObject(this, obj));
         }
 
-        /// <summary>
-        /// Bind a .NET type in the JavaScript runtime
-        /// </summary>
-        /// <param name="name">The name that will be used when referring to it in JavaScript</param>
-        /// <param name="obj">The type to bind</param>
         public void SetType(string name, Type type)
         {
             SetValue(name, TypeReference.CreateTypeReference(this, type));
@@ -158,7 +154,13 @@ namespace KAG.Runtime
 
         public JsValue FromClass(string className)
         {
-            return Execute($"new {className}()").GetCompletionValue();
+            return FromClass(Global.Get(className));
         }
+
+        public JsValue FromClass(JsValue classFunction)
+        {
+            return Invoke(Global.Get("Reflect").Get("construct"), JsValue.Undefined, new object[] { classFunction, Execute("[]").GetCompletionValue().ToObject() });
+        }
+        #endregion
     }
 }

@@ -1,18 +1,22 @@
 class Main {
     constructor() {
-        this.rules = null
+        
     }
 
     Start(rulesPath) {
-        this.rules = Engine.Import(rulesPath)
+        let rulesClass = Engine.Import(rulesPath)
+
+        this.rules = Engine.FromClass(rulesClass)
         this.rules.Start()
     }
 
     OnPlayerConnected(player) {
-        Debug.Log(player.Username)
+        this.rules.OnPlayerConnected(player)
     }
 
     OnPlayerDisconnected(player) {
-        Debug.Log(player.Username)
+        this.rules.OnPlayerDisconnected(player)
     }
 }
+
+Engine.Export(Main)

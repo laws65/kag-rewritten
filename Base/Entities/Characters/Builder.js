@@ -13,3 +13,5 @@ class Builder {
 		
 	}
 }
+
+Engine.Export(Builder)

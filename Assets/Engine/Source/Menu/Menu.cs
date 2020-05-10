@@ -32,7 +32,7 @@ namespace KAG.Menu
         {
             session.Logout(() =>
             {
-                GameManager.Instance.LoadScene(GameScene.Authentication);
+                manager.LoadScene(GameScene.Authentication);
             });
         }
     }

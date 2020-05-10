@@ -7,7 +7,7 @@ public class GameAuthenticator : NetworkAuthenticator
     public override void OnStartServer()
     {
         // Register a handler for the authentication request we expect from client
-        NetworkServer.RegisterHandler<PlayerInfo>(OnAuthenticationRequest, false);
+        NetworkServer.ReplaceHandler<PlayerInfo>(OnAuthenticationRequest, false);
     }
 
     public override void OnServerAuthenticate(NetworkConnection conn)
@@ -28,7 +28,7 @@ public class GameAuthenticator : NetworkAuthenticator
     public override void OnStartClient()
     {
         // Register a handler for the authentication response we expect from server
-        NetworkClient.RegisterHandler<PlayerInfo>(OnAuthenticationResponse, false);
+        NetworkClient.ReplaceHandler<PlayerInfo>(OnAuthenticationResponse, false);
     }
 
     public override void OnClientAuthenticate(NetworkConnection conn)

@@ -4,51 +4,27 @@ namespace KAG.Runtime
 {
     public class GameMain
     {
-        protected GameEngine engine;
-        public JsValue controller;
+        protected GameEngine engine => GameManager.Instance.engine;
+        protected JsValue controller;
 
-        public GameMain(GameManager manager)
+        public GameMain(string className)
         {
-            engine = manager.engine;
-            controller = engine.FromClass("Main");
+            controller = engine.FromClass(className);
         }
 
         public void Start(string rulesPath)
         {
-            Call("Start", rulesPath);
+            controller.Call(engine, "Start", rulesPath);
         }
 
         public void OnPlayerConnected(PlayerInfo player)
         {
-            Call("OnPlayerConnected", player);
+            controller.Call(engine, "OnPlayerConnected", player);
         }
 
         public void OnPlayerDisconnected(PlayerInfo player)
         {
-            Call("OnPlayerConnected", player);
-        }
-
-        public JsValue GetValue(string property)
-        {
-            return controller.AsObject().Get(property);
-        }
-
-        public void SetValue(string property, JsValue value)
-        {
-            controller.AsObject().Set(property, value);
-        }
-
-        public void Call(string function, params object[] arguments)
-        {
-            if (controller != null)
-            {
-                if (engine.GetValue(controller, function).IsUndefined())
-                {
-                    return;
-                }
-
-                engine.Invoke(controller.Get(function), controller, arguments);
-            }
+            controller.Call(engine, "OnPlayerConnected", player);
         }
     }
 }

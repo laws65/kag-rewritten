@@ -9,27 +9,28 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Main = /*#__PURE__*/function () {
   function Main() {
     _classCallCheck(this, Main);
-
-    this.rules = null;
   }
 
   _createClass(Main, [{
     key: "Start",
     value: function Start(rulesPath) {
-      this.rules = Engine.Import(rulesPath);
+      var rulesClass = Engine.Import(rulesPath);
+      this.rules = Engine.FromClass(rulesClass);
       this.rules.Start();
     }
   }, {
     key: "OnPlayerConnected",
     value: function OnPlayerConnected(player) {
-      Debug.Log(player.Username);
+      this.rules.OnPlayerConnected(player);
     }
   }, {
     key: "OnPlayerDisconnected",
     value: function OnPlayerDisconnected(player) {
-      Debug.Log(player.Username);
+      this.rules.OnPlayerDisconnected(player);
     }
   }]);
 
   return Main;
 }();
+
+Engine.Export(Main);

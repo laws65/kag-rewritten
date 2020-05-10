@@ -14,6 +14,16 @@ class SandboxRules extends Rules {
 
         MapLoader.Load("Maps/CTF/Mazey_Epic.png")
     }
+    
+    OnPlayerConnected(player) {
+        Debug.Log(player.Username + " has joined the game.")
+
+        Engine.Instantiate("Entities/Characters/Builder.js")
+    }
+
+    OnPlayerDisconnected(player) {
+
+    }
 }
 
-Engine.Export(new SandboxRules())
+Engine.Export(SandboxRules)

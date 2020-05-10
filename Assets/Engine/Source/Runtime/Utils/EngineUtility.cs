@@ -3,39 +3,46 @@ using TinyJSON;
 using Jint;
 using Jint.Native;
 using UnityEngine;
+using Mirror;
 
 namespace KAG.Runtime.Utils
 {
     public class EngineUtility : Utility
     {
-        private Dictionary<string, JsValue> includes = new Dictionary<string, JsValue>();
-
         public float deltaTime { get { return Time.deltaTime; } }
         public float fixedDeltaTime { get { return Time.fixedDeltaTime; } }
+
+        public void Instantiate(string classPath)
+        {
+            GameEntity entity = Object.Instantiate(GameManager.Instance.entityPrefab).GetComponent<GameEntity>();
+            entity.Init(classPath);
+
+            NetworkServer.Spawn(entity.gameObject);
+        }
 
         public EngineUtility(GameEngine engine) : base(engine)
         {
             engine.SetObject("Engine", this);
         }
 
-        public JsValue Import(string filePath)
+        public JsValue Import(string scriptPath)
         {
-            if (!includes.ContainsKey(filePath))
-            {
-                includes[filePath] = engine.ExecuteFile(filePath).GetCompletionValue();
-            }
-
-            return includes[filePath];
+            return engine.Import(scriptPath);
         }
 
-        public JsValue ImportUnsafe(string filePath)
+        public JsValue ImportUnsafe(string scriptPath)
         {
-            return engine.ExecuteFile(filePath).GetCompletionValue();
+            return engine.Import(scriptPath);
         }
 
         public JsValue Export(JsValue obj)
         {
             return obj;
+        }
+
+        public JsValue FromClass(JsValue classFunction)
+        {
+            return engine.FromClass(classFunction);
         }
 
         public object FromJson(string filePath)

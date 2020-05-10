@@ -47,9 +47,18 @@ var SandboxRules = /*#__PURE__*/function (_Rules) {
       Debug.Log(this.description);
       MapLoader.Load("Maps/CTF/Mazey_Epic.png");
     }
+  }, {
+    key: "OnPlayerConnected",
+    value: function OnPlayerConnected(player) {
+      Debug.Log(player.Username + " has joined the game.");
+      Engine.Instantiate("Entities/Characters/Builder.js");
+    }
+  }, {
+    key: "OnPlayerDisconnected",
+    value: function OnPlayerDisconnected(player) {}
   }]);
 
   return SandboxRules;
 }(Rules);
 
-Engine.Export(new SandboxRules());
+Engine.Export(SandboxRules);

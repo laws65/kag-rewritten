@@ -19,7 +19,15 @@ var Rules = /*#__PURE__*/function () {
   _createClass(Rules, [{
     key: "Start",
     value: function Start() {}
+  }, {
+    key: "OnPlayerConnected",
+    value: function OnPlayerConnected(player) {}
+  }, {
+    key: "OnPlayerDisconnected",
+    value: function OnPlayerDisconnected(player) {}
   }]);
 
   return Rules;
 }();
+
+Engine.Export(Rules);

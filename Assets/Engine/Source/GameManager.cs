@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace KAG
 {
+    using Jint.Native;
     using KAG.Menu;
     using KAG.Runtime;
     using System.Collections;
@@ -23,7 +24,9 @@ namespace KAG
 
     public class GameManager : NetworkManager
     {
-        private string currentScene;
+        [Header("References")]
+        public Toast toast;
+        public GameObject entityPrefab;
 
         #region Singleton
         private static GameManager _instance;
@@ -39,24 +42,12 @@ namespace KAG
                 return _instance;
             }
         }
-
-        private Toast _toast;
-        private Toast toast
-        {
-            get
-            {
-                if (_toast == null)
-                {
-                    _toast = FindObjectOfType<Toast>();
-                }
-
-                return _toast;
-            }
-        }
         #endregion
 
-        public GameEngine engine;
+        private string currentScene;
+
         public GameSession session;
+        public GameEngine engine;
         public GameMain main;
 
         public override void Start()
@@ -76,55 +67,48 @@ namespace KAG
             }
         }
 
+        private void StartRuntime()
+        {
+            engine = new GameEngine();
+            engine.Import("Main.js");
+
+            main = new GameMain("Main");
+            main.Start("Rules/Sandbox/SandboxRules.js");
+        }
+
+        private void Instantiate(string classPath)
+        {
+            GameEntity entity = Instantiate(entityPrefab).GetComponent<GameEntity>();
+            entity.Init(classPath);
+
+            NetworkServer.Spawn(entity.gameObject);
+        }
+
         #region Scene management helpers
         public void LoadScene(string scene)
         {
-            if (!string.IsNullOrEmpty(currentScene))
-            {
-                UnloadScene(currentScene);
-            }
-            currentScene = scene;
-
             StartCoroutine(InternalLoadScene(scene));
         }
 
         private IEnumerator InternalLoadScene(string scene)
         {
-            var asyncOperation = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
+            var asyncOperation = SceneManager.LoadSceneAsync(scene);
             while (!asyncOperation.isDone)
             {
                 yield return null;
             }
-        }
-
-        public void UnloadScene(string scene)
-        {
-            StartCoroutine(InternalUnloadScene(scene));
-        }
-
-        private IEnumerator InternalUnloadScene(string scene)
-        {
-            var asyncOperation = SceneManager.UnloadSceneAsync(scene, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
-
-            while (!asyncOperation.isDone)
-            {
-                yield return null;
-            }
+            currentScene = scene;
         }
         #endregion
 
         public override void OnStartServer()
         {
             base.OnStartServer();
+            
+            StartRuntime();
 
-            if (mode == NetworkManagerMode.ServerOnly || mode == NetworkManagerMode.Host)
+            if (mode == NetworkManagerMode.ServerOnly)
             {
-                engine = new GameEngine();
-                engine.ExecuteFile("Main.js");
-
-                main = new GameMain(this);
-                main.Start("Rules/Sandbox/SandboxRules.js");
-
                 session.LoginAsGuest((playerInfo) =>
                 {
                     session.MatchmakeCreate(new ServerInfo
@@ -132,8 +116,6 @@ namespace KAG
                         Name = "KAG Server"
                     });
                 });
-
-                LoadScene(GameScene.Match);
             }
         }
 
@@ -141,15 +123,9 @@ namespace KAG
         {
             base.OnStartClient();
 
-            if (mode == NetworkManagerMode.ClientOnly)
+            if (mode == NetworkManagerMode.ClientOnly || mode == NetworkManagerMode.Host)
             {
-                engine = new GameEngine();
-                engine.ExecuteFile("Main.js");
-
-                main = new GameMain(this);
-                main.Start("Rules/Sandbox/SandboxRules.js");
-
-                LoadScene(GameScene.Match);
+                StartRuntime();
             }
         }
 

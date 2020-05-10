@@ -9,4 +9,14 @@ class Rules {
     Start() {
         
     }
+
+    OnPlayerConnected(player) {
+
+    }
+
+    OnPlayerDisconnected(player) {
+
+    }
 }
+
+Engine.Export(Rules)
