@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7f146c2ed93888442bdd5836a31a283f
+guid: eed0f4e0a3bcbbd4c91645520e33a9a9
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: DejaVu Sans
+  fontName: Inconsolata
   fontNames:
-  - DejaVu Sans
+  - Inconsolata
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
