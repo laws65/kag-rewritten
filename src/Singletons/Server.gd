@@ -10,6 +10,10 @@ var latency = 0
 var delta_latency = 0
 var client_clock = 0
 
+# Vars for other nodes to see
+var current_map : String = "Default" 
+var is_spectating : bool = false
+
 
 func _ready() -> void:
 	connect_to_server(ip, port)
@@ -81,8 +85,8 @@ remote func recieve_world_state(world_state) -> void:
 	get_node("../World").update_world_state(world_state)
 
 
-remote func spawn_new_player(player_id, team) -> void:
-	get_node("../World").spawn_new_player(player_id, team)
+remote func spawn_new_player(player_id) -> void:
+	get_node("../World").spawn_new_player(player_id)
 
 
 remote func despawn_player(player_id) -> void:
@@ -97,3 +101,8 @@ func get_stat(context, type, value, requester) -> void:
 remote func return_stat(stat, requester, value) -> void:
 	print("Interface recieved stat from server")
 	instance_from_id(requester).update_variable(stat, value)
+
+
+remote func load_map(map_name: String, map_data: Array) -> void:
+	get_node("../World/TileMap").load_map(map_data)
+	print("Loading map " + map_name)

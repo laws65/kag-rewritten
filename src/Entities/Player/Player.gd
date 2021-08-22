@@ -12,16 +12,9 @@ const classes = {
 	"knight" : preload("res://src/Entities/Player/Knight/Knight.tscn")
 }
 
-onready var PlayerCamera : Camera2D = get_node("Camera2D")
-onready var CameraInterpolator : Tween = get_node("Camera2D/Interpolator")
 
-
-func _process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	_flip_player()
-	_evaluate_zoom()
-
-
-func _physics_process(delta: float) -> void:
 	var direction: = _get_direction()
 	velocity = _calculate_move_velocity(velocity, direction, speed)
 	velocity = move_and_slide(velocity, FLOOR_NORMAL)
@@ -88,20 +81,4 @@ func initialise(world) -> void:
 	self.world = world
 
 
-# This method changes zoom levels based on player input
-func _evaluate_zoom() -> void:
-	if Input.is_action_pressed("zoom_in"):
-		CameraInterpolator.interpolate_property(PlayerCamera, "zoom",
-		PlayerCamera.zoom, PlayerCamera.zoom - Vector2(0.1, 0.1), 0.15
-		)
-		CameraInterpolator.start()
-	elif Input.is_action_pressed("zoom_out"):
-		CameraInterpolator.interpolate_property(PlayerCamera, "zoom",
-		PlayerCamera.zoom, PlayerCamera.zoom + Vector2(0.1, 0.1), 0.15
-		)
-		CameraInterpolator.start()
-	
-	PlayerCamera.zoom = Vector2(
-	clamp(PlayerCamera.zoom.x, 0.7, 1.3),
-	clamp(PlayerCamera.zoom.y, 0.7, 1.3)
-	)
+

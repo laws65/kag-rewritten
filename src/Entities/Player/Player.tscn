@@ -13,7 +13,7 @@
 radius = 8.33678
 height = 0.0
 
-[sub_resource type="Animation" id=17]
+[sub_resource type="Animation" id=2]
 resource_name = "knight_charge"
 length = 1.03333
 step = 0.0333333
@@ -54,8 +54,7 @@ tracks/2/keys = {
 "values": [ 1 ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "knight_fall"
+[sub_resource type="Animation" id=3]
 length = 0.0333333
 step = 1.0
 tracks/0/type = "value"
@@ -95,7 +94,7 @@ tracks/2/keys = {
 "values": [ Vector2( 1, -4 ) ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=4]
 resource_name = "knight_glide"
 length = 0.533333
 loop = true
@@ -137,8 +136,7 @@ tracks/2/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "knight_idle"
+[sub_resource type="Animation" id=5]
 length = 0.0333333
 step = 0.0333333
 tracks/0/type = "value"
@@ -178,7 +176,7 @@ tracks/2/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=22]
+[sub_resource type="Animation" id=6]
 resource_name = "knight_jab_down"
 length = 0.4
 loop = true
@@ -208,7 +206,7 @@ tracks/1/keys = {
 "values": [ Vector2( -1, -2 ), Vector2( 0, -1 ), Vector2( 1, -2 ), Vector2( 1, -2 ) ]
 }
 
-[sub_resource type="Animation" id=21]
+[sub_resource type="Animation" id=7]
 resource_name = "knight_jab_floor"
 length = 0.4
 step = 0.0333333
@@ -237,7 +235,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, -7 ), Vector2( 0, -7 ), Vector2( 1, -2 ), Vector2( -1, -2 ) ]
 }
 
-[sub_resource type="Animation" id=19]
+[sub_resource type="Animation" id=8]
 resource_name = "knight_jab_mid"
 length = 0.4
 loop = true
@@ -279,7 +277,7 @@ tracks/2/keys = {
 "values": [ Vector2( -1, -2 ), Vector2( -1, -2 ), Vector2( 1, -3 ), Vector2( 0, -4 ) ]
 }
 
-[sub_resource type="Animation" id=20]
+[sub_resource type="Animation" id=9]
 resource_name = "knight_jab_up"
 length = 0.4
 loop = true
@@ -321,8 +319,7 @@ tracks/2/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "knight_jump"
+[sub_resource type="Animation" id=10]
 length = 0.3
 step = 0.0333333
 tracks/0/type = "value"
@@ -362,7 +359,7 @@ tracks/2/keys = {
 "values": [ Vector2( 4, 0 ), Vector2( 5, 0 ), Vector2( 6, 0 ) ]
 }
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=11]
 resource_name = "knight_point"
 length = 0.0333333
 step = 0.0333333
@@ -403,7 +400,7 @@ tracks/2/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=12]
 resource_name = "knight_point_down"
 length = 0.0333333
 step = 0.0333333
@@ -444,7 +441,7 @@ tracks/2/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=13]
 resource_name = "knight_point_up"
 length = 0.0333333
 step = 0.0333333
@@ -485,8 +482,7 @@ tracks/2/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=6]
-resource_name = "knight_shield"
+[sub_resource type="Animation" id=14]
 step = 1.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:frame")
@@ -525,8 +521,7 @@ tracks/2/keys = {
 "values": [ Vector2( -1, -2 ) ]
 }
 
-[sub_resource type="Animation" id=12]
-resource_name = "knight_shield_bash"
+[sub_resource type="Animation" id=15]
 length = 0.333333
 step = 0.0333333
 tracks/0/type = "value"
@@ -566,8 +561,7 @@ tracks/2/keys = {
 "values": [ Vector2( -3, -2 ), Vector2( -3, -2 ), Vector2( -3, -3 ) ]
 }
 
-[sub_resource type="Animation" id=8]
-resource_name = "knight_shield_down"
+[sub_resource type="Animation" id=16]
 length = 0.1
 step = 1.0
 tracks/0/type = "value"
@@ -607,8 +601,7 @@ tracks/2/keys = {
 "values": [ Vector2( 2, -3 ) ]
 }
 
-[sub_resource type="Animation" id=11]
-resource_name = "knight_shield_down_walk"
+[sub_resource type="Animation" id=17]
 length = 0.4
 loop = true
 step = 0.0333333
@@ -649,8 +642,7 @@ tracks/2/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=7]
-resource_name = "knight_shield_up"
+[sub_resource type="Animation" id=18]
 length = 0.1
 step = 1.0
 tracks/0/type = "value"
@@ -690,8 +682,7 @@ tracks/2/keys = {
 "values": [ Vector2( -4, -3 ) ]
 }
 
-[sub_resource type="Animation" id=10]
-resource_name = "knight_shield_up_walk"
+[sub_resource type="Animation" id=19]
 length = 0.4
 loop = true
 step = 0.0333333
@@ -732,8 +723,7 @@ tracks/2/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=9]
-resource_name = "knight_shield_walk"
+[sub_resource type="Animation" id=20]
 length = 0.4
 loop = true
 step = 0.0333333
@@ -774,8 +764,7 @@ tracks/2/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=18]
-resource_name = "knight_slash"
+[sub_resource type="Animation" id=21]
 length = 0.5
 loop = true
 step = 0.0333333
@@ -816,8 +805,7 @@ tracks/2/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "knight_walk"
+[sub_resource type="Animation" id=22]
 length = 0.4
 loop = true
 step = 0.0333333
@@ -872,43 +860,37 @@ shape = SubResource( 1 )
 [node name="Head" type="Sprite" parent="Sprites"]
 position = Vector2( 2, -2 )
 texture = ExtResource( 4 )
-vframes = 32
 hframes = 32
+vframes = 32
 
 [node name="Body" type="Sprite" parent="Sprites"]
 texture = ExtResource( 2 )
-vframes = 8
 hframes = 8
+vframes = 8
 frame = 47
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprites"]
-anims/knight_charge = SubResource( 17 )
-anims/knight_fall = SubResource( 2 )
-anims/knight_glide = SubResource( 13 )
-anims/knight_idle = SubResource( 3 )
-anims/knight_jab_down = SubResource( 22 )
-anims/knight_jab_floor = SubResource( 21 )
-anims/knight_jab_mid = SubResource( 19 )
-anims/knight_jab_up = SubResource( 20 )
-anims/knight_jump = SubResource( 4 )
-anims/knight_point = SubResource( 15 )
-anims/knight_point_down = SubResource( 16 )
-anims/knight_point_up = SubResource( 14 )
-anims/knight_shield = SubResource( 6 )
-anims/knight_shield_bash = SubResource( 12 )
-anims/knight_shield_down = SubResource( 8 )
-anims/knight_shield_down_walk = SubResource( 11 )
-anims/knight_shield_up = SubResource( 7 )
-anims/knight_shield_up_walk = SubResource( 10 )
-anims/knight_shield_walk = SubResource( 9 )
-anims/knight_slash = SubResource( 18 )
-anims/knight_walk = SubResource( 5 )
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 0.140305, -19.6431 )
-current = true
-
-[node name="Interpolator" type="Tween" parent="Camera2D"]
+anims/knight_charge = SubResource( 2 )
+anims/knight_fall = SubResource( 3 )
+anims/knight_glide = SubResource( 4 )
+anims/knight_idle = SubResource( 5 )
+anims/knight_jab_down = SubResource( 6 )
+anims/knight_jab_floor = SubResource( 7 )
+anims/knight_jab_mid = SubResource( 8 )
+anims/knight_jab_up = SubResource( 9 )
+anims/knight_jump = SubResource( 10 )
+anims/knight_point = SubResource( 11 )
+anims/knight_point_down = SubResource( 12 )
+anims/knight_point_up = SubResource( 13 )
+anims/knight_shield = SubResource( 14 )
+anims/knight_shield_bash = SubResource( 15 )
+anims/knight_shield_down = SubResource( 16 )
+anims/knight_shield_down_walk = SubResource( 17 )
+anims/knight_shield_up = SubResource( 18 )
+anims/knight_shield_up_walk = SubResource( 19 )
+anims/knight_shield_walk = SubResource( 20 )
+anims/knight_slash = SubResource( 21 )
+anims/knight_walk = SubResource( 22 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 

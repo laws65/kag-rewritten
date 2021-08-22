@@ -13,7 +13,7 @@ func _ready() -> void:
 	get_node("YSort/Player").initialise(Tilemap)
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	
 	var render_time = Server.client_clock - interpolation_offset
 	if world_state_buffer.size() > 1:
@@ -35,7 +35,7 @@ func _physics_process(delta: float) -> void:
 					var new_position = lerp(world_state_buffer[1][player]["P"], world_state_buffer[2][player]["P"], interpolation_factor)
 					get_node("YSort/OtherPlayers/" + str(player)).update_info(new_position, world_state_buffer[2][player]["A"], world_state_buffer[2][player]["R"])
 				else:
-					spawn_new_player(player, 0)
+					spawn_new_player(player)
 					
 		elif render_time > world_state_buffer[1].T: # if the game should extrapolate instead
 			
@@ -55,7 +55,7 @@ func _physics_process(delta: float) -> void:
 					get_node("YSort/OtherPlayers/" + str(player)).update_info(new_position, world_state_buffer[1][player]["A"], world_state_buffer[1][player]["R"])
 
 
-func spawn_new_player(player_id, team) -> void:
+func spawn_new_player(player_id) -> void:
 	if get_tree().get_network_unique_id() == player_id: # check if ur not spawning in a clone of urself
 		pass
 	elif not get_node("YSort/OtherPlayers").has_node(str(player_id)): # check if it already exists
@@ -74,9 +74,3 @@ func update_world_state(world_state) -> void:
 	if world_state["T"] > last_world_state:
 		last_world_state = world_state["T"]
 		world_state_buffer.append(world_state)
-		
-
-
-func calculate_player_team() -> int:
-	return 1
-
