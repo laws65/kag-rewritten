@@ -7,10 +7,7 @@ var world_state_buffer = []
 const interpolation_offset = 100
 onready var Tilemap = $TileMap
 
-
-func _ready() -> void:
-	#spawn_point = Tilemap.create_world()
-	get_node("YSort/Player").initialise(Tilemap)
+export var PlayerScene: PackedScene
 
 
 func _physics_process(_delta: float) -> void:
@@ -34,8 +31,8 @@ func _physics_process(_delta: float) -> void:
 				if get_node("YSort/OtherPlayers").has_node(str(player)):
 					var new_position = lerp(world_state_buffer[1][player]["P"], world_state_buffer[2][player]["P"], interpolation_factor)
 					get_node("YSort/OtherPlayers/" + str(player)).update_info(new_position, world_state_buffer[2][player]["A"], world_state_buffer[2][player]["R"])
-				else:
-					spawn_new_player(player)
+				#else:
+					#spawn_new_player(player)
 					
 		elif render_time > world_state_buffer[1].T: # if the game should extrapolate instead
 			
@@ -55,9 +52,18 @@ func _physics_process(_delta: float) -> void:
 					get_node("YSort/OtherPlayers/" + str(player)).update_info(new_position, world_state_buffer[1][player]["A"], world_state_buffer[1][player]["R"])
 
 
-func spawn_new_player(player_id) -> void:
+func spawn_player(player_id: int, player_data: Dictionary) -> void:
+	print("Spawning player " + str(player_id))
+	print("Class is " + str(player_data["class"]))
+	print("Team is " + str(player_data["team"]))
+	print("Spawnpoint is " + str(player_data["spawnpoint"]))
+	
 	if get_tree().get_network_unique_id() == player_id: # check if ur not spawning in a clone of urself
-		pass
+		var player_instance = PlayerScene.instance()
+		player_instance.game_class = player_data["class"]
+		player_instance.position = player_data["spawnpoint"]
+		player_instance.team = player_data["team"]
+		get_node("YSort").add_child(player_instance)
 	elif not get_node("YSort/OtherPlayers").has_node(str(player_id)): # check if it already exists
 		var new_player = player_spawn.instance()
 		new_player.global_position = Vector2(0, 0)
@@ -65,9 +71,11 @@ func spawn_new_player(player_id) -> void:
 		get_node("YSort/OtherPlayers").add_child(new_player, true)
 
 
-func despawn_player(player_id) -> void:
+func despawn_player(player_id: int) -> void:
 	if get_node("YSort/OtherPlayers").has_node(str(player_id)):
 		get_node("YSort/OtherPlayers/" + str(player_id)).queue_free()
+	elif player_id == get_tree().get_network_unique_id():
+		get_node("YSort/Player").queue_free()
 
 
 func update_world_state(world_state) -> void:

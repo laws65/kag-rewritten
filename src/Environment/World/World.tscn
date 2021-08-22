@@ -1,10 +1,17 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://src/Environment/Tilemaps/TileMap.gd" type="Script" id=1]
 [ext_resource path="res://src/Entities/Player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/Environment/Tilemaps/World.png" type="Texture" id=3]
 [ext_resource path="res://src/Environment/World/World.gd" type="Script" id=4]
 [ext_resource path="res://src/Scripts/Camera.gd" type="Script" id=5]
+[ext_resource path="res://src/Reusable/Direction/InputDirection.tscn" type="PackedScene" id=6]
+[ext_resource path="res://src/Environment/Background/BackgroundIsland.png" type="Texture" id=7]
+[ext_resource path="res://src/Environment/Background/BackgroundCastle.png" type="Texture" id=8]
+[ext_resource path="res://src/Environment/Background/BackgroundTrees.png" type="Texture" id=9]
+[ext_resource path="res://src/Environment/Background/BackgroundPlains.png" type="Texture" id=10]
+[ext_resource path="res://src/Environment/Spawnpoints/TentBlue.png" type="Texture" id=11]
+[ext_resource path="res://src/Environment/Spawnpoints/TentRed.png" type="Texture" id=12]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 8, 0, 8, 8, 0, 8 )
@@ -247,9 +254,38 @@ points = PoolVector2Array( 0, 0, 8, 0, 8, 8, 0, 8 )
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 9/z_index = 0
+10/name = "TentBlue.png 10"
+10/texture = ExtResource( 11 )
+10/tex_offset = Vector2( 0, 0 )
+10/modulate = Color( 1, 1, 1, 1 )
+10/region = Rect2( 0, 0, 40, 40 )
+10/tile_mode = 0
+10/occluder_offset = Vector2( 0, 0 )
+10/navigation_offset = Vector2( 0, 0 )
+10/shape_offset = Vector2( 0, 0 )
+10/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+10/shape_one_way = false
+10/shape_one_way_margin = 0.0
+10/shapes = [  ]
+10/z_index = 0
+11/name = "TentRed.png 11"
+11/texture = ExtResource( 12 )
+11/tex_offset = Vector2( 0, 0 )
+11/modulate = Color( 1, 1, 1, 1 )
+11/region = Rect2( 0, 0, 40, 40 )
+11/tile_mode = 0
+11/occluder_offset = Vector2( 0, 0 )
+11/navigation_offset = Vector2( 0, 0 )
+11/shape_offset = Vector2( 0, 0 )
+11/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+11/shape_one_way = false
+11/shape_one_way_margin = 0.0
+11/shapes = [  ]
+11/z_index = 0
 
 [node name="World" type="Node2D"]
 script = ExtResource( 4 )
+PlayerScene = ExtResource( 2 )
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource( 11 )
@@ -260,12 +296,43 @@ script = ExtResource( 1 )
 
 [node name="YSort" type="YSort" parent="."]
 
-[node name="Player" parent="YSort" instance=ExtResource( 2 )]
-position = Vector2( 175, 98 )
-
 [node name="OtherPlayers" type="YSort" parent="YSort"]
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D" parent="."]
 current = true
 script = ExtResource( 5 )
-PlayerPath = NodePath("../YSort/Player")
+
+[node name="InputDirection" parent="Camera" instance=ExtResource( 6 )]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scale = Vector2( 0.5, 0.5 )
+transform = Transform2D( 0.5, 0, 0, 0.5, 0, 0 )
+scroll_base_scale = Vector2( 0.5, 0.5 )
+
+[node name="Island" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.3, 0.3 )
+motion_mirroring = Vector2( 1024, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Island"]
+texture = ExtResource( 7 )
+
+[node name="Plains" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.5, 0.4 )
+motion_mirroring = Vector2( 1024, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Plains"]
+texture = ExtResource( 10 )
+
+[node name="Trees" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.7, 0.5 )
+motion_mirroring = Vector2( 1024, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Trees"]
+texture = ExtResource( 9 )
+
+[node name="Castle" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.9, 0.6 )
+motion_mirroring = Vector2( 1024, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Castle"]
+texture = ExtResource( 8 )

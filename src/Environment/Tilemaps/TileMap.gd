@@ -8,6 +8,7 @@ enum Tile {
 
 
 func load_map(map: Array) -> void:
+	self.clear() # delete all old tiles
 	for x in map.size():
 		for y in map[x].size():
 			set_cell(x, y, map[x][y])

@@ -1,6 +1,4 @@
 extends KinematicBody2D
-
-var world
 var speed = Vector2(100, 200)
 var velocity = Vector2.ZERO
 const FLOOR_NORMAL = Vector2.UP
@@ -8,6 +6,8 @@ const gravity = 700
 
 var current_class = "knight" setget _set_class
 
+var game_class
+var team
 const classes = {
 	"knight" : preload("res://src/Entities/Player/Knight/Knight.tscn")
 }
@@ -21,12 +21,13 @@ func _physics_process(_delta: float) -> void:
 	_send_player_info()
 
 
-# This method processes player movement inputs
 func _get_direction() -> Vector2:
-	return Vector2(
-		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
-		-1.0 if Input.is_action_just_pressed("jump") and is_on_floor() else 1.0 # negative x is to the left, negative y is up
-	)
+	var direction = get_node("InputDirection").get_input_direction()
+	if Input.is_action_just_pressed("move_up") and is_on_floor():
+		direction.y = -1.0
+	else:
+		direction.y = 1.0
+	return direction
 
 
 # This method handles movement calculation
@@ -47,11 +48,9 @@ func _calculate_move_velocity(
 func _flip_player() -> void:
 	var mouse_position = sign(get_global_mouse_position().x - global_position.x)
 	if mouse_position < 0:
-		get_node("Sprites/Body").flip_h = true
-		get_node("Sprites/Head").flip_h = true
+		get_node("Sprites").scale.x = -1
 	elif mouse_position > 0:
-		get_node("Sprites/Body").flip_h = false
-		get_node("Sprites/Head").flip_h = false
+		get_node("Sprites").scale.x = 1
 
 
 # This method changes class by instancing a class node and deleting an old one
@@ -71,14 +70,9 @@ func _send_player_info() -> void:
 		var state = {"T": Server.client_clock, # time
 			 "P": get_global_position(),  # position
 			 "A": get_node("Sprites/AnimationPlayer").current_animation, # animation
-			 "R": get_node("Sprites/Body").flip_h # rotation
+			 "R": get_node("Sprites").scale.x # rotation
 			} 
 		Server.send_player_state(state)
-
-
-# This method is called by the world scene
-func initialise(world) -> void:
-	self.world = world
 
 
 

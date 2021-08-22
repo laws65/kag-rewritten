@@ -12,7 +12,7 @@ var client_clock = 0
 
 # Vars for other nodes to see
 var current_map : String = "Default" 
-var is_spectating : bool = false
+var is_spectating : bool = true
 
 
 func _ready() -> void:
@@ -85,12 +85,16 @@ remote func recieve_world_state(world_state) -> void:
 	get_node("../World").update_world_state(world_state)
 
 
-remote func spawn_new_player(player_id) -> void:
-	get_node("../World").spawn_new_player(player_id)
+remote func spawn_player(player_id: int, player_data: Dictionary) -> void:
+	get_node("../World").spawn_player(player_id, player_data)
+	if player_id == get_tree().get_network_unique_id():
+		is_spectating = false
 
 
-remote func despawn_player(player_id) -> void:
+remote func despawn_player(player_id: int) -> void:
 	get_node("../World").despawn_player(player_id)
+	if player_id == get_tree().get_network_unique_id():
+		is_spectating = true
 
 
 func get_stat(context, type, value, requester) -> void:
