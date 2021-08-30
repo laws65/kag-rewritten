@@ -1,14 +1,11 @@
 extends Camera2D
 
 
-var PlayerPath: NodePath = "../YSort/Player"
-
-
 func _physics_process(delta: float) -> void:
 	zoom = _calculate_zoom()
 	if Server.is_spectating:
 		_spectator_movement(delta)
-	elif has_node(PlayerPath):
+	else:
 		position = _calculate_position()
 
 
@@ -27,10 +24,11 @@ func _calculate_zoom() -> Vector2:
 
 
 func _calculate_position() -> Vector2:
+	var player = instance_from_id(Server.player_instance_id)
 	var camera_position := position
 	
-	camera_position.x = lerp(camera_position.x, get_node(PlayerPath).position.x, 0.5)
-	camera_position.y = lerp(camera_position.y, get_node(PlayerPath).position.y, 0.5)
+	camera_position.x = lerp(camera_position.x, player.position.x, 0.5)
+	camera_position.y = lerp(camera_position.y, player.position.y, 0.5)
 	
 	return camera_position
 

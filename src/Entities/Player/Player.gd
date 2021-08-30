@@ -4,75 +4,35 @@ var velocity = Vector2.ZERO
 const FLOOR_NORMAL = Vector2.UP
 const gravity = 700
 
-var current_class = "knight" setget _set_class
-
+export var player_logic_scene: PackedScene
 var game_class
 var team
-const classes = {
-	"knight" : preload("res://src/Entities/Player/Knight/Knight.tscn")
-}
+
+var last_position = Vector2()
+
+var blob_owner: int # is the network unique id
+
+func set_team(team: int) -> void:
+	self.team = team
+	get_node("Sprites").get_material().set_shader_param("should_swap", bool(team))
 
 
-func _physics_process(_delta: float) -> void:
-	_flip_player()
-	var direction: = _get_direction()
-	velocity = _calculate_move_velocity(velocity, direction, speed)
-	velocity = move_and_slide(velocity, FLOOR_NORMAL)
-	_send_player_info()
+func initialise(data: Dictionary) -> void:
+	name = str(data["id"])
+	game_class = data["class"]
+	position = data["spawnpoint"]
+	set_team(data["team"])
 
 
-func _get_direction() -> Vector2:
-	var direction = get_node("InputDirection").get_input_direction()
-	if Input.is_action_just_pressed("move_up") and is_on_floor():
-		direction.y = -1.0
-	else:
-		direction.y = 1.0
-	return direction
+func update_data(data: Dictionary) -> void:
+	position = Vector2(int(data["P"].x), int(data["P"].y))
+	get_node("Sprites/AnimationPlayer").play(data["A"])
+	get_node("Sprites").scale.x = data["R"]
 
 
-# This method handles movement calculation
-func _calculate_move_velocity(
-		linear_velocity: Vector2,
-		direction: Vector2,
-		speed: Vector2
-	) -> Vector2:
-	var out: = linear_velocity
-	out.x = speed.x * direction.x
-	out.y += gravity * get_physics_process_delta_time() # so we dont have to pass delta to the function
-	if direction.y == -1.0:
-		out.y = speed.y * direction.y
-	return out # out is the new velocity
-
-
-# This method flips the player sprites direction based on the mouses position
-func _flip_player() -> void:
-	var mouse_position = sign(get_global_mouse_position().x - global_position.x)
-	if mouse_position < 0:
-		get_node("Sprites").scale.x = -1
-	elif mouse_position > 0:
-		get_node("Sprites").scale.x = 1
-
-
-# This method changes class by instancing a class node and deleting an old one
-func _set_class(new_class) -> void:
-	if current_class == new_class:
-		pass
-	var instance = classes[new_class].instance()
-	instance.global_position = self.global_position
-	instance.name = new_class
-	get_node(current_class).queue_free()
-	self.add_child(instance)
-
-
-# This method sends player info to the server
-func _send_player_info() -> void:
-	if Server.is_connected:
-		var state = {"T": Server.client_clock, # time
-			 "P": get_global_position(),  # position
-			 "A": get_node("Sprites/AnimationPlayer").current_animation, # animation
-			 "R": get_node("Sprites").scale.x # rotation
-			} 
-		Server.send_player_state(state)
-
-
-
+func set_blob_ownership(player_id: int) -> void:
+	blob_owner = player_id
+	if blob_owner == get_tree().get_network_unique_id():
+		if not has_node("PlayerLogic"):
+			var player_logic_instance = player_logic_scene.instance()
+			add_child(player_logic_instance)

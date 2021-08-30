@@ -14,6 +14,7 @@ var client_clock = 0
 var current_map : String = "Default" 
 var is_spectating : bool = true
 
+var player_instance_id: int
 
 func _ready() -> void:
 	connect_to_server(ip, port)
@@ -26,6 +27,7 @@ func _physics_process(delta: float) -> void:
 	if decimal_collector >= 1.00:
 		client_clock += 1
 		decimal_collector -= 1.00
+	print(latency)
 
 
 func connect_to_server(ip, port) -> void:
@@ -78,35 +80,29 @@ remote func return_server_time(server_time, client_time) -> void:
 
 func send_player_state(player_state) -> void:
 	if is_connected:
-		rpc_unreliable_id(1, "recieve_player_state", player_state)
+		rpc_unreliable_id(1, "receive_player_state", player_state)
 
 
-remote func recieve_world_state(world_state) -> void:
+remote func receive_world_state(world_state) -> void:
 	get_node("../World").update_world_state(world_state)
 
 
-remote func spawn_player(player_id: int, player_data: Dictionary) -> void:
-	get_node("../World").spawn_player(player_id, player_data)
-	if player_id == get_tree().get_network_unique_id():
-		is_spectating = false
-
-
-remote func despawn_player(player_id: int) -> void:
-	get_node("../World").despawn_player(player_id)
-	if player_id == get_tree().get_network_unique_id():
+remote func despawn_blob(player_network_id: int, blob_id: int) -> void:
+	get_node("../World").despawn_blob(player_network_id, blob_id)
+	if player_network_id == get_tree().get_network_unique_id():
 		is_spectating = true
-
-
-func get_stat(context, type, value, requester) -> void:
-	print("Interface attempts to get stat")
-	rpc_id(1, "get_stat", context, type, value, requester)
-
-
-remote func return_stat(stat, requester, value) -> void:
-	print("Interface recieved stat from server")
-	instance_from_id(requester).update_variable(stat, value)
 
 
 remote func load_map(map_name: String, map_data: Array) -> void:
 	get_node("../World/TileMap").load_map(map_data)
 	print("Loading map " + map_name)
+
+
+remote func spawn_blob(blob_name: String, blob_data: Dictionary) -> void:
+	get_node("../World").spawn_blob(blob_name, blob_data)
+
+
+remote func set_blob_ownership(player_id: int, blob_id: int) -> void:
+	if player_id == get_tree().get_network_unique_id():
+		is_spectating = false
+	get_node("../World").set_blob_ownership(player_id, blob_id)

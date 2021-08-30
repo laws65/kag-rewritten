@@ -2,38 +2,38 @@
 
 [ext_resource path="res://src/Entities/Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://src/Entities/Player/Knight/KnightMale.png" type="Texture" id=2]
-[ext_resource path="res://src/Entities/Player/Knight/Knight.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/Entities/Player/PlayerLogic/PlayerLogic.tscn" type="PackedScene" id=3]
 [ext_resource path="res://src/Entities/Player/Heads.png" type="Texture" id=4]
 [ext_resource path="res://src/Entities/Player/AnimationPlayer.tscn" type="PackedScene" id=5]
-[ext_resource path="res://src/Reusable/Direction/InputDirection.tscn" type="PackedScene" id=9]
+[ext_resource path="res://src/Reusable/PaletteSwap/PaletteSwap.tres" type="Material" id=6]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 8.33678
 height = 0.0
 
 [node name="Player" type="KinematicBody2D"]
+collision_layer = 2
 script = ExtResource( 1 )
+player_logic_scene = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -0.334087, 3.45223 )
 shape = SubResource( 1 )
 
-[node name="Knight" parent="." instance=ExtResource( 3 )]
-
 [node name="Sprites" type="Node2D" parent="."]
+material = ExtResource( 6 )
 
 [node name="Head" type="Sprite" parent="Sprites"]
-position = Vector2( 2, -2 )
+use_parent_material = true
+position = Vector2( 0, -3 )
 texture = ExtResource( 4 )
 hframes = 32
 vframes = 32
 
 [node name="Body" type="Sprite" parent="Sprites"]
+use_parent_material = true
 texture = ExtResource( 2 )
 hframes = 8
 vframes = 8
-frame = 47
 
 [node name="AnimationPlayer" parent="Sprites" instance=ExtResource( 5 )]
-
-[node name="InputDirection" parent="." instance=ExtResource( 9 )]
