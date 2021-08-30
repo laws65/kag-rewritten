@@ -106,3 +106,11 @@ remote func set_blob_ownership(player_id: int, blob_id: int) -> void:
 	if player_id == get_tree().get_network_unique_id():
 		is_spectating = false
 	get_node("../World").set_blob_ownership(player_id, blob_id)
+
+
+func call_on_blob(blob_id: int, blob_method: String, method_args: Array = []) -> void:
+	rpc_id(1, "call_to_blob", blob_id, blob_method, method_args)
+
+
+remote func call_to_blob(blob_id: int, blob_method: String, method_args: Array = []) -> void:
+	return

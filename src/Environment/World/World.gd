@@ -1,6 +1,5 @@
 extends Node2D
 
-var player_spawn = preload("res://src/Entities/Player/Template/PlayerTemplate.tscn")
 var spawn_point = []
 var last_world_state = 0
 var world_state_buffer = []
@@ -27,13 +26,13 @@ func _physics_process(_delta: float) -> void:
 				continue
 			if not world_state_buffer[1].has(player):
 				continue
-			if not get_node("YSort/OtherPlayers").has_node(str(player)):
+			if not get_node("YSort/Entities").has_node(str(player)):
 				continue
-			if get_node("YSort/OtherPlayers/" + str(player)).blob_owner == get_tree().get_network_unique_id():
+			if get_node("YSort/Entities/" + str(player)).blob_owner == get_tree().get_network_unique_id():
 				continue
 			var new_position = lerp(world_state_buffer[1][player]["P"], world_state_buffer[2][player]["P"], interpolation_factor)
 			var data_dict = {"P": new_position, "A": world_state_buffer[2][player]["A"], "R": world_state_buffer[2][player]["R"]}
-			get_node("YSort/OtherPlayers/" + str(player)).update_data(data_dict)
+			get_node("YSort/Entities/" + str(player)).update_data(data_dict)
 
 	elif render_time > world_state_buffer[1].T: # if the game should extrapolate instead
 		
@@ -46,19 +45,19 @@ func _physics_process(_delta: float) -> void:
 				continue
 			if not world_state_buffer[0].has(player):
 				continue
-			if not get_node("YSort/OtherPlayers").has_node(str(player)):
+			if not get_node("YSort/Entities").has_node(str(player)):
 				continue
-			if get_node("YSort/OtherPlayers/" + str(player)).blob_owner == get_tree().get_network_unique_id():
+			if get_node("YSort/Entities/" + str(player)).blob_owner == get_tree().get_network_unique_id():
 				continue
 			var position_delta = (world_state_buffer[1][player]["P"] - world_state_buffer[0][player]["P"])
 			var new_position = world_state_buffer[1][player]["P"] + (position_delta * extrapolation_factor)
 			var data_dict = {"P": new_position, "A": world_state_buffer[1][player]["A"], "R": world_state_buffer[1][player]["R"]}
-			get_node("YSort/OtherPlayers/" + str(player)).update_data(data_dict)
+			get_node("YSort/Entities/" + str(player)).update_data(data_dict)
 
 
 func despawn_blob(player_network_id: int, blob_id: int) -> void:
-	if get_node("YSort/OtherPlayers").has_node(str(blob_id)):
-		get_node("YSort/OtherPlayers/" + str(blob_id)).queue_free()
+	if get_node("YSort/Entities").has_node(str(blob_id)):
+		get_node("YSort/Entities/" + str(blob_id)).queue_free()
 	if player_network_id == get_tree().get_network_unique_id():
 		Server.is_spectating = true
 
@@ -71,16 +70,16 @@ func update_world_state(world_state) -> void:
 
 func spawn_blob(blob_name: String, blob_data: Dictionary) -> void:
 	if blob_name == "player":
-		if get_node("YSort/OtherPlayers").has_node(str(blob_data["id"])):
+		if get_node("YSort/Entities").has_node(str(blob_data["id"])):
 			return
 		var new_player = PlayerScene.instance()
 		new_player.initialise(blob_data)
-		get_node("YSort/OtherPlayers").add_child(new_player, true)
+		get_node("YSort/Entities").add_child(new_player, true)
 
 
 func set_blob_ownership(player_id: int, blob_id: int) -> void:
-	if not has_node("YSort/OtherPlayers/" + str(blob_id)):
+	if not has_node("YSort/Entities/" + str(blob_id)):
 		return
 	if player_id == get_tree().get_network_unique_id():
-		Server.player_instance_id = get_node("YSort/OtherPlayers/" + str(blob_id)).get_instance_id()
-	get_node("YSort/OtherPlayers/" + str(blob_id)).set_blob_ownership(player_id)
+		Server.player_instance_id = get_node("YSort/Entities/" + str(blob_id)).get_instance_id()
+	get_node("YSort/Entities/" + str(blob_id)).set_blob_ownership(player_id)
